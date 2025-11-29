@@ -423,7 +423,8 @@
                   </div>
                  </div>
     
-              <!-- قسم المجلات - نسخة متوافقة مع CSP -->
+        <!-- قسم المجلات - متوافق 100% مع GitHub Pages -->
+    
 <section id="digital-magazines" class="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
   <div class="max-w-7xl mx-auto">
     <div class="text-center mb-12">
@@ -438,13 +439,16 @@
           <div class="bg-gray-50 px-6 py-3 border-b border-gray-200">
             <h3 id="mag-title" class="font-bold text-gray-900">أعمالي المختارة</h3>
           </div>
-          <div class="p-6">
-            <!-- Slides بسيط -->
-            <div id="mag-slider" class="relative h-[500px] overflow-hidden rounded-lg bg-gray-50 border border-gray-200">
-              <!-- سيتم إنشاء الشرائح هنا -->
+          <div class="p-6 text-center">
+            <div id="mag-content" class="min-h-[400px] flex flex-col items-center justify-center bg-gray-50 rounded-xl border border-gray-200">
+              <div class="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center mb-4">
+                <span class="text-cyan-700 text-xl font-bold" id="page-number">1</span>
+              </div>
+              <h3 class="font-bold text-gray-800">غلاف داخلي</h3>
+              <p class="text-gray-600 mt-2">سيتم استبداله بمحتواك عند الانتهاء</p>
             </div>
-            <div class="flex justify-center mt-4 space-x-2">
-              <button id="prev-btn" class="w-10 h-10 rounded-full bg-cyan-500 text-white flex items-center justify-center hover:bg-cyan-600">‹</button>
+            <div class="mt-6 flex justify-center space-x-2">
+              <button id="prev-btn" disabled class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center">‹</button>
               <button id="next-btn" class="w-10 h-10 rounded-full bg-cyan-500 text-white flex items-center justify-center hover:bg-cyan-600">›</button>
             </div>
           </div>
@@ -455,14 +459,14 @@
       <div class="lg:w-1/3">
         <h4 class="font-bold text-gray-900 mb-4 text-lg text-center lg:text-right">اختر مجلّة:</h4>
         <div class="space-y-4">
-          <div onclick="switchMagazine('portfolio')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400">
-            <h5 class="font-bold text-gray-900">أعمالي المختارة</h5>
+          <div onclick="changeMagazine('portfolio')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400 transition-colors">
+            <h5 class="font-bold text-gray-900 text-center lg:text-right">أعمالي المختارة</h5>
           </div>
-          <div onclick="switchMagazine('branding')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400">
-            <h5 class="font-bold text-gray-900">هويات بصرية</h5>
+          <div onclick="changeMagazine('branding')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400 transition-colors">
+            <h5 class="font-bold text-gray-900 text-center lg:text-right">هويات بصرية</h5>
           </div>
-          <div onclick="switchMagazine('packaging')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400">
-            <h5 class="font-bold text-gray-900">تغليف منتجات</h5>
+          <div onclick="changeMagazine('packaging')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400 transition-colors">
+            <h5 class="font-bold text-gray-900 text-center lg:text-right">تغليف منتجات</h5>
           </div>
         </div>
       </div>
@@ -471,103 +475,84 @@
 </section>
 
 <script>
-// مجلات بسيطة - بدون eval، بدون CSP issues
+// === كود بسيط بدون eval - آمن لـ GitHub Pages ===
 const magazines = {
-  portfolio: {
-    title: "أعمالي المختارة",
-    pages: 3
-  },
-  branding: {
-    title: "هويات بصرية",
-    pages: 3
-  },
-  packaging: {
-    title: "تغليف منتجات",
-    pages: 3
-  }
+  portfolio: { title: "أعمالي المختارة", pages: 3 },
+  branding: { title: "هويات بصرية", pages: 3 },
+  packaging: { title: "تغليف منتجات", pages: 3 }
 };
 
 let currentMag = 'portfolio';
-let currentPage = 0;
+let currentPage = 1;
+let totalPages = 3;
 
-function renderMagazine(magKey) {
-  const mag = magazines[magKey];
-  const slider = document.getElementById('mag-slider');
-  const titleEl = document.getElementById('mag-title');
+function updateDisplay() {
+  document.getElementById('mag-title').textContent = magazines[currentMag].title;
+  document.getElementById('page-number').textContent = currentPage;
   
-  if (!mag || !slider || !titleEl) return;
-  
-  titleEl.textContent = mag.title;
-  currentPage = 0;
-  
-  // إنشاء الشرائح
-  slider.innerHTML = '';
-  for (let i = 0; i < mag.pages; i++) {
-    const slide = document.createElement('div');
-    slide.className = 'absolute inset-0 flex items-center justify-center transition-opacity duration-500';
-    slide.style.opacity = (i === 0) ? '1' : '0';
-    slide.style.backgroundColor = (i === 0) ? '#f8fafc' : '#e2e8f0';
-    
-    const content = document.createElement('div');
-    content.className = 'text-center p-6';
-    content.innerHTML = `
-      <div class="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <span class="text-cyan-700 text-xl font-bold">${i + 1}</span>
-      </div>
-      <h3 class="font-bold text-gray-800">صفحة ${i + 1}</h3>
-      <p class="text-gray-600 mt-2">محتوى تجريبي - سيتم استبداله</p>
-    `;
-    slide.appendChild(content);
-    slider.appendChild(slide);
-  }
-  
-  updateButtons(mag.pages);
-}
-
-function showPage(index, total) {
-  const slides = document.querySelectorAll('#mag-slider > div');
-  slides.forEach((slide, i) => {
-    slide.style.opacity = (i === index) ? '1' : '0';
-    slide.style.zIndex = (i === index) ? '10' : '1';
-  });
-  currentPage = index;
-  updateButtons(total);
-}
-
-function updateButtons(total) {
+  const content = document.getElementById('mag-content');
   const prevBtn = document.getElementById('prev-btn');
   const nextBtn = document.getElementById('next-btn');
-  if (prevBtn) prevBtn.disabled = (currentPage === 0);
-  if (nextBtn) nextBtn.disabled = (currentPage === total - 1);
+
+  // تحديث المحتوى حسب الصفحة
+  let subtitle, desc;
+  if (currentPage === 1) {
+    subtitle = "غلاف داخلي";
+    desc = "سيتم استبداله بمحتواك عند الانتهاء";
+  } else if (currentPage === totalPages) {
+    subtitle = "نهاية المجلّة";
+    desc = "شكرًا لاستكشاف أعمالي";
+  } else {
+    subtitle = `صفحة ${currentPage}`;
+    desc = "محتوى تجريبي - سيتم استبداله";
+  }
+
+  content.querySelector('h3').textContent = subtitle;
+  content.querySelector('p').textContent = desc;
+
+  // تحديث أزرار التنقل
+  prevBtn.disabled = (currentPage === 1);
+  prevBtn.classList.toggle('bg-gray-200', currentPage === 1);
+  prevBtn.classList.toggle('text-gray-500', currentPage === 1);
+  prevBtn.classList.toggle('bg-cyan-500', currentPage > 1);
+  prevBtn.classList.toggle('text-white', currentPage > 1);
+
+  nextBtn.disabled = (currentPage === totalPages);
+  nextBtn.classList.toggle('bg-cyan-500', currentPage < totalPages);
+  nextBtn.classList.toggle('hover:bg-cyan-600', currentPage < totalPages);
+  nextBtn.classList.toggle('bg-gray-200', currentPage === totalPages);
+  nextBtn.classList.toggle('text-gray-500', currentPage === totalPages);
 }
 
-function switchMagazine(key) {
-  currentMag = key;
-  renderMagazine(key);
+function changeMagazine(key) {
+  if (magazines[key]) {
+    currentMag = key;
+    totalPages = magazines[key].pages;
+    currentPage = 1;
+    updateDisplay();
+  }
 }
 
-// أزرار التحكم
-document.getElementById('prev-btn')?.addEventListener('click', () => {
-  if (currentPage > 0) {
-    showPage(currentPage - 1, magazines[currentMag].pages);
+// أزرار التنقل
+document.getElementById('prev-btn').onclick = () => {
+  if (currentPage > 1) {
+    currentPage--;
+    updateDisplay();
   }
-});
+};
 
-document.getElementById('next-btn')?.addEventListener('click', () => {
-  const total = magazines[currentMag].pages;
-  if (currentPage < total - 1) {
-    showPage(currentPage + 1, total);
+document.getElementById('next-btn').onclick = () => {
+  if (currentPage < totalPages) {
+    currentPage++;
+    updateDisplay();
   }
-});
+};
 
 // تحميل أول مجلّة
 document.addEventListener('DOMContentLoaded', () => {
-  renderMagazine('portfolio');
+  updateDisplay();
 });
-</script>              
-
-
-    
+</script>
                                            
             <!-- Contact -->
         <section id="contact" class="py-20 px-4 bg-black bg-opacity-30">
