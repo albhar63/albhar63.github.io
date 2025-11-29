@@ -433,72 +433,73 @@
               </span>
               <h2 class="text-3xl md:text-4xl font-bold text-white">استكشف أعمالي ككتاب حي</h2>
             </div>
-        
-                   <!-- شريط الاختيار - عرض عمودي دائم -->
+                <!-- شريط الاختيار - تقسيم 3 + 3 -->
         <div class="w-full lg:w-1/3">
           <h4 class="font-bold text-white mb-4 text-lg text-center lg:text-right">اختر مجلّة:</h4>
-          <div class="space-y-6"> <!-- كل مجلّة تحت الأخرى -->
+          
+          <!-- عمودان، كل عمود 3 مجلات -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             
-            <!-- 1. أعمالي المختارة -->
-            <div onclick="changeMagazine('portfolio')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cychan-400 transition-all overflow-hidden">
-              <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
-                <img src="/covers/portfolio-cover.jpg" alt="أعمالي المختارة" class="w-full h-full object-cover">
+            <!-- العمود الأول: 3 مجلات -->
+            <div class="space-y-4">
+              <div onclick="changeMagazine('portfolio')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+                <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+                  <img src="/covers/portfolio-cover.jpg" alt="أعمالي المختارة" class="w-full h-full object-cover">
+                </div>
+                <div class="p-3 text-center lg:text-right">
+                  <h5 class="font-bold text-gray-100 text-sm">أعمالي المختارة</h5>
+                </div>
               </div>
-              <div class="p-3 text-center lg:text-right">
-                <h5 class="font-bold text-gray-100 text-sm">أعمالي المختارة</h5>
+        
+              <div onclick="changeMagazine('branding')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+                <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+                  <img src="/covers/branding-cover.jpg" alt="هويات بصرية" class="w-full h-full object-cover">
+                </div>
+                <div class="p-3 text-center lg:text-right">
+                  <h5 class="font-bold text-gray-100 text-sm">هويات بصرية</h5>
+                </div>
+              </div>
+        
+              <div onclick="changeMagazine('packaging')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+                <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+                  <img src="/covers/packaging-cover.jpg" alt="تغليف منتجات" class="w-full h-full object-cover">
+                </div>
+                <div class="p-3 text-center lg:text-right">
+                  <h5 class="font-bold text-gray-100 text-sm">تغليف منتجات</h5>
+                </div>
               </div>
             </div>
         
-            <!-- 2. هويات بصرية -->
-            <div onclick="changeMagazine('branding')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
-              <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
-                <img src="/covers/branding-cover.jpg" alt="هويات بصرية" class="w-full h-full object-cover">
+            <!-- العمود الثاني: 3 مجلات -->
+            <div class="space-y-4">
+              <div onclick="changeMagazine('fashion')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+                <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+                  <img src="/covers/fashion-cover.jpg" alt="مجلة فاشن" class="w-full h-full object-cover">
+                </div>
+                <div class="p-3 text-center lg:text-right">
+                  <h5 class="font-bold text-gray-100 text-sm">مجلة فاشن</h5>
+                </div>
               </div>
-              <div class="p-3 text-center lg:text-right">
-                <h5 class="font-bold text-gray-100 text-sm">هويات بصرية</h5>
+        
+              <div onclick="changeMagazine('egyptianMuseum')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+                <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+                  <img src="/covers/egyptian-museum-cover.jpg" alt="المتحف المصري الكبير" class="w-full h-full object-cover">
+                </div>
+                <div class="p-3 text-center lg:text-right">
+                  <h5 class="font-bold text-gray-100 text-sm">المتحف المصري الكبير</h5>
+                </div>
+              </div>
+        
+              <div onclick="changeMagazine('sunKids')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+                <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+                  <img src="/covers/sun-kids-cover.jpg" alt="مجلة شمس الطفولة" class="w-full h-full object-cover">
+                </div>
+                <div class="p-3 text-center lg:text-right">
+                  <h5 class="font-bold text-gray-100 text-sm">مجلة شمس الطفولة</h5>
+                </div>
               </div>
             </div>
-        
-            <!-- 3. تغليف منتجات -->
-            <div onclick="changeMagazine('packaging')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
-              <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
-                <img src="/covers/packaging-cover.jpg" alt="تغليف منتجات" class="w-full h-full object-cover">
-              </div>
-              <div class="p-3 text-center lg:text-right">
-                <h5 class="font-bold text-gray-100 text-sm">تغليف منتجات</h5>
-              </div>
-            </div>
-        
-            <!-- 4. مجلة فاشن -->
-            <div onclick="changeMagazine('fashion')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
-              <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
-                <img src="/covers/fashion-cover.jpg" alt="مجلة فاشن" class="w-full h-full object-cover">
-              </div>
-              <div class="p-3 text-center lg:text-right">
-                <h5 class="font-bold text-gray-100 text-sm">مجلة فاشن</h5>
-              </div>
-            </div>
-        
-            <!-- 5. المتحف المصري الكبير -->
-            <div onclick="changeMagazine('egyptianMuseum')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
-              <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
-                <img src="/covers/egyptian-museum-cover.jpg" alt="المتحف المصري الكبير" class="w-full h-full object-cover">
-              </div>
-              <div class="p-3 text-center lg:text-right">
-                <h5 class="font-bold text-gray-100 text-sm">المتحف المصري الكبير</h5>
-              </div>
-            </div>
-        
-            <!-- 6. شمس الطفولة -->
-            <div onclick="changeMagazine('sunKids')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
-              <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
-                <img src="/covers/sun-kids-cover.jpg" alt="مجلة شمس الطفولة" class="w-full h-full object-cover">
-              </div>
-              <div class="p-3 text-center lg:text-right">
-                <h5 class="font-bold text-gray-100 text-sm">مجلة شمس الطفولة</h5>
-              </div>
-            </div>
-        
+            
           </div>
         </div>
         <!-- JavaScript للمجلات (مدمج وآمن) -->
