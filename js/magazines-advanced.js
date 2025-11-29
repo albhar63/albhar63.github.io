@@ -41,12 +41,52 @@ function switchMagazine(key) {
   document.getElementById('downloadPdfLinkMobile').href = mag.pdf;
   
   // إعادة تحميل كتاب التقليب
-  loadFlipbook(key, mag.pages);
-}
+ let currentFlipBook = null;
 
 function loadFlipbook(magKey, totalPages) {
-  const container = document.getElementById('flipbook');
-  
+  const container = document.getElementById('flipbook-container');
+  container.innerHTML = '';
+
+  // إنشاء عناصر الصفحات
+  const pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    const page = document.createElement('div');
+    page.className = 'page bg-white border border-gray-200';
+    page.style.backgroundImage = `url('/magazines/${magKey}/page-${i}.jpg)`;
+    page.style.backgroundSize = 'contain';
+    page.style.backgroundRepeat = 'no-repeat';
+    page.style.backgroundPosition = 'center';
+    page.style.width = '100%';
+    page.style.height = '100%';
+    pages.push(page);
+  }
+
+  // تهيئة page-flip
+  if (currentFlipBook) {
+    currentFlipBook.dispose();
+  }
+
+  currentFlipBook = new PageFlip(container, {
+    width: container.offsetWidth || 500,
+    height: container.offsetHeight || 700,
+    size: 'fixed',
+    minWidth: 300,
+    maxWidth: 800,
+    minHeight: 400,
+    maxHeight: 1000,
+    maxShadowOpacity: 0.5,
+    showCover: false,
+    mobileScrollSupport: true,
+    usePortrait: true
+  });
+
+  currentFlipBook.loadFromHTML(pages);
+
+  // تحديث الأبعاد عند تغيير حجم النافذة
+  window.addEventListener('resize', () => {
+    currentFlipBook.updateSize(container.offsetWidth, container.offsetHeight);
+  });
+}
   // إزالة المحتوى القديم
   container.innerHTML = '';
   
