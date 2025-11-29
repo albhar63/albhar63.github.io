@@ -435,59 +435,107 @@
             </div>
         
             <div class="flex flex-col lg:flex-row gap-8">
-              <!-- عارض المجلة -->
-              <div class="lg:w-2/3">
-                <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden border-2 border-cyan-500/30">
-                  <div class="bg-gray-900 px-6 py-3 border-b border-cyan-500/20">
-                    <h3 id="mag-title" class="font-bold text-white">أعمالي المختارة</h3>
-                  </div>
-                  <div class="p-6 text-center">
-                    <div id="mag-content" class="min-h-[400px] flex flex-col items-center justify-center bg-gray-800/70 rounded-xl border-2 border-cyan-500/20">
-                      <div class="w-16 h-16 bg-cyan-900/30 rounded-full flex items-center justify-center mb-4 border-2 border-cyan-500/40">
-                        <span class="text-cyan-300 text-xl font-bold" id="page-number">1</span>
+                      <!-- عارض المجلة -->
+                      <div class="lg:w-2/3">
+                        <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden border-2 border-cyan-500/30">
+                          <div class="bg-gray-900 px-6 py-3 border-b border-cyan-500/20">
+                            <h3 id="mag-title" class="font-bold text-white">أعمالي المختارة</h3>
+                          </div>
+                          <div class="p-6 text-center">
+                            <div id="mag-content" class="min-h-[400px] flex flex-col items-center justify-center bg-gray-800/70 rounded-xl border-2 border-cyan-500/20">
+                              <div class="w-16 h-16 bg-cyan-900/30 rounded-full flex items-center justify-center mb-4 border-2 border-cyan-500/40">
+                                <span class="text-cyan-300 text-xl font-bold" id="page-number">1</span>
+                              </div>
+                              <h3 class="font-bold text-gray-100">غلاف داخلي</h3>
+                              <p class="text-gray-300 mt-2">سيتم استبداله بمحتواك عند الانتهاء</p>
+                            </div>
+                            <div class="mt-6 flex justify-center space-x-3">
+                              <button id="prev-btn" disabled class="w-12 h-12 rounded-full bg-gray-700 text-gray-400 flex items-center justify-center border-2 border-cyan-500/20">
+                                ‹
+                              </button>
+                              <button id="next-btn" class="w-12 h-12 rounded-full bg-cyan-500 text-white flex items-center justify-center hover:bg-cyan-600 border-2 border-cyan-500 shadow-lg shadow-cyan-500/30">
+                                ›
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <h3 class="font-bold text-gray-100">غلاف داخلي</h3>
-                      <p class="text-gray-300 mt-2">سيتم استبداله بمحتواك عند الانتهاء</p>
-                    </div>
-                    <div class="mt-6 flex justify-center space-x-3">
-                      <button id="prev-btn" disabled class="w-12 h-12 rounded-full bg-gray-700 text-gray-400 flex items-center justify-center border-2 border-cyan-500/20">
-                        ‹
-                      </button>
-                      <button id="next-btn" class="w-12 h-12 rounded-full bg-cyan-500 text-white flex items-center justify-center hover:bg-cyan-600 border-2 border-cyan-500 shadow-lg shadow-cyan-500/30">
-                        ›
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        
-              <!-- شريط الاختيار -->
-              <div class="lg:w-1/3">
-                <h4 class="font-bold text-white mb-4 text-lg text-center lg:text-right">اختر مجلّة:</h4>
-                <div class="space-y-4">
-                  <div onclick="changeMagazine('portfolio')" class="cursor-pointer rounded-xl p-4 bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all duration-300">
-                    <h5 class="font-bold text-gray-100 text-center lg:text-right">أعمالي المختارة</h5>
-                  </div>
-                  <div onclick="changeMagazine('branding')" class="cursor-pointer rounded-xl p-4 bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all duration-300">
-                    <h5 class="font-bold text-gray-100 text-center lg:text-right">هويات بصرية</h5>
-                  </div>
-                  <div onclick="changeMagazine('packaging')" class="cursor-pointer rounded-xl p-4 bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all duration-300">
-                    <h5 class="font-bold text-gray-100 text-center lg:text-right">تغليف منتجات</h5>
-                  </div>
-                </div>
-              </div>
+                
+                     <div class="space-y-4">
+          <!-- 1. أعمالي المختارة -->
+          <div onclick="changeMagazine('portfolio')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+            <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+              <img src="/covers/portfolio-cover.jpg" alt="أعمالي المختارة" class="w-full h-full object-cover">
+            </div>
+            <div class="p-3 text-center lg:text-right">
+              <h5 class="font-bold text-gray-100 text-sm">أعمالي المختارة</h5>
             </div>
           </div>
-        </section>
+        
+          <!-- 2. هويات بصرية -->
+          <div onclick="changeMagazine('branding')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+            <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+              <img src="/covers/branding-cover.jpg" alt="هويات بصرية" class="w-full h-full object-cover">
+            </div>
+            <div class="p-3 text-center lg:text-right">
+              <h5 class="font-bold text-gray-100 text-sm">هويات بصرية</h5>
+            </div>
+          </div>
+        
+          <!-- 3. تغليف منتجات -->
+          <div onclick="changeMagazine('packaging')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+            <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+              <img src="/covers/packaging-cover.jpg" alt="تغليف منتجات" class="w-full h-full object-cover">
+            </div>
+            <div class="p-3 text-center lg:text-right">
+              <h5 class="font-bold text-gray-100 text-sm">تغليف منتجات</h5>
+            </div>
+          </div>
+        
+          <!-- 4. مجلة فاشن -->
+          <div onclick="changeMagazine('fashion')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+            <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+              <img src="/covers/fashion-cover.jpg" alt="مجلة فاشن" class="w-full h-full object-cover">
+            </div>
+            <div class="p-3 text-center lg:text-right">
+              <h5 class="font-bold text-gray-100 text-sm">مجلة فاشن</h5>
+            </div>
+          </div>
+        
+          <!-- 5. المتحف المصري الكبير -->
+          <div onclick="changeMagazine('egyptianMuseum')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+            <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+              <img src="/covers/egyptian-museum-cover.jpg" alt="المتحف المصري الكبير" class="w-full h-full object-cover">
+            </div>
+            <div class="p-3 text-center lg:text-right">
+              <h5 class="font-bold text-gray-100 text-sm">المتحف المصري الكبير</h5>
+            </div>
+          </div>
+        
+          <!-- 6. شمس الطفولة -->
+          <div onclick="changeMagazine('sunKids')" class="cursor-pointer rounded-xl bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all overflow-hidden">
+            <div class="aspect-[3/4] bg-gray-900 border-b border-cyan-500/20">
+              <img src="/covers/sun-kids-cover.jpg" alt="مجلة شمس الطفولة" class="w-full h-full object-cover">
+            </div>
+            <div class="p-3 text-center lg:text-right">
+              <h5 class="font-bold text-gray-100 text-sm">مجلة شمس الطفولة</h5>
+            </div>
+          </div>
+        </div>
         
         <!-- JavaScript للمجلات (مدمج وآمن) -->
         <script>
-        const magazines = {
-          portfolio: { title: "أعمالي المختارة", pages: 3 },
-          branding: { title: "هويات بصرية", pages: 3 },
-          packaging: { title: "تغليف منتجات", pages: 3 }
-        };
-        
+            <script>
+                const magazines = {
+                  portfolio: { title: "أعمالي المختارة", pages: 4 },
+                  branding: { title: "هويات بصرية", pages: 5 },
+                  packaging: { title: "تغليف منتجات", pages: 5 },
+                  fashion: { title: "مجلة فاشن", pages: 8 },
+                  egyptianMuseum: { title: "المتحف المصري الكبير", pages: 10 },
+                  sunKids: { title: "مجلة شمس الطفولة", pages: 12 }
+                };
+            
+             
         let currentMag = 'portfolio';
         let currentPage = 1;
         let totalPages = 3;
