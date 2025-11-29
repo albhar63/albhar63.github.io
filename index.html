@@ -421,56 +421,153 @@
                       <p class="text-gray-300 text-base">كيف تبني هوية بصرية تُعبر عن روح علامتك؟</p>
                     </div>
                   </div>
-                </div
-                             <!-- قسم اختبار سريع -->
-<section class="py-20 px-4 bg-gray-100">
-  <div class="max-w-4xl mx-auto text-center">
-    <h2 class="text-2xl font-bold mb-6">اختبار تقليب الصفحات</h2>
+                 </div>
     
-    <!-- عارض بسيط -->
-    <div id="test-flipbook" class="w-full h-[400px] bg-white border border-gray-300 rounded-lg mx-auto"></div>
-    
-    <!-- أزرار اختبار -->
-    <div class="mt-6 space-x-4">
-      <button onclick="loadTestBook()" class="bg-cyan-500 text-white px-4 py-2 rounded">تشغيل العارض</button>
-      <button onclick="console.log('JS يعمل!')" class="bg-gray-500 text-white px-4 py-2 rounded">اختبار JS</button>
+              <!-- قسم المجلات - نسخة متوافقة مع CSP -->
+<section id="digital-magazines" class="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="inline-block bg-cyan-100 text-cyan-800 text-sm font-bold px-4 py-1 rounded-full mb-3">مجلات رقمية</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900">استكشف أعمالي ككتاب حي</h2>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+      <!-- عارض المجلة -->
+      <div class="lg:w-2/3">
+        <div class="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
+          <div class="bg-gray-50 px-6 py-3 border-b border-gray-200">
+            <h3 id="mag-title" class="font-bold text-gray-900">أعمالي المختارة</h3>
+          </div>
+          <div class="p-6">
+            <!-- Slides بسيط -->
+            <div id="mag-slider" class="relative h-[500px] overflow-hidden rounded-lg bg-gray-50 border border-gray-200">
+              <!-- سيتم إنشاء الشرائح هنا -->
+            </div>
+            <div class="flex justify-center mt-4 space-x-2">
+              <button id="prev-btn" class="w-10 h-10 rounded-full bg-cyan-500 text-white flex items-center justify-center hover:bg-cyan-600">‹</button>
+              <button id="next-btn" class="w-10 h-10 rounded-full bg-cyan-500 text-white flex items-center justify-center hover:bg-cyan-600">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- شريط الاختيار -->
+      <div class="lg:w-1/3">
+        <h4 class="font-bold text-gray-900 mb-4 text-lg text-center lg:text-right">اختر مجلّة:</h4>
+        <div class="space-y-4">
+          <div onclick="switchMagazine('portfolio')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400">
+            <h5 class="font-bold text-gray-900">أعمالي المختارة</h5>
+          </div>
+          <div onclick="switchMagazine('branding')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400">
+            <h5 class="font-bold text-gray-900">هويات بصرية</h5>
+          </div>
+          <div onclick="switchMagazine('packaging')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400">
+            <h5 class="font-bold text-gray-900">تغليف منتجات</h5>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.1/dist/page-flip.browser.min.js"></script>
 <script>
-  function loadTestBook() {
-    const container = document.getElementById('test-flipbook');
-    if (!container) {
-      alert('❌ العنصر غير موجود!');
-      return;
-    }
-
-    const pages = [];
-    for (let i = 1; i <= 3; i++) {
-      const div = document.createElement('div');
-      div.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-gray-50 border border-gray-200">
-        <div class="text-center p-6">
-          <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-3">
-            <span class="text-cyan-700 font-bold">${i}</span>
-          </div>
-          <p>صفحة تجريبية ${i}</p>
-        </div>
-      </div>`;
-      pages.push(div);
-    }
-
-    const flipBook = new PageFlip(container, {
-      width: container.offsetWidth,
-      height: container.offsetHeight,
-      size: 'fixed'
-    });
-
-    flipBook.loadFromHTML(pages);
-    console.log('✅ العارض تم تحميله!');
+// مجلات بسيطة - بدون eval، بدون CSP issues
+const magazines = {
+  portfolio: {
+    title: "أعمالي المختارة",
+    pages: 3
+  },
+  branding: {
+    title: "هويات بصرية",
+    pages: 3
+  },
+  packaging: {
+    title: "تغليف منتجات",
+    pages: 3
   }
-</script>
+};
+
+let currentMag = 'portfolio';
+let currentPage = 0;
+
+function renderMagazine(magKey) {
+  const mag = magazines[magKey];
+  const slider = document.getElementById('mag-slider');
+  const titleEl = document.getElementById('mag-title');
+  
+  if (!mag || !slider || !titleEl) return;
+  
+  titleEl.textContent = mag.title;
+  currentPage = 0;
+  
+  // إنشاء الشرائح
+  slider.innerHTML = '';
+  for (let i = 0; i < mag.pages; i++) {
+    const slide = document.createElement('div');
+    slide.className = 'absolute inset-0 flex items-center justify-center transition-opacity duration-500';
+    slide.style.opacity = (i === 0) ? '1' : '0';
+    slide.style.backgroundColor = (i === 0) ? '#f8fafc' : '#e2e8f0';
+    
+    const content = document.createElement('div');
+    content.className = 'text-center p-6';
+    content.innerHTML = `
+      <div class="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <span class="text-cyan-700 text-xl font-bold">${i + 1}</span>
+      </div>
+      <h3 class="font-bold text-gray-800">صفحة ${i + 1}</h3>
+      <p class="text-gray-600 mt-2">محتوى تجريبي - سيتم استبداله</p>
+    `;
+    slide.appendChild(content);
+    slider.appendChild(slide);
+  }
+  
+  updateButtons(mag.pages);
+}
+
+function showPage(index, total) {
+  const slides = document.querySelectorAll('#mag-slider > div');
+  slides.forEach((slide, i) => {
+    slide.style.opacity = (i === index) ? '1' : '0';
+    slide.style.zIndex = (i === index) ? '10' : '1';
+  });
+  currentPage = index;
+  updateButtons(total);
+}
+
+function updateButtons(total) {
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  if (prevBtn) prevBtn.disabled = (currentPage === 0);
+  if (nextBtn) nextBtn.disabled = (currentPage === total - 1);
+}
+
+function switchMagazine(key) {
+  currentMag = key;
+  renderMagazine(key);
+}
+
+// أزرار التحكم
+document.getElementById('prev-btn')?.addEventListener('click', () => {
+  if (currentPage > 0) {
+    showPage(currentPage - 1, magazines[currentMag].pages);
+  }
+});
+
+document.getElementById('next-btn')?.addEventListener('click', () => {
+  const total = magazines[currentMag].pages;
+  if (currentPage < total - 1) {
+    showPage(currentPage + 1, total);
+  }
+});
+
+// تحميل أول مجلّة
+document.addEventListener('DOMContentLoaded', () => {
+  renderMagazine('portfolio');
+});
+</script>              
+
+
+    
                                            
             <!-- Contact -->
         <section id="contact" class="py-20 px-4 bg-black bg-opacity-30">
