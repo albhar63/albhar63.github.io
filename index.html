@@ -147,9 +147,11 @@
                 <a href="#home" class="nav-link hover:text-cyan-300">الرئيسية</a>
                 <a href="#about" class="nav-link hover:text-cyan-300">عني</a>
                 <a href="#portfolio" class="nav-link hover:text-cyan-300">أعمالي</a>
+                <a href="#digital-magazines" class="nav-link hover:text-cyan-300">المجلات</a>
                 <a href="#skills" class="nav-link hover:text-cyan-300">المهارات</a>
                 <a href="#contact" class="nav-link hover:text-cyan-300">اتصل بي</a>
                 <a href="#blog" class="nav-link hover:text-cyan-300">المدونة</a>
+                
             </div>
             <button class="md:hidden text-white"><i class="fas fa-bars text-2xl"></i></button>
         </div>
@@ -422,69 +424,74 @@
                     </div>
                   </div>
                  </div>
-    
-        <!-- قسم المجلات - متوافق 100% مع GitHub Pages -->
-        <section id="digital-magazines" class="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
+               <!-- قسم المجلات الرقمية -->
+        <section id="digital-magazines" class="py-20 px-4 bg-gray-900">
           <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12">
-              <span class="inline-block bg-cyan-100 text-cyan-800 text-sm font-bold px-4 py-1 rounded-full mb-3">مجلات رقمية</span>
-              <h2 class="text-3xl md:text-4xl font-bold text-gray-900">استكشف أعمالي ككتاب حي</h2>
+              <span class="inline-block bg-cyan-900/20 text-cyan-300 text-sm font-bold px-4 py-1 rounded-full border border-cyan-500/30 mb-3">
+                مجلات رقمية
+              </span>
+              <h2 class="text-3xl md:text-4xl font-bold text-white">استكشف أعمالي ككتاب حي</h2>
             </div>
-
+        
             <div class="flex flex-col lg:flex-row gap-8">
               <!-- عارض المجلة -->
               <div class="lg:w-2/3">
-                <div class="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
-                  <div class="bg-gray-50 px-6 py-3 border-b border-gray-200">
-                    <h3 id="mag-title" class="font-bold text-gray-900">أعمالي المختارة</h3>
+                <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden border-2 border-cyan-500/30">
+                  <div class="bg-gray-900 px-6 py-3 border-b border-cyan-500/20">
+                    <h3 id="mag-title" class="font-bold text-white">أعمالي المختارة</h3>
                   </div>
                   <div class="p-6 text-center">
-                    <div id="mag-content" class="min-h-[400px] flex flex-col items-center justify-center bg-gray-50 rounded-xl border border-gray-200">
-                      <div class="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center mb-4">
-                        <span class="text-cyan-700 text-xl font-bold" id="page-number">1</span>
+                    <div id="mag-content" class="min-h-[400px] flex flex-col items-center justify-center bg-gray-800/70 rounded-xl border-2 border-cyan-500/20">
+                      <div class="w-16 h-16 bg-cyan-900/30 rounded-full flex items-center justify-center mb-4 border-2 border-cyan-500/40">
+                        <span class="text-cyan-300 text-xl font-bold" id="page-number">1</span>
                       </div>
-                      <h3 class="font-bold text-gray-800">غلاف داخلي</h3>
-                      <p class="text-gray-600 mt-2">سيتم استبداله بمحتواك عند الانتهاء</p>
+                      <h3 class="font-bold text-gray-100">غلاف داخلي</h3>
+                      <p class="text-gray-300 mt-2">سيتم استبداله بمحتواك عند الانتهاء</p>
                     </div>
-                    <div class="mt-6 flex justify-center space-x-2">
-                      <button id="prev-btn" disabled class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center">‹</button>
-                      <button id="next-btn" class="w-10 h-10 rounded-full bg-cyan-500 text-white flex items-center justify-center hover:bg-cyan-600">›</button>
+                    <div class="mt-6 flex justify-center space-x-3">
+                      <button id="prev-btn" disabled class="w-12 h-12 rounded-full bg-gray-700 text-gray-400 flex items-center justify-center border-2 border-cyan-500/20">
+                        ‹
+                      </button>
+                      <button id="next-btn" class="w-12 h-12 rounded-full bg-cyan-500 text-white flex items-center justify-center hover:bg-cyan-600 border-2 border-cyan-500 shadow-lg shadow-cyan-500/30">
+                        ›
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
-
+        
               <!-- شريط الاختيار -->
               <div class="lg:w-1/3">
-                <h4 class="font-bold text-gray-900 mb-4 text-lg text-center lg:text-right">اختر مجلّة:</h4>
+                <h4 class="font-bold text-white mb-4 text-lg text-center lg:text-right">اختر مجلّة:</h4>
                 <div class="space-y-4">
-                  <div onclick="changeMagazine('portfolio')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400 transition-colors">
-                    <h5 class="font-bold text-gray-900 text-center lg:text-right">أعمالي المختارة</h5>
+                  <div onclick="changeMagazine('portfolio')" class="cursor-pointer rounded-xl p-4 bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all duration-300">
+                    <h5 class="font-bold text-gray-100 text-center lg:text-right">أعمالي المختارة</h5>
                   </div>
-                  <div onclick="changeMagazine('branding')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400 transition-colors">
-                    <h5 class="font-bold text-gray-900 text-center lg:text-right">هويات بصرية</h5>
+                  <div onclick="changeMagazine('branding')" class="cursor-pointer rounded-xl p-4 bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all duration-300">
+                    <h5 class="font-bold text-gray-100 text-center lg:text-right">هويات بصرية</h5>
                   </div>
-                  <div onclick="changeMagazine('packaging')" class="cursor-pointer border border-gray-200 rounded-xl p-4 bg-white hover:border-cyan-400 transition-colors">
-                    <h5 class="font-bold text-gray-900 text-center lg:text-right">تغليف منتجات</h5>
+                  <div onclick="changeMagazine('packaging')" class="cursor-pointer rounded-xl p-4 bg-gray-800 border-2 border-cyan-500/30 hover:border-cyan-400 transition-all duration-300">
+                    <h5 class="font-bold text-gray-100 text-center lg:text-right">تغليف منتجات</h5>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
-
+        
+        <!-- JavaScript للمجلات (مدمج وآمن) -->
         <script>
-        // === كود بسيط بدون eval - آمن لـ GitHub Pages ===
         const magazines = {
           portfolio: { title: "أعمالي المختارة", pages: 3 },
           branding: { title: "هويات بصرية", pages: 3 },
           packaging: { title: "تغليف منتجات", pages: 3 }
         };
-
+        
         let currentMag = 'portfolio';
         let currentPage = 1;
         let totalPages = 3;
-
+        
         function updateDisplay() {
           document.getElementById('mag-title').textContent = magazines[currentMag].title;
           document.getElementById('page-number').textContent = currentPage;
@@ -492,8 +499,7 @@
           const content = document.getElementById('mag-content');
           const prevBtn = document.getElementById('prev-btn');
           const nextBtn = document.getElementById('next-btn');
-
-          // تحديث المحتوى حسب الصفحة
+        
           let subtitle, desc;
           if (currentPage === 1) {
             subtitle = "غلاف داخلي";
@@ -505,24 +511,15 @@
             subtitle = `صفحة ${currentPage}`;
             desc = "محتوى تجريبي - سيتم استبداله";
           }
-
+        
           content.querySelector('h3').textContent = subtitle;
           content.querySelector('p').textContent = desc;
-
-          // تحديث أزرار التنقل
+        
+          // تحديث حالة الأزرار
           prevBtn.disabled = (currentPage === 1);
-          prevBtn.classList.toggle('bg-gray-200', currentPage === 1);
-          prevBtn.classList.toggle('text-gray-500', currentPage === 1);
-          prevBtn.classList.toggle('bg-cyan-500', currentPage > 1);
-          prevBtn.classList.toggle('text-white', currentPage > 1);
-
           nextBtn.disabled = (currentPage === totalPages);
-          nextBtn.classList.toggle('bg-cyan-500', currentPage < totalPages);
-          nextBtn.classList.toggle('hover:bg-cyan-600', currentPage < totalPages);
-          nextBtn.classList.toggle('bg-gray-200', currentPage === totalPages);
-          nextBtn.classList.toggle('text-gray-500', currentPage === totalPages);
         }
-
+        
         function changeMagazine(key) {
           if (magazines[key]) {
             currentMag = key;
@@ -531,28 +528,26 @@
             updateDisplay();
           }
         }
-
-        // أزرار التنقل
+        
         document.getElementById('prev-btn').onclick = () => {
           if (currentPage > 1) {
             currentPage--;
             updateDisplay();
           }
         };
-
+        
         document.getElementById('next-btn').onclick = () => {
           if (currentPage < totalPages) {
             currentPage++;
             updateDisplay();
           }
         };
-
-        // تحميل أول مجلّة
+        
         document.addEventListener('DOMContentLoaded', () => {
           updateDisplay();
         });
         </script>
-                                           
+      
             <!-- Contact -->
         <section id="contact" class="py-20 px-4 bg-black bg-opacity-30">
             <div class="text-center mb-12">
