@@ -732,7 +732,17 @@
      </script>
     
         <!-- مكتبة page-flip -->
-             <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.1/dist/page-flip.browser.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.1/dist/page-flip.browser.min.js"></script>
         <script src="/js/magazines-flip.js"></script>
+    <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('flipbook-container');
+    if (container) {
+      container.innerHTML = '<div class="text-center text-gray-500 p-10">جارٍ التحميل...</div>';
+    } else {
+      console.error("❌ flipbook-container غير موجود!");
+    }
+  });
+</script>
 </body>
 </html>
