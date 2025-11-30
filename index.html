@@ -424,6 +424,7 @@
                     </div>
                   </div>
                  </div>
+    
                <!-- قسم المجلات الرقمية -->
         <section id="digital-magazines" class="py-20 px-4 bg-gray-900">
           <div class="max-w-7xl mx-auto">
@@ -519,62 +520,94 @@
         let currentPage = 1;
         let totalPages = 3;
         
+                <script>
+        const magazines = {
+          fashion: { 
+            title: "مجلة فاشن", 
+            pages: 8,
+            folder: "fashion"
+          },
+          egyptianMuseum: { 
+            title: "المتحف المصري الكبير", 
+            pages: 10,
+            folder: "egyptian-museum"
+          },
+          sunKids: { 
+            title: "مجلة شمس الطفولة", 
+            pages: 12,
+            folder: "sun-kids"
+          },
+          // يمكنك إضافة باقي المجلات لاحقًا بنفس الطريقة
+        };
+        
+        let currentMag = 'fashion';
+        let currentPage = 1;
+        let totalPages = 8;
+        
         function updateDisplay() {
-          document.getElementById('mag-title').textContent = magazines[currentMag].title;
-          document.getElementById('page-number').textContent = currentPage;
-          
+          const mag = magazines[currentMag];
+          if (!mag) return;
+        
+          document.getElementById('mag-title').textContent = mag.title;
+          totalPages = mag.pages;
+        
           const content = document.getElementById('mag-content');
-          const prevBtn = document.getElementById('prev-btn');
-          const nextBtn = document.getElementById('next-btn');
+          if (!content) return;
         
-          let subtitle, desc;
-          if (currentPage === 1) {
-            subtitle = "غلاف داخلي";
-            desc = "سيتم استبداله بمحتواك عند الانتهاء";
-          } else if (currentPage === totalPages) {
-            subtitle = "نهاية المجلّة";
-            desc = "شكرًا لاستكشاف أعمالي";
-          } else {
-            subtitle = `صفحة ${currentPage}`;
-            desc = "محتوى تجريبي - سيتم استبداله";
-          }
-        
-          content.querySelector('h3').textContent = subtitle;
-          content.querySelector('p').textContent = desc;
-        
-          // تحديث حالة الأزرار
-          prevBtn.disabled = (currentPage === 1);
-          nextBtn.disabled = (currentPage === totalPages);
+          // إنشاء صورة الصفحة الحالية
+          const img = document.createElement('img');
+          img.src = `/magazines/${mag.folder}/page-${currentPage}.jpg`;
+          img.alt = `صفحة ${currentPage} من ${mag.title}`;
+          img.className = 'max-w-full max-h-full object-contain rounded-lg shadow-lg';
+          
+          // مسح المحتوى القديم وإضافة الصورة
+          content.innerHTML = '';
+          content.appendChild(img);
         }
         
         function changeMagazine(key) {
           if (magazines[key]) {
             currentMag = key;
-            totalPages = magazines[key].pages;
             currentPage = 1;
             updateDisplay();
+            
+            // تحديث حالة الزر "السابق"
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            if (prevBtn) prevBtn.disabled = true;
+            if (nextBtn && magazines[key].pages > 1) nextBtn.disabled = false;
           }
         }
         
-        document.getElementById('prev-btn').onclick = () => {
+        // أزرار التنقل
+        document.getElementById('prev-btn')?.addEventListener('click', () => {
           if (currentPage > 1) {
             currentPage--;
             updateDisplay();
+            document.getElementById('next-btn').disabled = false;
+            if (currentPage === 1) {
+              document.getElementById('prev-btn').disabled = true;
+            }
           }
-        };
+        });
         
-        document.getElementById('next-btn').onclick = () => {
-          if (currentPage < totalPages) {
+        document.getElementById('next-btn')?.addEventListener('click', () => {
+          const total = magazines[currentMag]?.pages || 1;
+          if (currentPage < total) {
             currentPage++;
             updateDisplay();
+            document.getElementById('prev-btn').disabled = false;
+            if (currentPage === total) {
+              document.getElementById('next-btn').disabled = true;
+            }
           }
-        };
+        });
         
+        // تحميل أول مجلّة عند التحميل
         document.addEventListener('DOMContentLoaded', () => {
           updateDisplay();
         });
         </script>
-      
             <!-- Contact -->
         <section id="contact" class="py-20 px-4 bg-black bg-opacity-30">
             <div class="text-center mb-12">
