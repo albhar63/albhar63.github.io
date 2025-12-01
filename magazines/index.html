@@ -9,25 +9,40 @@
   <style>
     body { background:#001d34; color:white; margin:0; padding:0; font-family:system-ui; }
     .shelf { height:28px; background:linear-gradient(#8B4513,#A0522D); border-radius:12px; box-shadow:inset 0 8px 16px rgba(0,0,0,0.6); }
-    #flipbook .hard { background:white; box-shadow:inset 0 0 30px #000; }
-    #flipbook .cover { background:#8B4513 !important; }
-    #flipbook .hard { background:white; box-shadow:inset 0 0 30px #333; }
-    #flipbook .hard { 
-      background: white !important; 
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-    }
-    #flipbook .cover { background: #8B4513 !important; }
-    #flipbook .page-content { 
-      width: 100%; 
-      height: 100%; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      padding: 20px; 
-      box-sizing: border-box; 
-    }
+         /* ده اللي هيخلي كل حاجة شغالة زي الكتاب الحقيقي */
+      #flipbook { 
+        background: #000 !important; 
+        box-shadow: 0 0 50px rgba(0,0,0,0.8) !important;
+      }
+      
+      #flipbook .hard {
+        background: white !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: inset 0 0 40px #333 !important;
+      }
+      
+      #flipbook .cover {
+        background: #331100 !important; /* لون الغلاف الخشبي */
+      }
+      
+      #flipbook .page-content {
+        width: 100% !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      
+      #flipbook img {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: contain !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      }
   </style>
 </head>
 <body class="min-h-screen">
@@ -125,27 +140,27 @@
       <div id="flipbook" style="width:1000px; height:700px; margin:20px auto;"></div>
     </div>
   </div>
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
 <script>
   async function openMag(folder) {
     try {
       const res = await fetch(`${folder}/pages.txt?t=${Date.now()}`);
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw '';
       const list = (await res.text()).trim().split('\n').map(l => l.trim()).filter(l => l);
 
-      if (list.length === 0) throw new Error();
+      if (list.length === 0) throw '';
 
-      // نضيف غلاف أمامي وخلفي + كل صفحة في <div> منفصل
+      // كل صورة في div منفصل تماماً + غلاف أمامي وخلفي
       let html = '<div class="hard cover"></div>'; // غلاف أمامي
 
-      list.forEach((file, index) => {
-        html += `
-          <div class="hard page">
-            <div class="page-content">
-              <img src="${folder}/${file}" class="max-w-full max-h-full object-contain block mx-auto">
-            </div>
-          </div>`;
+      list.forEach(file => {
+        html += `<div class="hard">
+                   <div class="page-content">
+                     <img src="${folder}/${file}" loading="lazy" style="max-width:100%; max-height:100%; object-fit:contain;">
+                   </div>
+                 </div>`;
       });
 
       html += '<div class="hard cover"></div>'; // غلاف خلفي
@@ -156,22 +171,25 @@
       document.getElementById('viewer').classList.remove('hidden');
       document.getElementById('backBtn').classList.remove('hidden');
 
-      // أهم جزء: نعمل التقليب بعد ما الصور تحمل شوية
+      // الحل السحري: نعمل التقليب بعد ما الصور تحمل فعلاً
       setTimeout(() => {
-        $("#flipbook").turn({
+        $("#flipbook").turn("destroy").empty().html(html).turn({
           width: 1000,
           height: 700,
           autoCenter: true,
           gradients: true,
           acceleration: true,
           display: 'double',
-          page: 2,                    // نبدأ من أول صفحتين محتوى
-          duration: 1000,
-          elevation: 50
+          page: 2,
+          duration: 1500,
+          elevation: 100,
+          when: {
+            turning: function(e, page) { /* عشان يشتغل التقليب بالماوس */ }
+          }
         });
-      }, 800);
+      }, 1000);
 
-    } catch (e) {
+    } catch {
       alert('العدد غير متوفر حالياً');
     }
   }
@@ -182,7 +200,7 @@
     document.getElementById('backBtn').classList.add('hidden');
     document.getElementById('flipbook').innerHTML = "";
   }
-</script> 
+</script>
       
 </body>
 </html>
