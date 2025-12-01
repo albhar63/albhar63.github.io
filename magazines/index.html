@@ -141,67 +141,56 @@
     </div>
   </div>
   
-  <!-- استبدل كل الـ scripts القديمة بكده بس -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+<!-- احذف كل الـ turn.js و jQuery القديمة وحط ده بس -->
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.3/dist/js/page-flip.browser.min.js"></script>
 
 <style>
-  /* CSS النهائي للتقليب الحقيقي */
   #flipbook {
-    background: #000 !important;
+    width: 1000px !important;
+    height: 700px !important;
+    margin: 0 auto;
   }
-  #flipbook .turn-page {
-    background-color: white !important;
-    background-repeat: no-repeat !important;
-    background-size: 100% 100% !important;
-  }
-  #flipbook .hard {
-    background: white !important;
-    box-shadow: inset 0 0 30px #555 !important;
-  }
-  #flipbook .cover {
-    background: #331100 !important;
-  }
-  #flipbook img {
-    max-width: 100% !important;
-    max-height: 100% !important;
-    object-fit: contain !important;
+  .st-page-flip .st-page {
+    background: white;
   }
 </style>
 
 <script>
+  let pageFlip = null;
+
   async function openMag(folder) {
     try {
       const res = await fetch(`${folder}/pages.txt?t=${Date.now()}`);
       if (!res.ok) throw '';
       const list = (await res.text()).trim().split('\n').map(l => l.trim()).filter(l => l);
 
-      // كل صورة في صفحة منفصلة + غلاف
-      let html = '<div class="hard cover"></div>';
+      if (list.length === 0) throw '';
+
+      // نعمل HTML لكل صفحة
+      let html = '';
       list.forEach(file => {
-        html += `<div class="hard"><img src="${folder}/${file}" loading="lazy"></div>`;
+        html += `<div><img src="${folder}/${file}" style="width:100%; height:100%; object-fit:contain;"></div>`;
       });
-      html += '<div class="hard cover"></div>';
 
-      const book = $('#flipbook');
-      book.html(html);
+      const book = document.getElementById('flipbook');
+      book.innerHTML = html;
 
-      $('#viewer').removeClass('hidden');
-      $('#backBtn').removeClass('hidden');
+      document.getElementById('viewer').classList.remove('hidden');
+      document.getElementById('backBtn').classList.remove('hidden');
 
-      // التقليب الحقيقي يشتغل هنا
+      // المكتبة الجديدة السحرية
       setTimeout(() => {
-        book.turn({
-          width: 1000,
+        pageFlip = new StPageFlip(book, {
+          width: 500,      // عرض الصفحة الواحدة
           height: 700,
-          autoCenter: true,
-          gradients: true,
-          acceleration: true,
-          display: 'double',
-          page: 2,
-          duration: 1200
+          showCover: true,
+          mobileScrollSupport: false,
+          usePortrait: false,
+          drawShadow: true,
+          flippingTime: 1200,
+          startPage: 0
         });
-      }, 500);
+      }, 300);
 
     } catch {
       alert('العدد غير متوفر حالياً');
@@ -209,9 +198,11 @@
   }
 
   function closeMag() {
-    $('#flipbook').turn('destroy').html('');
-    $('#viewer').addClass('hidden');
-    $('#backBtn').addClass('hidden');
+    if (pageFlip) pageFlip.destroy();
+    document.getElementById('viewer').classList.add('hidden');
+    document.getElementById('backBtn').classList.add('hidden');
+    document.getElementById('flipbook').innerHTML = "";
+    pageFlip = null;
   }
 </script>
 </body>
