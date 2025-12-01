@@ -6,43 +6,68 @@
   <title>مكتبة المجلات</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background:#001d34; color:white; margin:0; padding:20px 0; }
-    .cover:hover { transform:scale(1.15) rotate(4deg); transition:0.4s; }
-    #flipbook { width:1000px; height:700px; margin:40px auto; box-shadow:0 0 40px #000; background:#fff; }
+    body { background:#001d34; color:white; margin:0; padding:20px 0; font-family:system-ui; }
+    .cover { transition:all .4s; border-radius:12px; }
+    .cover:hover { transform:scale(1.15) rotate(5deg); box-shadow:0 20px 40px rgba(0,0,0,0.6); }
+    #flipbook { width:1000px; height:720px; margin:30px auto; background:#fff; box-shadow:0 0 50px rgba(0,0,0,0.9); }
   </style>
 </head>
 <body>
 
-  <div class="text-center mb-10">
-    <a href="../index.html" class="bg-white/20 hover:bg-white/40 px-8 py-4 rounded-full text-xl">الرئيسية</a>
+  <div class="text-center mb-12">
+    <a href="../index.html" class="bg-white/20 hover:bg-white/40 px-8 py-4 rounded-full text-xl text-xl">الصفحة الرئيسية</a>
   </div>
 
-  <h1 class="text-6xl font-bold text-center text-cyan-400 mb-16">مكتبة المجلات</h1>
+  <h1 class="text-6xl font-bold text-center text-cyan-400 mb-20 drop-shadow-2xl">مكتبة المجلات</h1>
 
-  <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 max-w-7xl mx-auto">
+  <!-- الرفوف والأغلفة -->
+  <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 px-4">
+
     <div onclick="openMag('sun-kids')" class="cursor-pointer text-center">
-      <img src="../covers/sun-kids/222.jpg" class="cover w-full h-64 object-cover rounded-xl shadow-2xl">
+      <img src="../covers/sun-kids/222.jpg" class="cover w-full h-64 object-cover shadow-2xl">
       <p class="mt-4 text-xl font-bold text-cyan-400">شمس الطفولة</p>
     </div>
-    <!-- أضف الباقي بنفس الطريقة -->
+
+    <div onclick="openMag('fashico')" class="cursor-pointer text-center">
+      <img src="../covers/fashico/cover.jpg" class="cover w-full h-64 object-cover shadow-2xl">
+      <p class="mt-4 text-xl font-bold text-cyan-400">فاشن</p>
+    </div>
+
+    <div onclick="openMag('egyptian-museum')" class="cursor-pointer text-center">
+      <img src="../covers/egyptian-museum/cover.jpg" class="cover w-full h-64 object-cover shadow-2xl">
+      <p class="mt-4 text-xl font-bold text-cyan-400">كنوز المتحف</p>
+    </div>
+
+    <!-- أضف باقي المجلات بنفس الطريقة -->
+    <!-- مثال:
+    <div onclick="openMag('اسم-المجلد')" class="cursor-pointer text-center">
+      <img src="../covers/اسم-المجلد/cover.jpg" class="cover w-full h-64 object-cover shadow-2xl">
+      <p class="mt-4 text-xl font-bold text-cyan-400">اسم المجلة</p>
+    </div>
+    -->
+
   </div>
 
+  <!-- نافذة الكتاب -->
   <div id="viewer" class="fixed inset-0 bg-black/95 hidden flex items-center justify-center z-50">
     <div class="relative">
-      <button onclick="closeMag()" class="absolute -top-16 left-1/2 -translate-x-1/2 bg-red-600 hover:bg-red-700 px-10 py-4 rounded-full text-2xl z-10">✕ إغلاق</button>
+      <button onclick="closeMag()" class="absolute -top-16 left-1/2 -translate-x-1/2 bg-red-600 hover:bg-red-700 px-10 py-4 rounded-full text-3xl z-10">
+        ✕ إغلاق
+      </button>
       <div id="flipbook"></div>
     </div>
   </div>
 
-  <!-- المكتبة الأقوى والأخف والشغالة 100% -->
+  <!-- مكتبة التقليب الخفيفة والمضمونة 100% -->
   <script src="https://cdn.jsdelivr.net/npm/flip-book-js@1.0.6/dist/flip-book.min.js"></script>
 
   <script>
     let book = null;
-    async function openMag(folder) {
-      const res = await fetch(`${folder}/pages.txt?t=${Date.now()}`);
-      const txt = await res.text();
-      const pages = txt.trim().split('\n').map(l => folder + '/' + l.trim());
+
+    function openMag(folder) {
+      {
+      // يجيب الصور تلقائي من 1.jpg إلى 200.jpg (هيوقف لو الصور خلصت)
+      const pages = Array.from({length: 200}, (_, i) => `${folder}/${i+1}.jpg`);
 
       document.getElementById('viewer').classList.remove('hidden');
       document.getElementById('flipbook').innerHTML = '<div id="mybook"></div>';
@@ -54,16 +79,19 @@
           pageHeight: 700,
           autoSize: true,
           autoCenter: true,
-          shadows: true
+          shadows: true,
+          loadAll: false
         });
-      }, 300);
+      }, 400);
     }
 
     function closeMag() {
       if (book) book.destroy();
       document.getElementById('viewer').classList.add('hidden');
       document.getElementById('flipbook').innerHTML = '';
+      book = null;
     }
   </script>
+
 </body>
 </html>
