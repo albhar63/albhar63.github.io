@@ -425,27 +425,27 @@
                   </div>
                   </div>
     
-            <!-- زر قسم المجلات - عربي + إنجليزي - نفس ستايل موقعك -->
-        <div class="flex justify-center my-16">
-          <a href="magazines/" class="relative inline-block px-12 py-6 text-center rounded-full shadow-2xl transition-all duration-500 hover:scale-105 group overflow-hidden">
-            
-            <!-- الخلفية المتدرجة + التوهج الداخلي -->
-            <div class="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-800 rounded-full"></div>
-            <div class="absolute inset-0 bg-cyan-400 opacity-0 group-hover:opacity-50 blur-2xl transition-opacity duration-500 rounded-full"></div>
-            
-            <!-- الإطار الخارجي اللامع -->
-            <div class="absolute -inset-1 bg-cyan-500 rounded-full opacity-70 blur-xl group-hover:opacity-90 group-hover:blur-2xl transition-all duration-500"></div>
-            
-            <!-- النصوص -->
-            <div class="relative z-10">
-              <div class="text-2xl md:text-3xl font-bold text-white drop-shadow-2xl leading-tight">
-                قسم المجلات
-              </div>
-              <div class="text-lg md:text-xl text-cyan-200 font-medium tracking-wider">
-                Magazines Section
+            <!-- زر قسم المجلات – عربي + إنجليزي + إسترك سيان قوي حول الزر -->
+        <div class="flex justify-center my-20">
+          <a href="magazines/" class="relative group">
+        
+            <!-- الزر نفسه -->
+            <div class="relative z-20 px-16 py-8 bg-gradient-to-r from-cyan-600 to-blue-800 rounded-full shadow-2xl transition-all duration-500 group-hover:scale-110">
+              <div class="text-center">
+                <div class="text-3xl md:text-4xl font-bold text-white drop-shadow-2xl leading-tight">
+                  قسم المجلات
+                </div>
+                <div class="text-lg md:text-2xl text-cyan-100 font-medium tracking-wider">
+                  Magazines Section
+                </div>
               </div>
             </div>
-            
+        
+            <!-- الإسترك السيان القوي حول الزر (3 طبقات عشان يبقى زي أزرارك بالضبط) -->
+            <div class="absolute inset-0 rounded-full bg-cyan-400 blur-xl opacity-70 group-hover:opacity-100 group-hover:blur-2xl transition-all duration-500"></div>
+            <div class="absolute -inset-1 rounded-full bg-cyan-500 blur-2xl opacity-60 group-hover:opacity-90 group-hover:blur-3xl transition-all duration-500"></div>
+            <div class="absolute -inset-2 rounded-full bg-cyan-300 blur-3xl opacity-50 group-hover:opacity-80 group-hover:blur-4xl transition-all duration-700"></div>
+        
           </a>
         </div>
     
