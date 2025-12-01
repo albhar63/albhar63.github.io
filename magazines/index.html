@@ -99,54 +99,67 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    async function openMag(folder) {
-      const pagesFile = `magazines/${folder}/pages.txt`;
-      let pageNames;
+   async function openMag(folder) {
+  const pagesFile = `magazines/${folder}/pages.txt`;
+  console.log("جارٍ تحميل:", pagesFile); // ← سيرى هذا في Console
 
-      try {
-        const response = await fetch(pagesFile);
-        if (!response.ok) throw new Error('File not found');
-        const text = await response.text();
-        pageNames = text
-          .split(/\r?\n/)
-          .map(name => name.trim())
-          .filter(name => name && !name.startsWith('#'));
-      } catch (err) {
-        alert('العدد غير متوفر حالياً');
-        return;
-      }
+  try {
+    const response = await fetch(pagesFile);
+    console.log("استجابة HTTP:", response.status); // ← مثلاً 200 أو 404
 
-      if (pageNames.length === 0) {
-        alert('لا توجد صفحات');
-        return;
-      }
-
-      const pages = pageNames.map(name => `magazines/${folder}/${name}`);
-      const book = document.getElementById("flipbook");
-
-      let htmlPages = pages.map(p =>
-        `<div><img src="${p}" class="w-full h-full object-contain"></div>`
-      );
-
-      // Ensure even number of pages for double view
-      if (htmlPages.length % 2 !== 0) {
-        htmlPages.push('<div></div>');
-      }
-
-      book.innerHTML = htmlPages.join('');
-      document.getElementById("viewer").classList.remove("hidden");
-
-      setTimeout(() => {
-        $("#flipbook").turn({
-          width: 1000,
-          height: 700,
-          autoCenter: true,
-          gradients: true,
-          acceleration: false, // ✅ مهم جدًا لتجنب خطأ CSP
-          display: 'double'
-        });
-      }, 300);
+    if (!response.ok) {
+      console.error("فشل تحميل pages.txt — الحالة:", response.status);
+      alert('العدد غير متوفر حالياً');
+      return;
     }
+
+    const text = await response.text();
+    console.log("محتوى pages.txt:", text); // ← يعرض المحتوى
+
+    let pageNames = text
+      .split(/\r?\n/)
+      .map(name => name.trim())
+      .filter(name => name && !name.startsWith('#'));
+
+    if (pageNames.length === 0) {
+      console.warn("ملف pages.txt فارغ أو لا يحتوي على أسماء صور صالحة");
+      alert('العدد غير متوفر حالياً');
+      return;
+    }
+
+    const pages = pageNames.map(name => `magazines/${folder}/${name}`);
+    const book = document.getElementById("flipbook");
+
+    let htmlPages = pages.map(p =>
+      `<div><img src="${p}" class="w-full h-full object-contain bg-white"></div>`
+    );
+
+    if (htmlPages.length % 2 !== 0) {
+      htmlPages.push('<div class="bg-white"></div>');
+    }
+
+    book.innerHTML = htmlPages.join('');
+    document.getElementById("viewer").classList.remove("hidden");
+
+    const width = Math.min(1000, window.innerWidth - 40);
+    const height = Math.min(700, window.innerHeight - 120);
+
+    setTimeout(() => {
+      $("#flipbook").turn({
+        width: width,
+        height: height,
+        autoCenter: true,
+        gradients: true,
+        acceleration: false,
+        display: 'double'
+      });
+    }, 300);
+
+  } catch (err) {
+    console.error("خطأ أثناء تحميل المجلة:", err);
+    alert('العدد غير متوفر حالياً');
+  }
+}
 
     function closeMag() {
       if ($("#flipbook").data('turn')) {
