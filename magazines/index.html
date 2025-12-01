@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name=" viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>مكتبة المجلات</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
@@ -22,12 +22,11 @@
   </style>
 </head>
 <body class="min-h-screen">
-  <!-- زر الرجوع -->
+
   <div class="fixed top-4 left-4 z-50">
     <a href="../index.html" class="bg-white/20 hover:bg-white/40 backdrop-blur px-6 py-3 rounded-full">رجوع</a>
   </div>
 
-  <!-- العنوان والمجلات -->
   <div class="container mx-auto px-6 py-16">
     <h1 class="text-5xl md:text-6xl font-bold text-center mb-16 text-[#31c5fd] drop-shadow-2xl">
       مكتبة المجلات
@@ -39,7 +38,7 @@
         <div class="shelf mb-10"></div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 justify-center">
           <div class="group cursor-pointer" onclick="openMag('sun-kids')">
-            <img src=../"covers/sun-kids/222.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6" />
+            <img src="../covers/sun-kids/222.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6" />
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">شمس الطفولة</p>
           </div>
           <div class="group cursor-pointer" onclick="openMag('fashico')">
@@ -90,7 +89,7 @@
     </div>
   </div>
 
-  <!-- نافذة العرض -->
+  <!-- Flipbook Viewer -->
   <div id="viewer" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
     <div class="relative bg-white rounded-2xl shadow-4xl p-8 max-w-6xl w-full">
       <button onclick="closeMag()" class="absolute -top-12 right-0 text-white text-5xl hover:text-[#31c5fd]">×</button>
@@ -98,7 +97,6 @@
     </div>
   </div>
 
-  <!-- المكتبات والـ JavaScript -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     async function openMag(folder) {
@@ -107,7 +105,7 @@
 
       try {
         const response = await fetch(pagesFile);
-        if (!response.ok) throw new Error('pages.txt غير موجود');
+        if (!response.ok) throw new Error('File not found');
         const text = await response.text();
         pageNames = text
           .split(/\r?\n/)
@@ -119,18 +117,18 @@
       }
 
       if (pageNames.length === 0) {
-        alert('لا توجد صفحات في المجلة');
+        alert('لا توجد صفحات');
         return;
       }
 
       const pages = pageNames.map(name => `magazines/${folder}/${name}`);
       const book = document.getElementById("flipbook");
 
-      let htmlPages = pages.map(p => 
+      let htmlPages = pages.map(p =>
         `<div><img src="${p}" class="w-full h-full object-contain"></div>`
       );
 
-      // ✅ إضافة صفحة فارغة إذا كان العدد فرديًا (لعرض مزدوج سليم)
+      // Ensure even number of pages for double view
       if (htmlPages.length % 2 !== 0) {
         htmlPages.push('<div></div>');
       }
@@ -144,8 +142,8 @@
           height: 700,
           autoCenter: true,
           gradients: true,
-          acceleration: true,
-          display: 'double' // ← يعرض صفحتين ويدعم التقليب
+          acceleration: false, // ✅ مهم جدًا لتجنب خطأ CSP
+          display: 'double'
         });
       }, 300);
     }
