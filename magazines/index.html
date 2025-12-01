@@ -5,77 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>مكتبة المجلات</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/page-flip/dist/js/page-flip.browser.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zebra-magazine@1.2.1/dist/zebra.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/zebra-magazine@1.2.1/dist/zebra.min.js"></script>
   <style>
-    body { background:#001d34; color:white; margin:0; padding:0; }
-    .shelf { height:28px; background:linear-gradient(#8B4513,#A0522D); border-radius:12px; box-shadow:inset 0 8px 16px rgba(0,0,0,0.6); }
-    #flipbook { width:1000px; height:700px; margin:40px auto; box-shadow:0 0 40px rgba(0,0,0,0.8); }
+    body { background:#001d34; margin:0; font-family:system-ui; }
+    .shelf { height:30px; background:linear-gradient(#8B4513,#A0522D); border-radius:15px; box-shadow:inset 0 10px 20px rgba(0,0,0,0.7); }
   </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen text-white">
 
-  <div id="backBtn" class="fixed top-4 left-4 z-50 hidden">
-    <button onclick="closeMag()" class="bg-white/20 hover:bg-white/40 backdrop-blur px-6 py-3 rounded-full">رجوع</button>
-  </div>
-
-  <div class="fixed top-4 left-4 z-10">
+  <div class="fixed top-4 left-4 z-50">
     <a href="../index.html" class="bg-white/20 hover:bg-white/40 backdrop-blur px-6 py-3 rounded-full">الرئيسية</a>
   </div>
 
-  <div class="container mx-auto px-6 py-16 text-center">
-    <h1 class="text-6xl font-bold text-[#31c5fd] mb-16 drop-shadow-2xl">مكتبة المجلات</h1>
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 max-w-7xl mx-auto">
+  <div class="container mx-auto px-6 py-16">
+    <h1 class="text-6xl font-bold text-center mb-16 text-[#31c5fd] drop-shadow-2xl">مكتبة المجلات</h1>
 
-      <div class="group cursor-pointer" onclick="openMag('sun-kids')">
-        <img src="../covers/sun-kids/222.jpg" class="w-full h-64 object-cover rounded-lg shadow-2xl hover:scale-110 transition">
-        <p class="mt-4 text-[#31c5fd] font-bold">شمس الطفولة</p>
+    <div class="max-w-7xl mx-auto space-y-24">
+      <div>
+        <div class="shelf mb-10"></div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 justify-center">
+
+          <div class="group cursor-pointer" onclick="openZebra('sun-kids')">
+            <img src="../covers/sun-kids/222.jpg" class="w-full h-64 object-cover rounded-lg shadow-2xl hover:scale-110 transition">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-xl">شمس الطفولة</p>
+          </div>
+
+          <div class="group cursor-pointer" onclick="openZebra('fashico')">
+            <img src="../covers/fashico/cover.jpg" class="w-full h-64 object-cover rounded-lg shadow-2xl hover:scale-110 transition">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-xl">فاشن</p>
+          </div>
+
+          <!-- أضف باقي المجلات بنفس الطريقة -->
+          
+        </div>
       </div>
-
-      <div class="group cursor-pointer" onclick="openMag('fashico')">
-        <img src="../covers/fashico/fisging.jpg" class="w-full h-64 object-cover rounded-lg shadow-2xl hover:scale-110 transition">
-        <p class="mt-4 text-[#31c5fd] font-bold">فاشن</p>
-      </div>
-
-      <!-- أضف باقي المجلات بنفس الطريقة -->
-
     </div>
   </div>
 
-  <div id="viewer" class="fixed inset-0 bg-black/95 z-40 hidden flex items-center justify-center">
-    <div id="flipbook"></div>
-  </div>
+  <div id="zebra-container"></div>
 
   <script>
-    let pf = null;
-    async function openMag(folder) {
-      const res = await fetch(`${folder}/pages.txt?t=${Date.now()}`);
-      const text = await res.text();
-      const pages = text.trim().split('\n').map(l => l.trim()).filter(l => l);
-
-      document.getElementById('flipbook').innerHTML = pages.map(p => 
-        `<div><img src="${folder}/${p}" style="width:100%;height:100%;object-fit:contain"></div>`
-      ).join('');
-
-      document.getElementById('viewer').classList.remove('hidden');
-      document.getElementById('backBtn').classList.remove('hidden');
-
-      setTimeout(() => {
-        pf = new PageFlip(document.getElementById('flipbook'), {
-          width: 500,
-          height: 700,
-          showCover: true,
-          drawShadow: true,
-          flippingTime: 1000,
-          usePortrait: false
+    function openZebra(folder) {
+      fetch(`${folder}/pages.txt?t=${Date.now()}`)
+        .then(r => r.text())
+        .then(text => {
+          const pages = text.trim().split('\n').map(l => l.trim()).filter(l => l);
+          const images = pages.map(p => `${folder}/${p}`);
+          
+          Zebra.Magazine({
+            images: images,
+            width: 1000,
+            height: 700,
+            autoStart: true
+          });
         });
-      }, 100);
-    }
-
-    function closeMag() {
-      if (pf) pf.destroy();
-      document.getElementById('viewer').classList.add('hidden');
-      document.getElementById('backBtn').classList.add('hidden');
-      document.getElementById('flipbook').innerHTML = '';
     }
   </script>
 </body>
