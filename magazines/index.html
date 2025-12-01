@@ -25,63 +25,38 @@
         <div class="shelf mb-10"></div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 justify-center">
 
-          <!-- كل الأغلفة من GitHub raw – شغالة 100% عند الجميع -->
-          <div class="group cursor-pointer" onclick="openDemo()">
-            <img src="https://github.com/islam1000/magazines-demo/raw/main/covers/1.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+          <!-- 1 شمس الطفولة -->
+          <div class="group cursor-pointer" onclick="openMag('شمس الطفولة')">
+            <img src="../covers/شمس الطفولة/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">شمس الطفولة</p>
           </div>
 
-          <div class="group cursor-pointer" onclick="openDemo()">
-            <img src="https://github.com/islam1000/magazines-demo/raw/main/covers/2.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
+          <!-- 2 فاشن -->
+          <div class="group cursor-pointer" onclick="openMag('فاشن')">
+            <img src="../covers/فاشن/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">فاشن</p>
           </div>
 
-          <div class="group cursor-pointer" onclick="openDemo()">
-            <img src="https://github.com/islam1000/magazines-demo/raw/main/covers/3.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+          <!-- 3 كنوز المتحف -->
+          <div class="group cursor-pointer" onclick="openMag('كنوز المتحف')">
+            <img src="../covers/كنوز المتحف/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">كنوز المتحف</p>
           </div>
 
-          <div class="group cursor-pointer" onclick="openDemo()">
-            <img src="https://github.com/islam1000/magazines-demo/raw/main/covers/4.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
+          <!-- 4 لمسات إبداعية -->
+          <div class="group cursor-pointer" onclick="openMag('لمسات إبداعية')">
+            <img src="../covers/لمسات إبداعية/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">لمسات إبداعية</p>
           </div>
 
-          <div class="group cursor-pointer" onclick="openDemo()">
-            <img src="https://github.com/islam1000/magazines-demo/raw/main/covers/5.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
-            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">عالم التصميم</p>
-          </div>
-
-          <div class="group cursor-pointer" onclick="openDemo()">
-            <img src="https://github.com/islam1000/magazines-demo/raw/main/covers/6.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
-            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">فوتوشوب العرب</p>
-          </div>
-
-          <div class="group cursor-pointer" onclick="openDemo()">
-            <img src="https://github.com/islam1000/magazines-demo/raw/main/covers/7.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
-            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">رؤى رقمية</p>
-          </div>
-
-          <div class="group cursor-pointer" onclick="openDemo()">
-            <img src="https://github.com/islam1000/magazines-demo/raw/main/covers/8.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
-            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">عالم الألوان</p>
-          </div>
-
-          <div class="group cursor-pointer" onclick="openDemo()">
-            <img src="https://github.com/islam1000/magazines-demo/raw/main/covers/9.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
-            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">إلهام</p>
-          </div>
-
-          <div class="group cursor-pointer" onclick="openDemo()">
-            <img src="https://github.com/islam1000/magazines-demo/raw/main/covers/10.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
-            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">فنون بصرية</p>
-          </div>
+          <!-- أضف هنا باقي المجلات بنفس الطريقة (كوبي بس السطرين دول وغيّر الاسم) -->
 
         </div>
       </div>
     </div>
   </div>
 
-  <!-- الفليب بوك (10 صفحات تجريبية شغالة فعلاً) -->
+  <!-- نافذة التقليب -->
   <div id="viewer" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
     <div class="relative bg-white rounded-2xl shadow-4xl p-8 max-w-6xl w-full">
       <button onclick="closeMag()" class="absolute -top-12 right-0 text-white text-5xl hover:text-[#31c5fd]">×</button>
@@ -91,19 +66,26 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    function openDemo() {
-      const demoPages = [];
-      for(let i=1; i<=10; i++) {
-        demoPages.push(`<div><img src="https://github.com/islam1000/magazines-demo/raw/main/demo-pages/${i}.jpg" class="w-full h-full object-contain"></div>`);
+    async function openMag(folder) {
+      let pages = [];
+      for (let i = 1; i <= 300; i++) {
+        const url = `../pages/${folder}/${i}.jpg`;
+        const ok = await fetch(url, {method: 'HEAD'}).then(r => r.ok).catch(() => false);
+        if (!ok) break;
+        pages.push(url);
       }
-      document.getElementById("flipbook").innerHTML = demoPages.join('');
+      if (pages.length === 0) { alert('العدد غير متوفر حالياً'); return; }
+
+      const book = document.getElementById("flipbook");
+      book.innerHTML = pages.map(p => `<div><img src="${p}" class="w-full h-full object-contain"></div>`).join('');
       document.getElementById("viewer").classList.remove("hidden");
-      setTimeout(()=>$("#flipbook").turn({width:1000,height:700,autoCenter:true,gradients:true,acceleration:true}),300);
+      setTimeout(() => $("#flipbook").turn({width:1000, height:700, autoCenter:true, gradients:true, acceleration:true}), 300);
     }
+
     function closeMag() {
       $("#flipbook").turn("destroy");
       document.getElementById("viewer").classList.add("hidden");
-      document.getElementById("flipbook").innerHTML="";
+      document.getElementById("flipbook").innerHTML = "";
     }
   </script>
 </body>
