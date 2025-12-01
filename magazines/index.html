@@ -10,6 +10,8 @@
     body { background:#001d34; color:white; margin:0; padding:0; font-family:system-ui; }
     .shelf { height:28px; background:linear-gradient(#8B4513,#A0522D); border-radius:12px; box-shadow:inset 0 8px 16px rgba(0,0,0,0.6); }
     #flipbook .hard { background:white; box-shadow:inset 0 0 30px #000; }
+    #flipbook .cover { background:#8B4513 !important; }
+    #flipbook .hard { background:white; box-shadow:inset 0 0 30px #333; }
   </style>
 </head>
 <body class="min-h-screen">
@@ -107,63 +109,71 @@
       <div id="flipbook" style="width:1000px; height:700px; margin:20px auto;"></div>
     </div>
   </div>
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    async function openMag(folder) {
-      try {
-        const res = await fetch(`${folder}/pages.txt?t=${Date.now()}`);
-        if (!res.ok) throw '';
-        const list = (await res.text()).trim().split('\n').map(l => l.trim()).filter(l => l);
-
-        if (list.length === 0) throw '';
-
-        // إنشاء الصفحات بشكل صحيح لـ turn.js
-        let html = '';
-        for (let i = 0; i < list.length; i += 2) {
-          const page1 = list[i];
-          const page2 = list[i+1] || null;
-
-          html += `<div class="hard">
-                  <img src="${folder}/${page1}" class="w-full h-full object-contain">
-                </div>`;
-          if (page2) {
+    
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+    <script>
+      async function openMag(folder) {
+        try {
+          const res = await fetch(`${folder}/pages.txt?t=${Date.now()}`);
+          if (!res.ok) throw '';
+          const list = (await res.text()).trim().split('\n').map(l => l.trim()).filter(l => l);
+    
+          if (list.length === 0) throw '';
+    
+          // نضيف غلاف أمامي فارغ عشان الكتاب يفتح على أول صفحتين مع بعض
+          let html = '<div class="hard cover"></div>'; // غلاف أمامي
+    
+          for (let i = 0; i < list.length; i += 2) {
+            const page1 = list[i];
+            const page2 = list[i+1] || null;
+    
             html += `<div class="hard">
-                       <img src="${folder}/${page2}" class="w-full h-full object-contain">
+                       <img src="${folder}/${page1}" class="w-full h-full object-contain">
                      </div>`;
+    
+            if (page2) {
+              html += `<div class="hard">
+                         <img src="${folder}/${page2}" class="w-full h-full object-contain">
+                       </div>`;
+            } else {
+              html += `<div class="hard"></div>`; // صفحة فاضية لو فردي
+            }
           }
+    
+          html += '<div class="hard cover"></div>'; // غلاف خلفي
+    
+          const book = document.getElementById('flipbook');
+          book.innerHTML = html;
+    
+          document.getElementById('viewer').classList.remove('hidden');
+          document.getElementById('backBtn').classList.remove('hidden');
+    
+          // أهم سطرين في التاريخ
+          setTimeout(() => {
+            $("#flipbook").turn({
+              width: 1000,
+              height: 700,
+              autoCenter: true,
+              gradients: true,
+              acceleration: true,
+              display: 'double',
+              page: 2,                    // ← نبدأ من الصفحة رقم 2 (أول صفحتين محتوى)
+              duration: 1200
+            });
+          }, 500);
+    
+        } catch {
+          alert('العدد غير متوفر حالياً');
         }
-
-        const book = document.getElementById('flipbook');
-        book.innerHTML = html;
-
-        document.getElementById('viewer').classList.remove('hidden');
-        document.getElementById('backBtn').classList.remove('hidden');
-
-        setTimeout(() => {
-          $("#flipbook").turn({
-            width: 1000,
-            height: 700,
-            autoCenter: true,
-            gradients: true,
-            acceleration: true,
-            display: 'double',
-            turnCorners: 'bl,br,tl,tr'
-          });
-        }, 400);
-
-      } catch {
-        alert('العدد غير متوفر حالياً');
       }
-    }
-
-    function closeMag() {
-      try { $("#flipbook").turn("destroy"); } catch(e) {}
-      document.getElementById('viewer').classList.add('hidden');
-      document.getElementById('backBtn').classList.add('hidden');
-      document.getElementById('flipbook').innerHTML = "";
-    }
-  </script>
-
+    
+      function closeMag() {
+        try { $("#flipbook").turn("destroy"); } catch(e) {}
+        document.getElementById('viewer').classList.add('hidden');
+        document.getElementById('backBtn').classList.add('hidden');
+        document.getElementById('flipbook').innerHTML = "";
+      }
+    </script>
 </body>
 </html>
