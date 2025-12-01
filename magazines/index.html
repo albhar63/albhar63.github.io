@@ -100,37 +100,61 @@
       <div id="flipbook" class="mx-auto"></div>
     </div>
   </div>
-
+  
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
   <script>
     async function openMag(folder) {
       try {
-        const response = await fetch(`${folder}/pages.txt?t=${Date.now()}`); // ?t= لتجنب الكاش
+        const response = await fetch(`${folder}/pages.txt?t=${Date.now()}`);
         if (!response.ok) throw new Error();
         const text = await response.text();
-        const pageFiles = text.trim().split('\n').map(line => line.trim()).filter(line => line.length > 0);
-
+        const pageFiles = text.trim().split('\n').map(l => l.trim()).filter(l => l);
+  
         if (pageFiles.length === 0) throw new Error();
-
+  
+        // نصنع الصفحات بشكل صحيح لـ turn.js (كل صفحتين في div واحد)
+        let pagesHTML = '';
+        for (let i = 0; i < pageFiles.length; i += 2) {
+          const left  = pageFiles[i];
+          const right = pageFiles[i + 1] || ''; // لو عدد الصفحات فردي
+  
+          pagesHTML += `<div class="hard">
+                          <img src="${folder}/${left}" class="w-full h-full object-contain">
+                        </div>`;
+          if (right) {
+            pagesHTML += `<div class="hard">
+                            <img src="${folder}/${right}" class="w-full h-full object-contain">
+                          </div>`;
+          }
+        }
+  
         const book = document.getElementById("flipbook");
-        book.innerHTML = pageFiles.map(file => `<div><img src="${folder}/${file}" class="w-full h-full object-contain"></div>`).join('');
-        
+        book.innerHTML = pagesHTML;
+  
         document.getElementById("viewer").classList.remove("hidden");
+  
         setTimeout(() => {
           $("#flipbook").turn({
             width: 1000,
             height: 700,
             autoCenter: true,
             gradients: true,
-            acceleration: true
+            acceleration: true,
+            display: 'double',      // ← أهم حاجة
+            when: {
+              turned: function(e, page) {
+                // عشان يشتغل التقليب بالكيبورد والماوس
+              }
+            }
           });
         }, 300);
-
+  
       } catch (err) {
         alert('العدد غير متوفر حالياً');
       }
     }
-
+  
     function closeMag() {
       try { $("#flipbook").turn("destroy"); } catch(e) {}
       document.getElementById("viewer").classList.add("hidden");
