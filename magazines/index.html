@@ -7,14 +7,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
   <style>
-    body { background:#001d34; color:white; margin:0; padding:0; }
+    body { background:#001d34; color:white; margin:0; padding:0; font-family:system-ui; }
     .shelf { height:28px; background:linear-gradient(#8B4513,#A0522D); border-radius:12px; box-shadow:inset 0 8px 16px rgba(0,0,0,0.6); }
   </style>
 </head>
 <body class="min-h-screen">
 
   <div class="fixed top-4 left-4 z-50">
-    <a href="../index.html" class="bg-white/20 hover:bg-white/40 backdrop-blur px-6 py-3 rounded-full">رجوع</a>
+    <a href="../index.html" class="bg-white/20 hover:bg-white/40 backdrop-blur px-6 py-3 rounded-full transition">رجوع</a>
   </div>
 
   <div class="container mx-auto px-6 py-16">
@@ -22,7 +22,7 @@
 
     <div class="max-w-7xl mx-auto space-y-24">
 
-      <!-- الرف الأول -->
+      <!-- رف 1 -->
       <div>
         <div class="shelf mb-10"></div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 justify-center">
@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <!-- الرف الثاني -->
+      <!-- رف 2 -->
       <div>
         <div class="shelf mb-10"></div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 justify-center">
@@ -64,6 +64,8 @@
             <img src="../covers/packaging/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">باكدجنج</p>
           </div>
+
+         
 
           <div class="group cursor-pointer" onclick="openMag('portfolio')">
             <img src="../covers/portfolio/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
@@ -91,7 +93,7 @@
     </div>
   </div>
 
-  <!-- باقي الكود زي ما هو (التقليب شغال 100%) -->
+  <!-- نافذة التقليب -->
   <div id="viewer" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
     <div class="relative bg-white rounded-2xl shadow-4xl p-8 max-w-6xl w-full">
       <button onclick="closeMag()" class="absolute -top-12 right-0 text-white text-5xl hover:text-[#31c5fd]">×</button>
@@ -102,25 +104,39 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     async function openMag(folder) {
-      let pages = [];
-      for (let i = 1; i <= 500; i++) {
-        const url = `${folder}/fisging${i}.jpg`;
-        const exists = await fetch(url, {method: 'HEAD'}).then(r => r.ok).catch(() => false);
-        if (!exists) break;
-        pages.push(url);
-      }
-      if (pages.length === 0) { alert('العدد غير متوفر حالياً'); return; }
+      try {
+        const response = await fetch(`${folder}/pages.txt?t=${Date.now()}`); // ?t= لتجنب الكاش
+        if (!response.ok) throw new Error();
+        const text = await response.text();
+        const pageFiles = text.trim().split('\n').map(line => line.trim()).filter(line => line.length > 0);
 
-      const book = document.getElementById("flipbook");
-      book.innerHTML = pages.map(p => `<div><img src="${p}" class="w-full h-full object-contain"></div>`).join('');
-      document.getElementById("viewer").classList.remove("hidden");
-      setTimeout(() => $("#flipbook").turn({width:1000,height:700,autoCenter:true,gradients:true,acceleration:true}), 300);
+        if (pageFiles.length === 0) throw new Error();
+
+        const book = document.getElementById("flipbook");
+        book.innerHTML = pageFiles.map(file => `<div><img src="${folder}/${file}" class="w-full h-full object-contain"></div>`).join('');
+        
+        document.getElementById("viewer").classList.remove("hidden");
+        setTimeout(() => {
+          $("#flipbook").turn({
+            width: 1000,
+            height: 700,
+            autoCenter: true,
+            gradients: true,
+            acceleration: true
+          });
+        }, 300);
+
+      } catch (err) {
+        alert('العدد غير متوفر حالياً');
+      }
     }
+
     function closeMag() {
-      $("#flipbook").turn("destroy");
+      try { $("#flipbook").turn("destroy"); } catch(e) {}
       document.getElementById("viewer").classList.add("hidden");
       document.getElementById("flipbook").innerHTML = "";
     }
   </script>
+
 </body>
 </html>
