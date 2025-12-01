@@ -1,57 +1,63 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>مكتبة المجلات</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
   <style>
-    body { background:#001d34; color:white; margin:0; padding:0; }
-    .shelf { height:28px; background:linear-gradient(#8B4513,#A0522D); border-radius:12px; box-shadow:inset 0 8px 16px rgba(0,0,0,0.6); }
+    body {
+      background: #001d34;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .shelf {
+      height: 28px;
+      background: linear-gradient(#8B4513, #A0522D);
+      border-radius: 12px;
+      box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.6);
+    }
   </style>
 </head>
 <body class="min-h-screen">
-
+  <!-- زر الرجوع -->
   <div class="fixed top-4 left-4 z-50">
     <a href="../index.html" class="bg-white/20 hover:bg-white/40 backdrop-blur px-6 py-3 rounded-full">رجوع</a>
   </div>
 
+  <!-- العنوان والمجلات -->
   <div class="container mx-auto px-6 py-16">
-    <h1 class="text-5xl md:text-6xl font-bold text-center mb-16 text-[#31c5fd] drop-shadow-2xl">مكتبة المجلات</h1>
+    <h1 class="text-5xl md:text-6xl font-bold text-center mb-16 text-[#31c5fd] drop-shadow-2xl">
+      مكتبة المجلات
+    </h1>
 
     <div class="max-w-7xl mx-auto space-y-24">
-
       <!-- الرف الأول -->
       <div>
         <div class="shelf mb-10"></div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 justify-center">
-
           <div class="group cursor-pointer" onclick="openMag('sun-kids')">
-            <img src="covers/sun-kids/222.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+            <img src="covers/sun-kids/222.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6" />
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">شمس الطفولة</p>
           </div>
-
           <div class="group cursor-pointer" onclick="openMag('fashico')">
-            <img src="covers/fashico/fisging.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
+            <img src="covers/fashico/fisging.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6" />
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">فاشن</p>
           </div>
-
           <div class="group cursor-pointer" onclick="openMag('egyptian-museum')">
-            <img src="covers/egyptian-museum/22.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+            <img src="covers/egyptian-museum/22.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6" />
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">كنوز المتحف</p>
           </div>
-
           <div class="group cursor-pointer" onclick="openMag('لمسات-ابداعية')">
-            <img src="covers/لمسات-ابداعية/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
+            <img src="covers/لمسات-ابداعية/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6" />
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">لمسات إبداعية</p>
           </div>
-
           <div class="group cursor-pointer" onclick="openMag('branding')">
-            <img src="covers/branding/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+            <img src="covers/branding/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6" />
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">براندينج</p>
           </div>
-
         </div>
       </div>
 
@@ -59,50 +65,44 @@
       <div>
         <div class="shelf mb-10"></div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 justify-center">
-
           <div class="group cursor-pointer" onclick="openMag('packaging')">
-            <img src="covers/packaging/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+            <img src="covers/packaging/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6" />
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">باكدجنج</p>
           </div>
-
           <div class="group cursor-pointer" onclick="openMag('portfolio')">
-            <img src="covers/portfolio/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
+            <img src="covers/portfolio/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6" />
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">بورتفوليو</p>
           </div>
-
           <div class="group cursor-pointer" onclick="openMag('digital-art')">
-            <img src="covers/digital-art/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+            <img src="covers/digital-art/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6" />
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">فن رقمي</p>
           </div>
-
           <div class="group cursor-pointer" onclick="openMag('photoshop-pro')">
-            <img src="covers/photoshop-pro/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
+            <img src="covers/photoshop-pro/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6" />
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">فوتوشوب برو</p>
           </div>
-
           <div class="group cursor-pointer" onclick="openMag('creative-design')">
-            <img src="covers/creative-design/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+            <img src="covers/creative-design/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6" />
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">تصميم إبداعي</p>
           </div>
-
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- الفليب بوك -->
+  <!-- نافذة العرض (Flipbook Viewer) -->
   <div id="viewer" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
     <div class="relative bg-white rounded-2xl shadow-4xl p-8 max-w-6xl w-full">
       <button onclick="closeMag()" class="absolute -top-12 right-0 text-white text-5xl hover:text-[#31c5fd]">×</button>
       <div id="flipbook" class="mx-auto"></div>
     </div>
   </div>
-<script>
+
+ <script>
   async function openMag(folder) {
     let pages = [];
     for (let i = 1; i <= 500; i++) {
-      const url = `${folder}/${i}.jpg`; // ✅ تم التصحيح هنا
+      const url = `magazines/${folder}/${i}.jpg`; // ✅ المسار الصحيح الآن
       const exists = await fetch(url, { method: 'HEAD' })
         .then(r => r.ok)
         .catch(() => false);
@@ -117,14 +117,14 @@
 
     const book = document.getElementById("flipbook");
 
-    // ✅ جعل العرض مزدوجًا (صفحتين)
-    const htmlPages = pages.map(p => 
+    // تحويل الصفحات إلى div
+    let htmlPages = pages.map(p => 
       `<div><img src="${p}" class="w-full h-full object-contain"></div>`
     );
 
-    // ✅ التأكد من أن عدد الصفحات زوجي (لعرض مزدوج سليم)
+    // إضافة صفحة فارغة إن كان العدد فرديًا (لعرض مزدوج سليم)
     if (htmlPages.length % 2 !== 0) {
-      htmlPages.push('<div></div>'); // صفحة فارغة
+      htmlPages.push('<div></div>');
     }
 
     book.innerHTML = htmlPages.join('');
@@ -137,7 +137,7 @@
         autoCenter: true,
         gradients: true,
         acceleration: true,
-        display: 'double' // ✅ هذا يسمح بعرض صفحتين وتقليب طبيعي
+        display: 'double' // ← هذا يسمح بعرض صفحتين متقابلتين وتقليب طبيعي
       });
     }, 300);
   }
