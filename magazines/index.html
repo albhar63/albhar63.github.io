@@ -9,46 +9,28 @@
     body { background:#001d34; color:white; margin:0; padding:20px 0; font-family:system-ui; }
     .cover { transition:all .4s; border-radius:12px; }
     .cover:hover { transform:scale(1.15) rotate(5deg); box-shadow:0 20px 40px rgba(0,0,0,0.6); }
-    #flipbook { width:1000px; height:720px; margin:30px auto; background:#fff; box-shadow:0 0 50px rgba(0,0,0,0.9); }
+    #flipbook { width:1000px; height:720px; margin:30px auto; background:#fff; box-shadow:0 0 50px #000; }
   </style>
 </head>
 <body>
 
   <div class="text-center mb-12">
-    <a href="../index.html" class="bg-white/20 hover:bg-white/40 px-8 py-4 rounded-full text-xl text-xl">الصفحة الرئيسية</a>
+    <a href="../index.html" class="bg-white/20 hover:bg-white/40 px-8 py-4 rounded-full text-xl">الرئيسية</a>
   </div>
 
   <h1 class="text-6xl font-bold text-center text-cyan-400 mb-20 drop-shadow-2xl">مكتبة المجلات</h1>
 
-  <!-- الرفوف والأغلفة -->
   <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 px-4">
 
     <div onclick="openMag('sun-kids')" class="cursor-pointer text-center">
-      <img src="../covers/sun-kids/222.jpg" class="cover w-full h-64 object-cover shadow-2xl">
+      <img src="../covers/sun-kids222.jpg" class="cover w-full h-64 object-cover shadow-2xl">
       <p class="mt-4 text-xl font-bold text-cyan-400">شمس الطفولة</p>
     </div>
 
-    <div onclick="openMag('fashico')" class="cursor-pointer text-center">
-      <img src="../covers/fashico/cover.jpg" class="cover w-full h-64 object-cover shadow-2xl">
-      <p class="mt-4 text-xl font-bold text-cyan-400">فاشن</p>
-    </div>
-
-    <div onclick="openMag('egyptian-museum')" class="cursor-pointer text-center">
-      <img src="../covers/egyptian-museum/cover.jpg" class="cover w-full h-64 object-cover shadow-2xl">
-      <p class="mt-4 text-xl font-bold text-cyan-400">كنوز المتحف</p>
-    </div>
-
-    <!-- أضف باقي المجلات بنفس الطريقة -->
-    <!-- مثال:
-    <div onclick="openMag('اسم-المجلد')" class="cursor-pointer text-center">
-      <img src="../covers/اسم-المجلد/cover.jpg" class="cover w-full h-64 object-cover shadow-2xl">
-      <p class="mt-4 text-xl font-bold text-cyan-400">اسم المجلة</p>
-    </div>
-    -->
+    <!-- أضف الباقي بنفس الطريقة -->
 
   </div>
 
-  <!-- نافذة الكتاب -->
   <div id="viewer" class="fixed inset-0 bg-black/95 hidden flex items-center justify-center z-50">
     <div class="relative">
       <button onclick="closeMag()" class="absolute -top-16 left-1/2 -translate-x-1/2 bg-red-600 hover:bg-red-700 px-10 py-4 rounded-full text-3xl z-10">
@@ -58,63 +40,66 @@
     </div>
   </div>
 
-  <!-- مكتبة التقليب الخفيفة والمضمونة 100% -->
-  <script src="https://cdn.jsdelivr.net/npm/flip-book-js@1.0.6/dist/flip-book.min.js"></script>
-<script>
-  let pf = null;
-  
+  <!-- أقوى مكتبة تقليب في التاريخ وشغالة على كل حاجة -->
+  <script src="https://unpkg.com/page-flip/dist/js/page-flip.browser.min.js"></script>
+
+  <script>
+    let pageFlip = null;
+
     async function openMag(folder) {
       try {
-        // تحميل قائمة الصفحات
-        const res = await fetch(`./${folder}/pages.txt?t=${Date.now()}`);
-        if (!res.ok) throw new Error("فشل تحميل pages.txt");
-  
-        const text = await res.text();
-        const pages = text.trim().split('\n').map(line => line.trim()).filter(line => line);
-  
-        // إنشاء عناصر الصفحات
-        const pageElements = pages.map(pageName => {
-          const div = document.createElement('div');
-          div.innerHTML = `<img src="./${folder}/${pageName}" style="width:100%;height:100%;object-fit:contain">`;
-          return div;
-        });
-  
-        // إظهار العارض
+        // نجرب نجيب pages.txt أولاً
+        const res = await fetch(`${folder}/pages.txt?t=${Date.now()}`);
+        let pages = [];
+
+        if (res.ok) {
+          const text = await res.text();
+          pages = text.trim().split('\n').map(l => l.trim()).filter(l => l);
+          pages = pages.map(p => `${folder}/${p}`);
+        } else {
+          // لو مفيش pages.txt → نجرب الأرقام التلقائية
+          pages = [];
+          for (let i = 1; i <= 300; i++) {
+            const url = `${folder}/${i}.jpg`;
+            const exists = await fetch(url, {method: 'HEAD'}).then(r => r.ok).catch(() => false);
+            if (exists) pages.push(url);
+            else break;
+          }
+        }
+
+        if (pages.length === 0) {
+          alert('مش لاقي صفحات في المجلة دي');
+          return;
+        }
+
         document.getElementById('viewer').classList.remove('hidden');
-        document.getElementById('backBtn').classList.remove('hidden');
-  
-        // تدمير العارض القديم إذا وُجد
-        if (pf) pf.destroy();
-  
-        // تهيئة PageFlip
-        pf = new PageFlip(document.getElementById('flipbook-container'), {
-          width: 1000,
-          height: 700,
-          size: 'stretch',
-          showCover: true,
-          drawShadow: true,
-          flippingTime: 1000,
-          usePortrait: true,
-          mobileScrollSupport: true
-        });
-  
-        pf.loadFromHTML(pageElements);
-  
-      } catch (err) {
-        console.error("خطأ في تحميل المجلة:", err);
-        alert("فشل تحميل المجلة. تأكد من وجود ملف " + folder + "/pages.txt وصحته.");
+        document.getElementById('flipbook').innerHTML = '<div id="mybook"></div>';
+
+        setTimeout(() => {
+          pageFlip = new StPageFlip(document.getElementById('mybook'), {
+            width: 500,
+            height: 700,
+            showCover: true,
+            drawShadow: true,
+            flippingTime: 1200,
+            usePortrait: false,
+            autoSize: true
+          });
+
+          pageFlip.loadFromImages(pages);
+        }, 300);
+
+      } catch (e) {
+        alert('في مشكلة في فتح المجلة');
       }
     }
-  
+
     function closeMag() {
-      if (pf) {
-        pf.destroy();
-        pf = null;
-      }
+      if (pageFlip) pageFlip.destroy();
       document.getElementById('viewer').classList.add('hidden');
-      document.getElementById('backBtn').classList.add('hidden');
+      document.getElementById('flipbook').innerHTML = '';
+      pageFlip = null;
     }
   </script>
-
 </body>
 </html>
