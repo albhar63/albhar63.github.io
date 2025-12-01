@@ -1,105 +1,128 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>معرض المجلات</title>
-  <!-- Tailwind CSS CDN -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المجلات</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Turn.js الخفيف جدًا (8kb فقط) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
   <style>
-    body { background: #001d34; margin: 0; padding: 0; min-height: 100vh; }
-    .shelf { background: linear-gradient(#8B4513, #A0522D); height: 20px; border-radius: 8px; box-shadow: inset 0 4px 8px rgba(0,0,0,0.4); }
-    #flipbook .page { background: white; padding: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-    .page img { max-width: 100%; height: auto; object-fit: contain; }
+    body { background:#001d34; color:white; margin:0; padding:0; font-family: system-ui; }
+    .shelf { height:28px; background:linear-gradient(#8B4513,#A0522D); border-radius:12px; box-shadow:inset 0 8px 16px rgba(0,0,0,0.6); }
+    .cover:hover { transform: scale(1.1) rotate(4deg) !important; }
   </style>
 </head>
-<body class="text-white">
+<body class="min-h-screen">
 
-  <!-- زر الرجوع للرئيسية -->
-  <div class="fixed top-6 left-6 z-50">
-    <a href="index.html" class="bg-white/20 hover:bg-white/40 backdrop-blur-md px-6 py-3 rounded-full transition">
-      ← العودة للرئيسية
+  <!-- زر الرجوع -->
+  <div class="fixed top-4 left-4 z-50">
+    <a href="../index.html" class="bg-white/20 hover:bg-white/40 backdrop-blur px-6 py-3 rounded-full transition">
+      ← رجوع
     </a>
   </div>
 
-  <div class="container mx-auto px-4 py-12">
-    <h1 class="text-4xl md:text-6xl font-bold text-center mb-12 text-[#31c5fd] drop-shadow-lg">
+  <div class="container mx-auto px-6 py-16">
+    <h1 class="text-5xl md:text-6xl font-bold text-center mb-16 text-[#31c5fd] drop-shadow-2xl">
       مكتبة المجلات
     </h1>
 
     <!-- الرفوف -->
-    <div class="space-y-16 max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto space-y-20">
 
       <!-- رف 1 -->
       <div>
-        <div class="shelf"></div>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8 justify-items-center">
-          
-          <!-- مجلة 1 -->
-          <div class="cursor-pointer group" onclick="openMagazine('magazine1')">
-            <img src="covers/mag1.jpg" alt="مجلة 1" class="w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-105 group-hover:-rotate-3">
-            <p class="text-center mt-4 text-lg font-semibold text-[#31c5fd]">مجلة العلوم 2025</p>
+        <div class="shelf mb-10"></div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center">
+
+          <!-- كل المجلات هنا -->
+          <div class="group cursor-pointer" onclick="openMag('مجلة العلوم')">
+            <img src="../covers/مجلة العلوم/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all duration-300 cover">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">مجلة العلوم</p>
           </div>
 
-          <!-- مجلة 2 -->
-          <div class="cursor-pointer group" onclick="openMagazine('magazine2')">
-            <img src="covers/mag2.jpg" class="w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-105 group-hover:rotate-3">
-            <p class="text-center mt-4 text-lg font-semibold text-[#31c5fd]">عالم التقنية</p>
+          <div class="group cursor-pointer" onclick="openMag('عالم التقنية')">
+            <img src="../covers/عالم التقنية/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all duration-300 cover">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">عالم التقنية</p>
           </div>
 
-          <!-- كمل باقي المجلات بنفس الطريقة (3، 4، 5، 6...) -->
-          
+          <div class="group cursor-pointer" onclick="openMag('الجرافيكس')">
+            <img src="../covers/الجرافيكس/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all duration-300 cover">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">الجرافيكس</p>
+          </div>
+
+          <div class="group cursor-pointer" onclick="openMag('التصميم الحديث')">
+            <img src="../covers/التصميم الحديث/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all duration-300 cover">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">التصميم الحديث</p>
+          </div>
+
+          <div class="group cursor-pointer" onclick="openMag('الفن الرقمي')">
+            <img src="../covers/الفن الرقمي/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all duration-300 cover">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">الفن الرقمي</p>
+          </div>
+
+          <div class="group cursor-pointer" onclick="openMag('المستقبل 2030')">
+            <img src="../covers/المستقبل 2030/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all duration-300 cover">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">المستقبل 2030</p>
+          </div>
+
         </div>
       </div>
 
-      <!-- رف 2 (لو عايز أكتر من 6) -->
-      <!-- كرر الـ div بتاع الرف حسب عدد المجلات -->
-
     </div>
   </div>
 
-  <!-- نافذة الـ Flipbook -->
-  <div id="magazineViewer" class="fixed inset-0 bg-black/95 z-50 hidden items-center justify-center">
-    <div class="relative bg-white rounded-2xl shadow-2xl p-8 max-w-6xl w-full mx-4">
-      <button onclick="closeMagazine()" class="absolute -top-12 right-0 text-white text-4xl hover:text-[#31c5fd]">&times;</button>
-      <div id="flipbook" class="mx-auto">
-        <!-- الصفحات هتتحط هنا ديناميكيًا بالجافاسكريبت -->
-      </div>
+  <!-- نافذة التقليب -->
+  <div id="viewer" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
+    <div class="relative bg-white rounded-2xl shadow-4xl p-8 max-w-6xl w-full">
+      <button onclick="closeMag()" class="absolute -top-12 right-0 text-white text-5xl hover:text-[#31c5fd]">×</button>
+      <div id="flipbook" class="mx-auto"></div>
     </div>
   </div>
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+    // قاعدة بيانات المجلات (اسم المجلة = اسم المجلد)
     const magazines = {
-      magazine1: ["pages/mag1/page1.jpg", "pages/mag1/page2.jpg", "pages/mag1/page3.jpg", /* كل الصفحات */],
-      magazine2: ["pages/mag2/page1.jpg", "pages/mag2/page2.jpg", /* ... */],
-      // أضف باقي المجلات هنا
+      "مجلة العلوم":    "../pages/مجلة العلوم/",
+      "عالم التقنية":    "../pages/عالم التقنية/",
+      "الجرافيكس":       "../pages/الجرافيكس/",
+      "التصميم الحديث":  "../pages/التصميم الحديث/",
+      "الفن الرقمي":     "../pages/الفن الرقمي/",
+      "المستقبل 2030":   "../pages/المستقبل 2030/"
     };
 
-    function openMagazine(id) {
-      const pages = magazines[id];
-      const flipbook = document.getElementById("flipbook");
-      flipbook.innerHTML = "";
-      pages.forEach(src => {
-        flipbook.innerHTML += `<div><img src="${src}" class="w-full h-full object-contain"></div>`;
-      });
-      document.getElementById("magazineViewer").classList.remove("hidden");
-      document.getElementById("magazineViewer").classList.add("flex");
-      setTimeout(() => $("#flipbook").turn({width: 900, height: 600, autoCenter: true, gradients: true}), 100);
+    async function openMag(name) {
+      const folder = magazines[name];
+      // جلب كل الصور من المجلد تلقائيًا (من 1.jpg لحد 100.jpg)
+      let pages = [];
+      for (let i = 1; i <= 100; i++) {
+        const url = `${folder}${i}.jpg`;
+        const exists = await fetch(url, {method: 'HEAD'}).then(r => r.ok).catch(() => false);
+        if (!exists) break;
+        pages.push(url);
+      }
+      if (pages.length === 0) return alert("لا توجد صفحات لهذه المجلة");
+
+      const book = document.getElementById("flipbook");
+      book.innerHTML = pages.map(p => `<div><img src="${p}" class="w-full h-full object-contain"></div>`).join('');
+      document.getElementById("viewer").classList.remove("hidden");
+
+      setTimeout(() => {
+        $("#flipbook").turn({
+          width: 1000,
+          height: 700,
+          autoCenter: true,
+          gradients: true,
+          acceleration: true
+        });
+      }, 200);
     }
 
-    function closeMagazine() {
-      $("#flipbook").turn("destroy");
-      document.getElementById("magazineViewer").classList.add("hidden");
+    function closeMag() {
+      $("#flipbook").turn("destroy").remove();
+      document.getElementById("viewer").classList.add("hidden");
       document.getElementById("flipbook").innerHTML = "";
     }
-
-    // تمكين jQuery من CDN (مطلوب لـ Turn.js)
-    const script = document.createElement('script');
-    script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
-    script.onload = () => { /* جاهز */ };
-    document.head.appendChild(script);
   </script>
 
 </body>
