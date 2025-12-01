@@ -3,40 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مكتبة المجلات</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>شمس الطفولة</title>
   <style>
-    body { background:#001d34; color:white; margin:0; padding:20px; font-family:system-ui; }
-    .cover:hover { transform:scale(1.1); }
+    body { background:#001d34; margin:0; padding:20px; }
+    img { width:100%; max-width:900px; display:block; margin:20px auto; border:8px solid #fff; box-shadow:0 10px 30px rgba(0,0,0,0.6); border-radius:12px; }
+    .back { position:fixed; top:20px; left:20px; background:#fff; color:#000; padding:15px 30px; border-radius:50px; font-size:20px; text-decoration:none; }
   </style>
 </head>
 <body>
+  <a href="../magazines/index.html" class="back">رجوع</a>
+  <h1 style="text-align:center; color:#31c5fd; font-size:50px; margin:40px;">شمس الطفولة</h1>
 
-  <h1 class="text-5xl text-center my-10 text-cyan-400 font-bold">مكتبة المجلات</h1>
-
-  <div class="grid grid-cols-3 gap-8 max-w-5xl mx-auto">
-    <div onclick="openMag('sun-kids')" class="text-center cursor-pointer">
-      <img src="../covers/sun-kids/222.jpg" class="w-full rounded-lg shadow-2xl">
-      <p class="mt-4 text-xl text-cyan-400 font-bold">شمس الطفولة</p>
-    </div>
-    <!-- أضف الباقي كده -->
-  </div>
-
-  <div id="viewer" class="fixed inset-0 bg-black hidden flex items-center justify-center z-50">
-    <div class="relative">
-      <button onclick="document.getElementById('viewer').classList.add('hidden')" 
-              class="absolute top-4 left-4 bg-red-600 px-6 py-3 rounded-full text-2xl">✕</button>
-      <iframe id="pdfviewer" class="w-screen h-screen"></iframe>
-    </div>
-  </div>
-
+  <!-- الصور هتظهر تلقائي من 1.jpg لـ 200.jpg -->
   <script>
-    function openMag(folder) {
-      // بدل التقليب اللي جننّا… هنفتح المجلة كـ PDF عادي (أسهل حاجة في الدنيا وشغالة 1000000%)
-      document.getElementById('pdfviewer').src = `https://albhar63.github.io/${folder}/magazine.pdf`;
-      document.getElementById('viewer').classList.remove('hidden');
+    const folder = '.'; // نفس المجلد
+    for(let i=1; i<=200; i++){
+      document.write(`<img src="${folder}/${i}.jpg" onerror="this.style.display='none'">`);
     }
   </script>
-
 </body>
 </html>
