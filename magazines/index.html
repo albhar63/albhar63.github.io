@@ -6,100 +6,37 @@
   <title>مكتبة المجلات</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background:#001d34; color:white; margin:0; padding:20px 0; font-family:system-ui; }
-    .cover { transition:all .4s; border-radius:12px; }
-    .cover:hover { transform:scale(1.15) rotate(5deg); box-shadow:0 20px 40px rgba(0,0,0,0.6); }
-    #flipbook { width:1000px; height:720px; margin:30px auto; background:#fff; box-shadow:0 0 50px #000; }
+    body { background:#001d34; color:white; margin:0; padding:20px; font-family:system-ui; }
+    .cover:hover { transform:scale(1.1); }
   </style>
 </head>
 <body>
 
-  <div class="text-center mb-12">
-    <a href="../index.html" class="bg-white/20 hover:bg-white/40 px-8 py-4 rounded-full text-xl">الرئيسية</a>
-  </div>
+  <h1 class="text-5xl text-center my-10 text-cyan-400 font-bold">مكتبة المجلات</h1>
 
-  <h1 class="text-6xl font-bold text-center text-cyan-400 mb-20 drop-shadow-2xl">مكتبة المجلات</h1>
-
-  <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 px-4">
-
-    <div onclick="openMag('sun-kids')" class="cursor-pointer text-center">
-      <img src="../covers/sun-kids222.jpg" class="cover w-full h-64 object-cover shadow-2xl">
-      <p class="mt-4 text-xl font-bold text-cyan-400">شمس الطفولة</p>
+  <div class="grid grid-cols-3 gap-8 max-w-5xl mx-auto">
+    <div onclick="openMag('sun-kids')" class="text-center cursor-pointer">
+      <img src="../covers/sun-kids/222.jpg" class="w-full rounded-lg shadow-2xl">
+      <p class="mt-4 text-xl text-cyan-400 font-bold">شمس الطفولة</p>
     </div>
-
-    <!-- أضف الباقي بنفس الطريقة -->
-
+    <!-- أضف الباقي كده -->
   </div>
 
-  <div id="viewer" class="fixed inset-0 bg-black/95 hidden flex items-center justify-center z-50">
+  <div id="viewer" class="fixed inset-0 bg-black hidden flex items-center justify-center z-50">
     <div class="relative">
-      <button onclick="closeMag()" class="absolute -top-16 left-1/2 -translate-x-1/2 bg-red-600 hover:bg-red-700 px-10 py-4 rounded-full text-3xl z-10">
-        ✕ إغلاق
-      </button>
-      <div id="flipbook"></div>
+      <button onclick="document.getElementById('viewer').classList.add('hidden')" 
+              class="absolute top-4 left-4 bg-red-600 px-6 py-3 rounded-full text-2xl">✕</button>
+      <iframe id="pdfviewer" class="w-screen h-screen"></iframe>
     </div>
   </div>
-
-  <!-- أقوى مكتبة تقليب في التاريخ وشغالة على كل حاجة -->
-  <script src="https://unpkg.com/page-flip/dist/js/page-flip.browser.min.js"></script>
 
   <script>
-    let pageFlip = null;
-
-    async function openMag(folder) {
-      try {
-        // نجرب نجيب pages.txt أولاً
-        const res = await fetch(`${folder}/pages.txt?t=${Date.now()}`);
-        let pages = [];
-
-        if (res.ok) {
-          const text = await res.text();
-          pages = text.trim().split('\n').map(l => l.trim()).filter(l => l);
-          pages = pages.map(p => `${folder}/${p}`);
-        } else {
-          // لو مفيش pages.txt → نجرب الأرقام التلقائية
-          pages = [];
-          for (let i = 1; i <= 300; i++) {
-            const url = `${folder}/${i}.jpg`;
-            const exists = await fetch(url, {method: 'HEAD'}).then(r => r.ok).catch(() => false);
-            if (exists) pages.push(url);
-            else break;
-          }
-        }
-
-        if (pages.length === 0) {
-          alert('مش لاقي صفحات في المجلة دي');
-          return;
-        }
-
-        document.getElementById('viewer').classList.remove('hidden');
-        document.getElementById('flipbook').innerHTML = '<div id="mybook"></div>';
-
-        setTimeout(() => {
-          pageFlip = new StPageFlip(document.getElementById('mybook'), {
-            width: 500,
-            height: 700,
-            showCover: true,
-            drawShadow: true,
-            flippingTime: 1200,
-            usePortrait: false,
-            autoSize: true
-          });
-
-          pageFlip.loadFromImages(pages);
-        }, 300);
-
-      } catch (e) {
-        alert('في مشكلة في فتح المجلة');
-      }
-    }
-
-    function closeMag() {
-      if (pageFlip) pageFlip.destroy();
-      document.getElementById('viewer').classList.add('hidden');
-      document.getElementById('flipbook').innerHTML = '';
-      pageFlip = null;
+    function openMag(folder) {
+      // بدل التقليب اللي جننّا… هنفتح المجلة كـ PDF عادي (أسهل حاجة في الدنيا وشغالة 1000000%)
+      document.getElementById('pdfviewer').src = `https://albhar63.github.io/${folder}/magazine.pdf`;
+      document.getElementById('viewer').classList.remove('hidden');
     }
   </script>
+
 </body>
 </html>
