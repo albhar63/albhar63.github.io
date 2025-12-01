@@ -98,39 +98,57 @@
       <div id="flipbook" class="mx-auto"></div>
     </div>
   </div>
+<script>
+  async function openMag(folder) {
+    let pages = [];
+    for (let i = 1; i <= 500; i++) {
+      const url = `${folder}/${i}.jpg`; // ✅ تم التصحيح هنا
+      const exists = await fetch(url, { method: 'HEAD' })
+        .then(r => r.ok)
+        .catch(() => false);
+      if (!exists) break;
+      pages.push(url);
+    }
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    async function openMag(folder) {
-      let pages = [];
-      for (let i = 1; i <= 500; i++) {
-        const url = `${folder}/fisging${i}.jpg`;
-        const exists = await fetch(url, {method: 'HEAD'}).then(r => r.ok).catch(() => false);
-        if (!exists) break;
-        pages.push(url);
-      }
-      if (pages.length === 0) {
-        alert('العدد غير متوفر حالياً');
-        return;
-      }
+    if (pages.length === 0) {
+      alert('العدد غير متوفر حالياً');
+      return;
+    }
 
-      const book = document.getElementById("flipbook");
-      book.innerHTML = pages.map(p => `<div><img src="${p}" class="w-full h-full object-contain"></div>`).join('');
-      document.getElementById("viewer").classList.remove("hidden");
-      setTimeout(() => $("#flipbook").turn({
+    const book = document.getElementById("flipbook");
+
+    // ✅ جعل العرض مزدوجًا (صفحتين)
+    const htmlPages = pages.map(p => 
+      `<div><img src="${p}" class="w-full h-full object-contain"></div>`
+    );
+
+    // ✅ التأكد من أن عدد الصفحات زوجي (لعرض مزدوج سليم)
+    if (htmlPages.length % 2 !== 0) {
+      htmlPages.push('<div></div>'); // صفحة فارغة
+    }
+
+    book.innerHTML = htmlPages.join('');
+    document.getElementById("viewer").classList.remove("hidden");
+
+    setTimeout(() => {
+      $("#flipbook").turn({
         width: 1000,
         height: 700,
         autoCenter: true,
         gradients: true,
-        acceleration: true
-      }), 300);
-    }
+        acceleration: true,
+        display: 'double' // ✅ هذا يسمح بعرض صفحتين وتقليب طبيعي
+      });
+    }, 300);
+  }
 
-    function closeMag() {
+  function closeMag() {
+    if ($("#flipbook").data('turn')) {
       $("#flipbook").turn("destroy");
-      document.getElementById("viewer").classList.add("hidden");
-      document.getElementById("flipbook").innerHTML = "";
     }
-  </script>
+    document.getElementById("viewer").classList.add("hidden");
+    document.getElementById("flipbook").innerHTML = "";
+  }
+</script>
 </body>
 </html>
