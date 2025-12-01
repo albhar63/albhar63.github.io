@@ -1,1 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مكتبة المجلات</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background:#001d34; color:white; margin:0; padding:20px 0; font-family:system-ui; }
+    .cover { transition:all .4s; }
+    .cover:hover { transform:scale(1.12) rotate(3deg); }
+  </style>
+</head>
+<body>
 
+  <div class="text-center my-10">
+    <a href="../index.html" class="bg-white/20 hover:bg-white/40 px-8 py-4 rounded-full text-xl">الصفحة الرئيسية</a>
+  </div>
+
+  <h1 class="text-6xl font-bold text-center text-cyan-400 mb-20">مكتبة المجلات</h1>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 max-w-7xl mx-auto px-4">
+
+    <!-- كل مجلة سطرين بس -->
+    <div onclick="openMag('sun-kids')" class="cursor-pointer text-center">
+      <img src="../covers/sun-kids/222.jpg" class="cover w-full h-64 object-cover rounded-xl shadow-2xl">
+      <p class="mt-4 text-xl font-bold text-cyan-400">شمس الطفولة</p>
+    </div>
+
+    <div onclick="openMag('fashico')" class="cursor-pointer text-center">
+      <img src="../covers/fashico/cover.jpg" class="cover w-full h-64 object-cover rounded-xl shadow-2xl">
+      <p class="mt-4 text-xl font-bold text-cyan-400">فاشن</p>
+    </div>
+
+    <!-- أضف الباقي بنفس الطريقة -->
+
+  </div>
+
+  <!-- النافذة الكبيرة -->
+  <div id="viewer" class="fixed inset-0 bg-black hidden flex items-center justify-center z-50">
+    <div class="relative max-w-5xl w-full">
+      <button onclick="document.getElementById('viewer').classList.add('hidden')" 
+              class="absolute -top-16 left-1/2 -translate-x-1/2 bg-red-600 hover:bg-red-700 px-8 py-4 rounded-full text-2xl">✕ إغلاق</button>
+      <div id="book" class="w-full h-screen max-h-screen"></div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/booklet/1.4.1/jquery.booklet.latest.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/booklet/1.4.1/jquery.booklet.latest.css">
+
+  <script>
+    function openMag(folder) {
+      fetch(`${folder}/pages.txt?t=${Date.now()}`)
+        .then(r => r.text())
+        .then(txt => {
+          const imgs = txt.trim().split('\n').map(l => l.trim()).filter(l => l);
+          let html = '';
+          imgs.forEach(src => {
+            html += `<div><img src="${folder}/${src}" style="width:100%;height:100%;object-fit:contain"></div>`;
+          });
+
+          document.getElementById('book').innerHTML = html;
+          document.getElementById('viewer').classList.remove('hidden');
+
+          setTimeout(() => {
+            $("#book").booklet({
+              width: '100%',
+              height: 700,
+              closed: false,
+              covers: true,
+              autoCenter: true,
+              pagePadding: 0,
+              shadows: true
+            });
+          }, 200);
+        });
+    }
+  </script>
+
+</body>
+</html>
