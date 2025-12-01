@@ -425,32 +425,31 @@
                   </div>
                   </div>
     
-         <!-- قسم المجلات في الصفحة الرئيسية -->
+            <!-- قسم المجلات: زرار جذاب مع استرك سيان ويفتح صفحة منفصلة -->
         <div id="magazines-section" class="scroll-mt-24 py-20">
           <div class="flex justify-center">
-            <a href="#magazines-section" class="relative group cursor-pointer">
+            <a href="magazines/" class="relative group cursor-pointer">
         
-              <!-- الزر الرئيسي -->
-              <div class="relative z-10 px-16 py-9 bg-gradient-to-r from-cyan-600 to-blue-800 rounded-full shadow-2xl transition-all duration-500 group-hover:scale-110">
+              <!-- الزرار الرئيسي -->
+              <div class="relative z-10 px-12 py-8 md:px-16 md:py-9 bg-gradient-to-r from-cyan-600 to-blue-800 rounded-full shadow-2xl transition-all duration-500 group-hover:scale-105 group-hover:shadow-cyan-500/40">
                 <div class="text-center">
-                  <div class="text-4xl md:text-5xl font-bold text-white drop-shadow-2xl leading-tight">
+                  <div class="text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-md">
                     قسم المجلات
                   </div>
-                  <div class="text-2xl md:text-3xl text-cyan-100 font-medium tracking-wider">
+                  <div class="text-lg md:text-xl lg:text-2xl text-cyan-100 font-medium tracking-wider mt-2">
                     Magazines Section
                   </div>
                 </div>
               </div>
         
-              <!-- الإسترك السيان القوي (طبقات متعددة) -->
-              <div class="absolute inset-0 rounded-full bg-cyan-400 blur-2xl opacity-80 group-hover:opacity-100 group-hover:blur-3xl transition-all duration-500"></div>
-              <div class="absolute -inset-2 rounded-full bg-cyan-500 blur-3xl opacity-70 group-hover:opacity-90 group-hover:blur-4xl transition-all duration-500"></div>
-              <div class="absolute -inset-4 rounded-full bg-cyan-300 blur-4xl opacity-50 group-hover:opacity-80 group-hover:blur-5xl transition-all duration-700"></div>
+              <!-- الطبقات الثلاث للاسترك السيان (مدعومة في Tailwind v2) -->
+              <div class="absolute inset-0 rounded-full bg-cyan-400 blur-xl opacity-60 group-hover:opacity-80 group-hover:blur-2xl transition-all duration-500"></div>
+              <div class="absolute -inset-2 rounded-full bg-cyan-500 blur-2xl opacity-40 group-hover:opacity-60 group-hover:blur-3xl transition-all duration-700"></div>
+              <div class="absolute -inset-4 rounded-full bg-cyan-300 blur-3xl opacity-20 group-hover:opacity-40 group-hover:blur-4xl transition-all duration-1000"></div>
         
             </a>
           </div>
         </div>
-    
             <!-- Contact -->
         <section id="contact" class="py-20 px-4 bg-black bg-opacity-30">
             <div class="text-center mb-12">
