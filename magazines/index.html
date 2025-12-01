@@ -20,43 +20,78 @@
   <div class="container mx-auto px-6 py-16">
     <h1 class="text-5xl md:text-6xl font-bold text-center mb-16 text-[#31c5fd] drop-shadow-2xl">مكتبة المجلات</h1>
 
-    <div class="max-w-7xl mx-auto space-y-20">
+    <div class="max-w-7xl mx-auto space-y-24">
+
+      <!-- الرف الأول -->
       <div>
         <div class="shelf mb-10"></div>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 justify-center">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 justify-center">
 
-          <!-- 1 شمس الطفولة -->
-          <div class="group cursor-pointer" onclick="openMag('شمس الطفولة')">
+          <div class="group cursor-pointer" onclick="openMag('sun-kids')">
             <img src="covers/sun-kids/222.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">شمس الطفولة</p>
           </div>
 
-          <!-- 2 فاشن -->
-          <div class="group cursor-pointer" onclick="openMag('فاشن')">
-            <img src="covers/fashion/121.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
+          <div class="group cursor-pointer" onclick="openMag('fashico')">
+            <img src="covers/fashico/121.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">فاشن</p>
           </div>
 
-          <!-- 3 كنوز المتحف -->
-          <div class="group cursor-pointer" onclick="openMag('كنوز المتحف')">
-            <img src="../covers/egyptian-museum/22.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+          <div class="group cursor-pointer" onclick="openMag('egyptian-museum')">
+            <img src="covers/egyptian-museum/22.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">كنوز المتحف</p>
           </div>
 
-          <!-- 4 لمسات إبداعية -->
-          <div class="group cursor-pointer" onclick="openMag('لمسات إبداعية')">
-            <img src="../covers/لمسات إبداعية/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
+          <div class="group cursor-pointer" onclick="openMag('لمسات-ابداعية')">
+            <img src="covers/لمسات-ابداعية/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">لمسات إبداعية</p>
           </div>
 
-          <!-- أضف هنا باقي المجلات بنفس الطريقة (كوبي بس السطرين دول وغيّر الاسم) -->
+          <div class="group cursor-pointer" onclick="openMag('branding')">
+            <img src="covers/branding/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">براندينج</p>
+          </div>
 
         </div>
       </div>
+
+      <!-- الرف الثاني -->
+      <div>
+        <div class="shelf mb-10"></div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 justify-center">
+
+          <div class="group cursor-pointer" onclick="openMag('packaging')">
+            <img src="covers/packaging/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">باكدجنج</p>
+          </div>
+
+          <div class="group cursor-pointer" onclick="openMag('portfolio')">
+            <img src="covers/portfolio/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">بورتفوليو</p>
+          </div>
+
+          <div class="group cursor-pointer" onclick="openMag('digital-art')">
+            <img src="covers/digital-art/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">فن رقمي</p>
+          </div>
+
+          <div class="group cursor-pointer" onclick="openMag('photoshop-pro')">
+            <img src="covers/photoshop-pro/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">فوتوشوب برو</p>
+          </div>
+
+          <div class="group cursor-pointer" onclick="openMag('creative-design')">
+            <img src="covers/creative-design/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:-rotate-6">
+            <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">تصميم إبداعي</p>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- نافذة التقليب -->
+  <!-- الفليب بوك -->
   <div id="viewer" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
     <div class="relative bg-white rounded-2xl shadow-4xl p-8 max-w-6xl w-full">
       <button onclick="closeMag()" class="absolute -top-12 right-0 text-white text-5xl hover:text-[#31c5fd]">×</button>
@@ -68,18 +103,27 @@
   <script>
     async function openMag(folder) {
       let pages = [];
-      for (let i = 1; i <= 300; i++) {
-        const url = `../pages/${folder}/${i}.jpg`;
-        const ok = await fetch(url, {method: 'HEAD'}).then(r => r.ok).catch(() => false);
-        if (!ok) break;
+      for (let i = 1; i <= 500; i++) {
+        const url = `${folder}/fisging${i}.jpg`;
+        const exists = await fetch(url, {method: 'HEAD'}).then(r => r.ok).catch(() => false);
+        if (!exists) break;
         pages.push(url);
       }
-      if (pages.length === 0) { alert('العدد غير متوفر حالياً'); return; }
+      if (pages.length === 0) {
+        alert('العدد غير متوفر حالياً');
+        return;
+      }
 
       const book = document.getElementById("flipbook");
       book.innerHTML = pages.map(p => `<div><img src="${p}" class="w-full h-full object-contain"></div>`).join('');
       document.getElementById("viewer").classList.remove("hidden");
-      setTimeout(() => $("#flipbook").turn({width:1000, height:700, autoCenter:true, gradients:true, acceleration:true}), 300);
+      setTimeout(() => $("#flipbook").turn({
+        width: 1000,
+        height: 700,
+        autoCenter: true,
+        gradients: true,
+        acceleration: true
+      }), 300);
     }
 
     function closeMag() {
