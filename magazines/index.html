@@ -60,36 +60,59 @@
 
   <!-- مكتبة التقليب الخفيفة والمضمونة 100% -->
   <script src="https://cdn.jsdelivr.net/npm/flip-book-js@1.0.6/dist/flip-book.min.js"></script>
-
-  <script>
-    let book = null;
-
-    function openMag(folder) {
-      {
-      // يجيب الصور تلقائي من 1.jpg إلى 200.jpg (هيوقف لو الصور خلصت)
-      const pages = Array.from({length: 200}, (_, i) => `${folder}/${i+1}.jpg`);
-
-      document.getElementById('viewer').classList.remove('hidden');
-      document.getElementById('flipbook').innerHTML = '<div id="mybook"></div>';
-
-      setTimeout(() => {
-        book = new FlipBook(document.getElementById('mybook'), {
-          pages: pages,
-          pageWidth: 500,
-          pageHeight: 700,
-          autoSize: true,
-          autoCenter: true,
-          shadows: true,
-          loadAll: false
+<script>
+  let pf = null;
+  
+    async function openMag(folder) {
+      try {
+        // تحميل قائمة الصفحات
+        const res = await fetch(`./${folder}/pages.txt?t=${Date.now()}`);
+        if (!res.ok) throw new Error("فشل تحميل pages.txt");
+  
+        const text = await res.text();
+        const pages = text.trim().split('\n').map(line => line.trim()).filter(line => line);
+  
+        // إنشاء عناصر الصفحات
+        const pageElements = pages.map(pageName => {
+          const div = document.createElement('div');
+          div.innerHTML = `<img src="./${folder}/${pageName}" style="width:100%;height:100%;object-fit:contain">`;
+          return div;
         });
-      }, 400);
+  
+        // إظهار العارض
+        document.getElementById('viewer').classList.remove('hidden');
+        document.getElementById('backBtn').classList.remove('hidden');
+  
+        // تدمير العارض القديم إذا وُجد
+        if (pf) pf.destroy();
+  
+        // تهيئة PageFlip
+        pf = new PageFlip(document.getElementById('flipbook-container'), {
+          width: 1000,
+          height: 700,
+          size: 'stretch',
+          showCover: true,
+          drawShadow: true,
+          flippingTime: 1000,
+          usePortrait: true,
+          mobileScrollSupport: true
+        });
+  
+        pf.loadFromHTML(pageElements);
+  
+      } catch (err) {
+        console.error("خطأ في تحميل المجلة:", err);
+        alert("فشل تحميل المجلة. تأكد من وجود ملف " + folder + "/pages.txt وصحته.");
+      }
     }
-
+  
     function closeMag() {
-      if (book) book.destroy();
+      if (pf) {
+        pf.destroy();
+        pf = null;
+      }
       document.getElementById('viewer').classList.add('hidden');
-      document.getElementById('flipbook').innerHTML = '';
-      book = null;
+      document.getElementById('backBtn').classList.add('hidden');
     }
   </script>
 
