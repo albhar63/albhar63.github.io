@@ -9,12 +9,22 @@
   <style>
     body { background:#001d34; color:white; margin:0; padding:0; font-family:system-ui; }
     .shelf { height:28px; background:linear-gradient(#8B4513,#A0522D); border-radius:12px; box-shadow:inset 0 8px 16px rgba(0,0,0,0.6); }
+    #flipbook .hard { background:white; box-shadow:inset 0 0 30px #000; }
   </style>
 </head>
 <body class="min-h-screen">
 
-  <div class="fixed top-4 left-4 z-50">
-    <a href="../index.html" class="bg-white/20 hover:bg-white/40 backdrop-blur px-6 py-3 rounded-full transition">رجوع</a>
+  <!-- زر الرجوع لصفحة المجلات نفسها (مش الرئيسية) -->
+  <div id="backBtn" class="fixed top-4 left-4 z-50 hidden">
+    <button onclick="closeMag()" class="bg-white/20 hover:bg-white/40 backdrop-blur px-6 py-3 rounded-full transition">
+      ← رجوع للرفوف
+    </button>
+  </div>
+
+  <div class="fixed top-4 left-4 z-10">
+    <a href="../index.html" class="bg-white/20 hover:bg-white/40 backdrop-blur px-6 py-3 rounded-full transition">
+      الصفحة الرئيسية
+    </a>
   </div>
 
   <div class="container mx-auto px-6 py-16">
@@ -33,7 +43,7 @@
           </div>
 
           <div class="group cursor-pointer" onclick="openMag('fashico')">
-            <img src="../covers/fashico/121.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
+            <img src="../covers/fashico/fashin.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">فاشن</p>
           </div>
 
@@ -65,8 +75,6 @@
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">باكدجنج</p>
           </div>
 
-         
-
           <div class="group cursor-pointer" onclick="openMag('portfolio')">
             <img src="../covers/portfolio/cover.jpg" class="w-full max-w-48 h-64 object-cover rounded-lg shadow-2xl transition-all group-hover:scale-110 group-hover:rotate-6">
             <p class="text-center mt-4 text-[#31c5fd] font-bold text-lg">بورتفوليو</p>
@@ -93,47 +101,45 @@
     </div>
   </div>
 
-  <!-- نافذة التقليب -->
-  <div id="viewer" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
-    <div class="relative bg-white rounded-2xl shadow-4xl p-8 max-w-6xl w-full">
-      <button onclick="closeMag()" class="absolute -top-12 right-0 text-white text-5xl hover:text-[#31c5fd]">×</button>
-      <div id="flipbook" class="mx-auto"></div>
+  <!-- نافذة الكتاب -->
+  <div id="viewer" class="fixed inset-0 bg-black/95 z-40 hidden flex items-center justify-center p-4">
+    <div class="relative bg-white rounded-2xl shadow-4xl overflow-hidden" style="width:1050px;">
+      <div id="flipbook" style="width:1000px; height:700px; margin:20px auto;"></div>
     </div>
   </div>
-  
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
   <script>
     async function openMag(folder) {
       try {
-        const response = await fetch(`${folder}/pages.txt?t=${Date.now()}`);
-        if (!response.ok) throw new Error();
-        const text = await response.text();
-        const pageFiles = text.trim().split('\n').map(l => l.trim()).filter(l => l);
-  
-        if (pageFiles.length === 0) throw new Error();
-  
-        // نصنع الصفحات بشكل صحيح لـ turn.js (كل صفحتين في div واحد)
-        let pagesHTML = '';
-        for (let i = 0; i < pageFiles.length; i += 2) {
-          const left  = pageFiles[i];
-          const right = pageFiles[i + 1] || ''; // لو عدد الصفحات فردي
-  
-          pagesHTML += `<div class="hard">
-                          <img src="${folder}/${left}" class="w-full h-full object-contain">
-                        </div>`;
-          if (right) {
-            pagesHTML += `<div class="hard">
-                            <img src="${folder}/${right}" class="w-full h-full object-contain">
-                          </div>`;
+        const res = await fetch(`${folder}/pages.txt?t=${Date.now()}`);
+        if (!res.ok) throw '';
+        const list = (await res.text()).trim().split('\n').map(l => l.trim()).filter(l => l);
+
+        if (list.length === 0) throw '';
+
+        // إنشاء الصفحات بشكل صحيح لـ turn.js
+        let html = '';
+        for (let i = 0; i < list.length; i += 2) {
+          const page1 = list[i];
+          const page2 = list[i+1] || null;
+
+          html += `<div class="hard">
+                  <img src="${folder}/${page1}" class="w-full h-full object-contain">
+                </div>`;
+          if (page2) {
+            html += `<div class="hard">
+                       <img src="${folder}/${page2}" class="w-full h-full object-contain">
+                     </div>`;
           }
         }
-  
-        const book = document.getElementById("flipbook");
-        book.innerHTML = pagesHTML;
-  
-        document.getElementById("viewer").classList.remove("hidden");
-  
+
+        const book = document.getElementById('flipbook');
+        book.innerHTML = html;
+
+        document.getElementById('viewer').classList.remove('hidden');
+        document.getElementById('backBtn').classList.remove('hidden');
+
         setTimeout(() => {
           $("#flipbook").turn({
             width: 1000,
@@ -141,24 +147,21 @@
             autoCenter: true,
             gradients: true,
             acceleration: true,
-            display: 'double',      // ← أهم حاجة
-            when: {
-              turned: function(e, page) {
-                // عشان يشتغل التقليب بالكيبورد والماوس
-              }
-            }
+            display: 'double',
+            turnCorners: 'bl,br,tl,tr'
           });
-        }, 300);
-  
-      } catch (err) {
+        }, 400);
+
+      } catch {
         alert('العدد غير متوفر حالياً');
       }
     }
-  
+
     function closeMag() {
       try { $("#flipbook").turn("destroy"); } catch(e) {}
-      document.getElementById("viewer").classList.add("hidden");
-      document.getElementById("flipbook").innerHTML = "";
+      document.getElementById('viewer').classList.add('hidden');
+      document.getElementById('backBtn').classList.add('hidden');
+      document.getElementById('flipbook').innerHTML = "";
     }
   </script>
 
