@@ -12,6 +12,7 @@
       margin: 0;
       padding: 0;
       min-height: 100vh;
+      font-family: 'Cairo', sans-serif;
     }
     .shelf {
       height: 32px;
@@ -19,15 +20,41 @@
       border-radius: 8px;
       box-shadow: inset 0 6px 12px rgba(0,0,0,0.7), 0 4px 8px rgba(0,0,0,0.9);
       margin: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
     .book {
       transition: transform 0.3s, box-shadow 0.3s;
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      cursor: pointer;
+      text-align: center;
     }
     .book:hover {
       transform: translateY(-10px) scale(1.03);
       box-shadow: 0 15px 40px rgba(0,191,255,0.4);
     }
+    .book img {
+      width: 100%;
+      max-width: 180px;
+      height: auto;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid transparent;
+    }
+    .book img:hover {
+      border-color: #00bfff;
+    }
+    .book p {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #31c5fd;
+      font-weight: 600;
+    }
+
+    /* عارض المجلة */
     #viewer {
       display: none;
       position: fixed;
@@ -40,6 +67,7 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      padding: 20px;
     }
     #book-view {
       display: flex;
@@ -58,6 +86,7 @@
       overflow: hidden;
       border-radius: 8px;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      position: relative;
     }
     .book-page img {
       width: 95%;
@@ -83,6 +112,13 @@
       background: rgba(0, 191, 255, 0.4);
       transform: scale(1.05);
     }
+    .btn-close {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid #fff;
+    }
+    .btn-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
   </style>
 </head>
 <body class="py-12 px-4">
@@ -104,28 +140,54 @@
     </p>
   </div>
 
-  <!-- رف الكتب -->
-  <div class="shelf mb-12"></div>
-
-  <!-- المجلات -->
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
-    <!-- كرر لكل مجلّة -->
+  <!-- رف 1: 5 مجلات -->
+  <div class="shelf mb-12">المجلات الأولى</div>
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 max-w-6xl mx-auto">
     <div class="book cursor-pointer" onclick="openMagazine('sun-kids')">
       <img src="../covers/sun-kids/222.jpg" alt="شمس الطفولة" class="w-full rounded-lg">
-      <p class="text-center mt-2 text-cyan-300 font-medium">شمس الطفولة</p>
+      <p>شمس الطفولة</p>
     </div>
-
     <div class="book cursor-pointer" onclick="openMagazine('egyptian-museum')">
       <img src="../covers/egyptian-museum/22.jpg" alt="المتحف المصري الكبير" class="w-full rounded-lg">
-      <p class="text-center mt-2 text-cyan-300 font-medium">المتحف المصري</p>
+      <p>المتحف المصري</p>
     </div>
-
     <div class="book cursor-pointer" onclick="openMagazine('fashico')">
       <img src="../covers/fashico/fisging.jpg" alt="فاشن" class="w-full rounded-lg">
-      <p class="text-center mt-2 text-cyan-300 font-medium">فاشن</p>
+      <p>فاشن</p>
     </div>
+    <div class="book cursor-pointer" onclick="openMagazine('packaging')">
+      <img src="../covers/packaging.jpg" alt="تغليف منتجات" class="w-full rounded-lg">
+      <p>تغليف منتجات</p>
+    </div>
+    <div class="book cursor-pointer" onclick="openMagazine('portfolio')">
+      <img src="../covers/portfolio.jpg" alt="أعمالي المختارة" class="w-full rounded-lg">
+      <p>أعمالي المختارة</p>
+    </div>
+  </div>
 
-    <!-- أضف باقي المجلات بنفس الطريقة -->
+  <!-- رف 2: 5 مجلات -->
+  <div class="shelf mb-12 mt-12">المجلات الثانية</div>
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 max-w-6xl mx-auto">
+    <div class="book cursor-pointer" onclick="openMagazine('branding')">
+      <img src="../covers/branding.jpg" alt="هويات بصرية" class="w-full rounded-lg">
+      <p>هويات بصرية</p>
+    </div>
+    <div class="book cursor-pointer" onclick="openMagazine('social-media')">
+      <img src="../covers/social-media.jpg" alt="محتوى السوشيال ميديا" class="w-full rounded-lg">
+      <p>سوشيال ميديا</p>
+    </div>
+    <div class="book cursor-pointer" onclick="openMagazine('poster')">
+      <img src="../covers/poster.jpg" alt="بوستر" class="w-full rounded-lg">
+      <p>بوستر</p>
+    </div>
+    <div class="book cursor-pointer" onclick="openMagazine('logo')">
+      <img src="../covers/logo.jpg" alt="تصميم شعار" class="w-full rounded-lg">
+      <p>تصميم شعار</p>
+    </div>
+    <div class="book cursor-pointer" onclick="openMagazine('ui-ux')">
+      <img src="../covers/ui-ux.jpg" alt="واجهة تطبيق" class="w-full rounded-lg">
+      <p>واجهة تطبيق</p>
+    </div>
   </div>
 
   <!-- عارض المجلة -->
@@ -140,7 +202,7 @@
     </div>
     <div id="controls">
       <button class="btn" onclick="prevPage()">‹ السابق</button>
-      <button class="btn" onclick="closeViewer()">إغلاق</button>
+      <button class="btn btn-close" onclick="closeViewer()">إغلاق</button>
       <button class="btn" onclick="nextPage()">التالي ›</button>
     </div>
   </div>
@@ -159,7 +221,7 @@
         pageList = text.trim().split('\n').map(p => p.trim()).filter(p => p);
         totalPages = pageList.length;
         currentMag = folder;
-        currentPage = 0;
+        currentPage = 0; // يبدأ دائمًا من الصفحة 1
         
         showPage();
         document.getElementById('viewer').style.display = 'flex';
