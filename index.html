@@ -515,118 +515,52 @@
                   </div>
                   </div>
     
-                  <!-- Contract Section — بدون ملفات خارجية -->
-        <section id="contract" class="py-20 px-4 bg-gray-900">
-          <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-12">
-              <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
-                العقد والشفافية | Contract & Clarity
-              </h2>
-            </div>
-        
-            <div class="flex flex-col md:flex-row items-center gap-10">
-              <!-- Left: عرض بصري للعقد (مُنشأ بالكود) -->
-              <div class="flex-1 flex justify-center">
-                <div class="relative bg-white rounded-xl shadow-2xl w-full max-w-xs p-6 border border-gray-200">
-                  <div class="text-center">
-                    <div class="w-16 h-16 bg-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
+                <!-- قسم العقد - نسخة مضمونة -->
+                <section id="contract" class="py-20 px-4 bg-gray-900 text-white">
+                  <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-12">
+                      <h2 class="inline-block bg-gradient-to-r from-cyan-400 to-cyan-500 text-white px-6 py-2.5 rounded-full font-bold text-xl shadow-md">
+                        العقد والشفافية | Contract
+                      </h2>
                     </div>
-                    <h3 class="font-bold text-gray-800 text-lg">اتفاقية تصميم</h3>
-                    <p class="text-gray-600 text-sm mt-1">محمد عمر — مصمم جرافيكي</p>
-                    <div class="mt-4 text-xs text-gray-500 text-left">
-                      - نطاق العمل<br>
-                      - الدفع والتسليم<br>
-                      - حقوق الملكية<br>
-                      - مزايا العملاء السابقين
+                
+                    <div class="flex flex-col md:flex-row items-center gap-10">
+                      <!-- صورة العقد (رسم بياني بسيط) -->
+                      <div class="flex justify-center">
+                        <div class="bg-white text-gray-800 rounded-xl p-6 w-64 shadow-xl border border-cyan-300">
+                          <div class="text-center">
+                            <div class="w-14 h-14 bg-cyan-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                              <span class="text-white font-bold text-lg">📄</span>
+                            </div>
+                            <h3 class="font-bold">اتفاقية تصميم</h3>
+                            <p class="text-sm text-gray-600 mt-1">محمد عمر</p>
+                          </div>
+                        </div>
+                      </div>
+                
+                      <!-- وصف + أزرار -->
+                      <div class="text-center md:text-right max-w-xl">
+                        <h3 class="text-2xl font-bold mb-4">عقد واضح = تعاون ناجح</h3>
+                        <p class="text-gray-300 mb-6">
+                          عقد احترافي يحدد نطاق العمل، الدفع، التسليم، وحقوق الملكية — لضمان شفافية تامة.
+                        </p>
+                
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center md:justify-end">
+                          <!-- زر تنزيل (مؤقت - يمكنك تفعيله لاحقًا) -->
+                          <a href="#" onclick="alert('جاري إعداد ملف العقد... سيتم التفعيل قريباً!'); return false;"
+                             class="px-5 py-2.5 border-2 border-cyan-400 text-cyan-400 font-bold rounded-full hover:bg-cyan-400 hover:text-gray-900 transition">
+                            تنزيل العقد (PDF)
+                          </a>
+                
+                          <a href="#contact"
+                             class="px-5 py-2.5 bg-cyan-500 text-gray-900 font-bold rounded-full hover:bg-cyan-400 transition">
+                            اطلب خدمتك الآن
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="absolute -bottom-3 -right-3 bg-cyan-500 text-white text-xs px-2 py-1 rounded">
-                    عقد رسمي
-                  </div>
-                </div>
-              </div>
-        
-              <!-- Right: أزرار + وصف -->
-              <div class="flex-1 text-center md:text-right">
-                <h3 class="text-2xl font-bold text-white mb-4">عقد شفاف، تعاون ناجح</h3>
-                <p class="text-gray-300 mb-6 leading-relaxed">
-                  كل مشروع يبدأ باتفاقية واضحة تحمي حقوقك وتحدد التوقعات.  
-                  العقد يشمل: نطاق العمل، المدة، الدفع، حقوق الملكية، ومزايا خاصة للعملاء السابقين.
-                </p>
-        
-                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-end">
-                  <!-- زر تنزيل العقد كـ PDF -->
-                  <button 
-                    onclick="generateContractPDF()"
-                    class="btn-outline-cyan px-6 py-3 text-center font-bold flex items-center justify-center gap-2"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                    تنزيل العقد (PDF)
-                  </button>
-        
-                  <a 
-                    href="#contact" 
-                    class="bg-cyan-500 hover:bg-cyan-400 text-gray-900 font-bold px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-cyan-500/30"
-                  >
-                    اطلب خدمتك الآن
-                  </a>
-                </div>
-        
-                <p class="text-gray-500 text-sm mt-4">
-                  العقد متاح بالعربية، ويُطبّق على جميع المشاريع الاحترافية.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        <!-- Hidden contract content for PDF generation -->
-        <div id="contract-content" style="display:none;">
-          <div style="font-family: 'Tajawal', sans-serif; max-width: 800px; padding: 40px; direction: rtl; background: white; color: #333;">
-            <h1 style="text-align: center; font-size: 24px; margin-bottom: 30px; color: #0e7490;">اتفاقية تقديم خدمة تصميم جرافيكي</h1>
-            <p style="text-align: center; margin-bottom: 30px;">تاريخ الاتفاق: _______________</p>
-        
-            <h2 style="color: #0891b2; margin: 20px 0 10px;">أولاً: أطراف العقد</h2>
-            <p>• المصمم: محمد عمر — مصمم جرافيكي محترف<br>البريد الإلكتروني: albharm47@gmail.com</p>
-            <p>• العميل: _________________________<br>البريد الإلكتروني: _________________________</p>
-            <p>• نوع العميل: ☐ عميل جديد &nbsp;&nbsp; ☐ عميل سابق / مميز</p>
-        
-            <h2 style="color: #0891b2; margin: 20px 0 10px;">ثانيًا: نطاق العمل</h2>
-            <p>يوافق المصمم على تنفيذ الخدمة التالية:<br>_________________________________________________________</p>
-        
-            <h2 style="color: #0891b2; margin: 20px 0 10px;">ثالثًا: الدفع</h2>
-            <p>• المبلغ الإجمالي: _______________<br>• الدفعة الأولى (50%): عند التوقيع<br>• الدفعة النهائية (50%): قبل التسليم</p>
-        
-            <h2 style="color: #0891b2; margin: 20px 0 10px;">ملاحظة خاصة بالعملاء السابقين</h2>
-            <p>يُمنح العميل السابق مزايا مثل: أولوية في الجدول، خصم، جولات تعديل إضافية.</p>
-        
-            <h2 style="color: #0891b2; margin: 20px 0 10px;">التوقيع</h2>
-            <p>بتوقيع هذا العقد، يقر الطرفان بفهم جميع البنود.</p>
-            <div style="margin-top: 50px;">
-              <div style="display: inline-block; width: 45%; border-top: 1px solid #999; padding-top: 5px;">(توقيع المصمم)</div>
-              <div style="display: inline-block; width: 45%; border-top: 1px solid #999; padding-top: 5px;">(توقيع العميل)</div>
-            </div>
-          </div>
-        </div>
-        
-        <script>
-          function generateContractPDF() {
-            const element = document.getElementById('contract-content');
-            const opt = {
-              margin: 10,
-              filename: 'عقد_تصميم_محمد_عمر.pdf',
-              image: { type: 'jpeg', quality: 0.98 },
-              html2canvas: { scale: 2 },
-              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            html2pdf().from(element).set(opt).save();
-          }
-        </script>
+                </section>
     
             <!-- Contact -->
         <section id="contact" class="py-20 px-4 bg-black bg-opacity-30">
