@@ -24,12 +24,16 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
-
+    <link rel="icon" type=" image/png" sizes="192x192" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.png">
+   
     <style>
         body {
             font-family: 'Cairo', sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: #ffffff;
+            margin: 0;
+            padding: 0;
         }
         .hero-text {
             background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
@@ -44,7 +48,10 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        .nav-link { position: relative; transition: color 0.3s ease; }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
         .nav-link::after {
             content: '';
             position: absolute;
@@ -67,10 +74,17 @@
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        .english-name { font-family: 'Poppins', sans-serif; font-weight: 600; color: #4ecdc4; }
-        .about-text { line-height: 1.8; text-align: justify; }
+        .english-name {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #4ecdc4;
+        }
+        .about-text {
+            line-height: 1.8;
+            text-align: justify;
+            text-align-last: center;
+        }
 
-        /* زر موحد بإطار سيان */
         .btn-outline-cyan {
             background: transparent;
             border: 2px solid #00bfff;
@@ -95,9 +109,9 @@
         .btn-outline-cyan.w-full {
             width: 100%;
             padding: 14px;
+            font-size: 1.125rem;
         }
 
-        /* أزرار المودال */
         #prevBtn, #nextBtn {
             background: transparent;
             border: 2px solid #00bfff;
@@ -122,30 +136,50 @@
             box-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
         }
 
-        /* عداد الصور */
         #imageCounter {
             background: rgba(0, 0, 0, 0.6);
             color: white;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 14px;
+            backdrop-filter: blur(4px);
+        }
+
+        section {
+            scroll-margin-top: 80px;
+        }
+
+        .cover-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.5rem;
+            justify-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .cover-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body class="bg-gray-900">
 
     <!-- Navigation -->
     <nav class="fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur-md z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div>
+            <div class="text-right">
                 <div class="text-white text-xl font-bold whitespace-nowrap px-4 py-2 rounded bg-gray-800 shadow-md">محمد عمر</div>
                 <div class="english-name text-lg">Mohamed Omar</div>
             </div>
-            <div class="hidden md:flex space-x-8 space-x-reverse">
+            <div class="hidden md:flex space-x-6 space-x-reverse text-white">
                 <a href="#home" class="nav-link hover:text-cyan-300">الرئيسية</a>
                 <a href="#about" class="nav-link hover:text-cyan-300">عني</a>
                 <a href="#portfolio" class="nav-link hover:text-cyan-300">أعمالي</a>
+                <a href="#magazines-showcase" class="nav-link hover:text-cyan-300">المجلات</a>
                 <a href="#skills" class="nav-link hover:text-cyan-300">المهارات</a>
+                <a href="#blog" class="nav-link hover:text-cyan-300">المدونة</a>
                 <a href="#contact" class="nav-link hover:text-cyan-300">اتصل بي</a>
             </div>
             <button class="md:hidden text-white"><i class="fas fa-bars text-2xl"></i></button>
@@ -155,215 +189,297 @@
     <!-- Hero -->
     <section id="home" class="min-h-screen flex items-center justify-center px-4 pt-20">
         <div class="text-center max-w-4xl mx-auto">
-            <div class="mb-8">
-                <div style="display: flex; justify-content: center; align-items: center; height: 250px;">
-                    <img 
-                        src="profile.jpg" 
-                        alt="Mohamed Omar" 
-                        style="width: 180px; height: 180px; border-radius: 50%; border: 5px solid #00bfff; box-shadow: 0 0 15px rgba(0, 191, 255, 0.5);"
-                    />
-                </div>
-                <h1 class="text-4xl md:text-6xl font-bold mb-2 hero-text">محمد عمر</h1>
-                <h2 class="text-2xl md:text-3xl english-name mb-4">Mohamed Omar</h2>
-                <h3 class="text-xl md:text-2xl text-cyan-300 font-semibold mb-6">مصمم جرافيك محترف | Graphic Designer</h3>
-                <p class="text-xl text-gray-300 mb-8">أخلق تجارب بصرية استثنائية تجمع بين الإبداع والوظيفية</p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#portfolio" class="btn-outline-cyan">عرض أعمالي</a>
-                    <a href="#contact" class="btn-outline-cyan">تواصل معي</a>
-                </div>
+            <div class="flex justify-center items-center mb-6">
+                <img 
+                    src="profile.jpg" 
+                    alt="Mohamed Omar" 
+                    class="w-44 h-44 rounded-full border-4 border-cyan-400 shadow-2xl"
+                />
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold mb-2 hero-text">محمد عمر</h1>
+            <h2 class="text-2xl md:text-3xl english-name mb-4">Mohamed Omar</h2>
+            <h3 class="text-xl md:text-2xl text-cyan-300 font-semibold mb-6">مصمم جرافيك محترف | Graphic Designer</h3>
+            <p class="text-xl text-gray-300 mb-8">أخلق تجارب بصرية استثنائية تجمع بين الإبداع والوظيفية</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#portfolio" class="btn-outline-cyan">عرض أعمالي</a>
+                <a href="#contact" class="btn-outline-cyan">تواصل معي</a>
             </div>
         </div>
     </section>
-        <!-- About Section -->
-    
-</section> 
-    <section id="about" class="py-20 px-4">
-   <div class="text-center mb-12">
-     <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
-      عني | About Me
-     </h2>
-  </div>
-  <!-- باقي محتوى القسم هنا -->
-</section>
+
     <!-- About -->
     <section id="about" class="py-20 px-4">
+        <div class="text-center mb-12">
+            <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
+                عني | About Me
+            </h2>
+        </div>
         <div class="container mx-auto max-w-6xl">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-400">عني | About Me</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-pink-500 to-cyan-400 mx-auto"></div>
-            </div>
             <div class="grid md:grid-cols-2 gap-12 items-center">
-                <img src="projects/images/102-01.jpg" alt="أعمالي" class="rounded-lg shadow-md hover:scale-105 transition duration-300">
-                <div class="text-gray-300 space-y-4 about-text">
-                    <p>مصمم جرافيك محترف بأكثر من 5 سنوات من الخبرة في إنشاء الهويات البصرية والعلامات التجارية المميزة.</p>
-                    <p>بدأت رحلتي في عالم التصميم منذ أن كنت طالباً في كلية الفنون الجميلة، ومنذ ذلك الحين عملت مع أكثر من 50 عميلاً.</p>
+                <div class="order-2 md:order-1 text-gray-300 space-y-6 about-text">
+                    <p>أنا مصمم جرافيك شغوف بالتفاصيل وبناء الهويات البصرية، أعمل على تحويل الأفكار إلى تصاميم جذابة وفعّالة توصل الرسالة بشكل واضح وتترك أثرًا بصريًا مميزًا.</p>
                     <p>أستخدم أحدث أدوات التصميم وأتبع أحدث الاتجاهات لضمان تقديم أعمال تتماشى مع متطلبات العصر.</p>
+                    <p>لدي خبرة في تصميم الشعارات، وبناء الهوية البصرية، وتصاميم السوشيال ميديا، والمطبوعات، والتصميم الرقمي. أحرص دائمًا على تحقيق التوازن بين الإبداع والبساطة مع الالتزام بمعايير الجودة والوضوح.</p>
+                    <p>أسعى باستمرار إلى تطوير مهاراتي ومواكبة أحدث اتجاهات التصميم واستخدام الأدوات الحديثة لتقديم أعمال احترافية تلبي أهداف العملاء وتعزز حضور العلامات التجارية.</p>
+                </div>
+                <div class="order-1 md:order-2 flex justify-center">
+                    <img src="projects/images/102-01.jpg" alt="أعمالي" class="rounded-lg shadow-xl max-w-full h-auto w-full md:w-auto md:max-w-md hover:scale-105 transition duration-300">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Portfolio: 6 مشاريع -->
-    <section id="portfolio" class="py-20 bg-gray-900">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-12 text-cyan-300">أعمالي</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Portfolio -->
+    <section id="portfolio" class="py-20 bg-gray-900 px-4">
+        <div class="container mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
+                    أعمالي | Portfolio
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="portfolio-item cursor-pointer" data-project="branding">
-                    <img src="projects/images/brand_adentity/9.jpg" alt="هوية بصرية" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300">هوية بصرية</h3>
+                    <img src="projects/images/brand_adentity/5.jpg" alt="هوية بصرية" class="w-full h-64 object-cover rounded-2xl shadow-lg">
+                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">هوية بصرية</h3>
                 </div>
                 <div class="portfolio-item cursor-pointer" data-project="mobile">
                     <img src="projects/images/mobile/mobile.jpg" alt="واجهة تطبيق" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300">واجهة تطبيق</h3>
+                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">واجهة تطبيق</h3>
                 </div>
                 <div class="portfolio-item cursor-pointer" data-project="packaging">
                     <img src="projects/images/packaging/packaging.jpg" alt="تغليف" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300">تصميم تغليف</h3>
+                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">تصميم تغليف</h3>
                 </div>
                 <div class="portfolio-item cursor-pointer" data-project="poster_desing">
                     <img src="projects/images/poster_desing/poster.jpg" alt="بوستر" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300">تصميم بوستر</h3>
+                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">تصميم بوستر</h3>
                 </div>
                 <div class="portfolio-item cursor-pointer" data-project="social_meade">
                     <img src="projects/images/social_meade/14.jpg" alt="سوشيال ميديا" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300">محتوى السوشيال ميديا</h3>
+                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">محتوى السوشيال ميديا</h3>
                 </div>
                 <div class="portfolio-item cursor-pointer" data-project="loges">
                     <img src="projects/images/loges/24.png" alt="شعار" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300">تصميم شعار</h3>
+                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">تصميم شعار</h3>
                 </div>
             </div>
         </div>
     </section>
 
-            <!-- Skills Section with Icons -->
-         
-        <div class="py-20 px-4" id="skills">
-          <!-- العنوان بمستطيل (بدون جريدن) -->
-          <div class="text-center mb-12">
-            <h2 class="inline-block bg-gradient-to-r from-purple-600 to-indigo-500 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
-              المهارات | Skills
+    <!-- Magazines -->
+    <section id="magazines-showcase" class="py-20 px-4">
+        <div class="text-center mb-12">
+            <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
+                مجلاتي الرقمية | My Magazines
             </h2>
-          </div>
-        
-          <div class="max-w-3xl mx-auto space-y-6">
-            <!-- Photoshop -->
-            <div>
-              <div class="flex justify-between items-center mb-2">
-                <div class="flex items-center space-x-3 space-x-reverse">
-                  <!-- أيقونة Photoshop -->
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 1H2C0.9 1 0 1.9 0 3V21C0 22.1 0.9 23 2 23H22C23.1 23 24 22.1 24 21V3C24 1.9 23.1 1 22 1Z" fill="#31A8FF"/>
-                    <path d="M6.5 12.5L8.5 17L10.5 12.5H13L9.5 20H7.5L4 12.5H6.5Z" fill="white"/>
-                    <path d="M15 12.5H17L18 15L19 12.5H21L19.5 16L21 20H19L18 17L17 20H15L16.5 16L15 12.5Z" fill="white"/>
-                  </svg>
-                  <span class="text-lg font-semibold text-gray-200">أدوبي فوتوشوب</span>
+        </div>
+        <div class="max-w-6xl mx-auto">
+            <div class="cover-grid">
+                <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
+                    <img src="covers/sun-kids/222.jpg" alt="شمس الطفولة" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                    <p class="mt-2 text-cyan-300 font-medium text-sm">شمس الطفولة</p>
                 </div>
-                <span class="text-cyan-400 font-bold">90%</span>
-              </div>
-              <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden">
-                <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 90%"></div>
-              </div>
+                <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
+                    <img src="covers/egyptian-museum/22.jpg" alt="المتحف المصري الكبير" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                    <p class="mt-2 text-cyan-300 font-medium text-sm">المتحف المصري</p>
+                </div>
+                <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
+                    <img src="covers/fashion/fisging.jpg" alt="فاشن" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                    <p class="mt-2 text-cyan-300 font-medium text-sm">فاشن</p>
+                </div>
+                <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
+                    <img src="covers/packaging.jpg" alt="تغليف" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                    <p class="mt-2 text-cyan-300 font-medium text-sm">تغليف منتجات</p>
+                </div>
+                <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
+                    <img src="covers/portfoli/22.jpg" alt="أعمالي المختارة" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                    <p class="mt-2 text-cyan-300 font-medium text-sm">أعمالي المختارة</p>
+                </div>
             </div>
-        
-            <!-- Illustrator -->
-            <div>
-              <div class="flex justify-between items-center mb-2">
-                <div class="flex items-center space-x-3 space-x-reverse">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 1H2C0.9 1 0 1.9 0 3V21C0 22.1 0.9 23 2 23H22C23.1 23 24 22.1 24 21V3C24 1.9 23.1 1 22 1Z" fill="#FF9A3D"/>
-                    <path d="M8.5 16.5L6.5 12.5H8L9.2 15.2L10.4 12.5H11.9L9.9 16.5H8.5Z" fill="white"/>
-                    <path d="M14 12.5V16.5H15.5V15H17V16.5H18.5V12.5H17V14H15.5V12.5H14Z" fill="white"/>
-                  </svg>
-                  <span class="text-lg font-semibold text-gray-200">أدوبي إلوستريتور</span>
-                </div>
-                <span class="text-cyan-400 font-bold">90%</span>
-              </div>
-              <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden">
-                <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 90%"></div>
-              </div>
+            <div class="text-center mt-12">
+                <a href="magazines/" class="btn-outline-cyan px-12 py-5 text-xl font-bold max-w-xs w-full mx-auto">
+                    استكشف جميع المجلات
+                </a>
             </div>
-        
-            <!-- InDesign -->
-            <div>
-              <div class="flex justify-between items-center mb-2">
-                <div class="flex items-center space-x-3 space-x-reverse">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 1H2C0.9 1 0 1.9 0 3V21C0 22.1 0.9 23 2 23H22C23.1 23 24 22.1 24 21V3C24 1.9 23.1 1 22 1Z" fill="#DD4D40"/>
-                    <rect x="6" y="12" width="3" height="5" fill="white"/>
-                    <rect x="10" y="10" width="3" height="7" fill="white"/>
-                    <rect x="14" y="8" width="3" height="9" fill="white"/>
-                  </svg>
-                  <span class="text-lg font-semibold text-gray-200">أدوبي إنديزاين</span>
+        </div>
+    </section>
+
+    <!-- Blog -->
+    <section id="blog" class="py-20 px-4">
+        <div class="text-center mb-12">
+            <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
+                مقالات وأفكار | Blog
+            </h2>
+        </div>
+        <div class="max-w-6xl mx-auto">
+            <div class="cover-grid">
+                <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
+                    <img src="blog/image/1.png" alt="الهوية البصرية" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                    <p class="mt-2 text-cyan-300 font-medium text-sm">الهوية البصرية</p>
                 </div>
-                <span class="text-cyan-400 font-bold">85%</span>
-              </div>
-              <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden">
-                <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 85%"></div>
-              </div>
+                <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
+                    <img src="blog/image/2.png" alt="البراندنج" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                    <p class="mt-2 text-cyan-300 font-medium text-sm">البراندنج</p>
+                </div>
+                <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
+                    <img src="blog/image/4.png" alt="تصميم التغليف" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                    <p class="mt-2 text-cyan-300 font-medium text-sm">تصميم التغليف</p>
+                </div>
+                <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
+                    <img src="blog/image/5.png" alt="فن الطباعة" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                    <p class="mt-2 text-cyan-300 font-medium text-sm">فن الطباعة</p>
+                </div>
+                <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
+                    <img src="blog/image/6.png" alt="أفضل الممارسات" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                    <p class="mt-2 text-cyan-300 font-medium text-sm">أفضل الممارسات</p>
+                </div>
             </div>
-        
-            <!-- Figma -->
-            <div>
-              <div class="flex justify-between items-center mb-2">
-                <div class="flex items-center space-x-3 space-x-reverse">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 1H2C0.9 1 0 1.9 0 3V21C0 22.1 0.9 23 2 23H22C23.1 23 24 22.1 24 21V3C24 1.9 23.1 1 22 1Z" fill="#0ACF83"/>
-                    <path d="M8 8H6V6H8V8Z" fill="white"/>
-                    <path d="M12 8H10V6H12V8Z" fill="white"/>
-                    <path d="M16 8H14V6H16V8Z" fill="white"/>
-                    <path d="M10 12H8V10H10V12Z" fill="white"/>
-                    <path d="M14 12H12V10H14V12Z" fill="white"/>
-                    <path d="M12 16H10V14H12V16Z" fill="white"/>
-                  </svg>
-                  <span class="text-lg font-semibold text-gray-200">Figma</span>
-                </div>
-                <span class="text-cyan-400 font-bold">90%</span>
-              </div>
-              <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden">
-                <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 90%"></div>
-              </div>
+            <div class="text-center mt-12">
+                <a href="blog/index.html" class="btn-outline-cyan px-12 py-5 text-xl font-bold max-w-xs w-full mx-auto">
+                    اقرأ جميع المقالات
+                </a>
             </div>
-        
-            <!-- Blender -->
-            <div>
-              <div class="flex justify-between items-center mb-2">
-                <div class="flex items-center space-x-3 space-x-reverse">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 1H2C0.9 1 0 1.9 0 3V21C0 22.1 0.9 23 2 23H22C23.1 23 24 22.1 24 21V3C24 1.9 23.1 1 22 1Z" fill="#F57900"/>
-                    <path d="M8 16L6 12H9L10 14L11 12H14L12 16H8Z" fill="white"/>
-                    <path d="M16 12H18V16H16V12Z" fill="white"/>
-                  </svg>
-                  <span class="text-lg font-semibold text-gray-200">بلندر</span>
-                </div>
-                <span class="text-amber-400 font-bold">40%</span>
-              </div>
-              <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden">
-                <div class="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full" style="width: 40%"></div>
-              </div>
-            </div>
-          </div>
-</div>
-                </div>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-semibold mb-6 text-cyan-300">المهارات الإبداعية | Creative Skills</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-3 space-x-reverse">
-                            <i class="fas fa-palette text-cyan-300"></i>
-                            <span>تصميم الهوية البصرية</span>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="py-20 px-4">
+        <div class="text-center mb-12">
+            <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
+                المهارات | Skills
+            </h2>
+        </div>
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-16">
+                <div class="bg-gray-800/30 p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold mb-6 text-cyan-300 text-center md:text-right">المهارات الإبداعية | Creative Skills</h3>
+                    <div class="space-y-6 text-right">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg text-gray-200">🎨 تصميم الهوية البصرية</span>
+                            <div class="text-left">
+                                <span class="text-cyan-400 font-bold">90%</span>
+                                <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden mt-1">
+                                    <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse">
-                            <i class="fas fa-tshirt text-cyan-300"></i>
-                            <span>تصميم الملابس والطباعة</span>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg text-gray-200">👕 تصميم الملابس والطباعة</span>
+                            <div class="text-left">
+                                <span class="text-cyan-400 font-bold">90%</span>
+                                <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden mt-1">
+                                    <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse">
-                            <i class="fas fa-mobile-alt text-cyan-300"></i>
-                            <span>تصميم واجهات التطبيقات</span>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg text-gray-200">📱 تصميم واجهات التطبيقات</span>
+                            <div class="text-left">
+                                <span class="text-cyan-400 font-bold">90%</span>
+                                <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden mt-1">
+                                    <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex items-center space-x-3 space-x-reverse">
-                            <i class="fas fa-bullhorn text-cyan-300"></i>
-                            <span>الإعلانات والتسويق</span>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg text-gray-200">📣 الإعلانات والتسويق</span>
+                            <div class="text-left">
+                                <span class="text-cyan-400 font-bold">85%</span>
+                                <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden mt-1">
+                                    <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800/30 p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold mb-6 text-cyan-300 text-center md:text-right">المهارات التقنية | Technical Skills</h3>
+                    <div class="space-y-6 text-right">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 1H2C0.9 1 0 1.9 0 3V21C0 22.1 0.9 23 2 23H22C23.1 23 24 22.1 24 21V3C24 1.9 23.1 1 22 1Z" fill="#31A8FF"/>
+                                    <path d="M6.5 12.5L8.5 17L10.5 12.5H13L9.5 20H7.5L4 12.5H6.5Z" fill="white"/>
+                                    <path d="M15 12.5H17L18 15L19 12.5H21L19.5 16L21 20H19L18 17L17 20H15L16.5 16L15 12.5Z" fill="white"/>
+                                </svg>
+                                <span class="text-lg font-semibold text-gray-200">أدوبي فوتوشوب</span>
+                            </div>
+                            <div class="text-left">
+                                <span class="text-cyan-400 font-bold">90%</span>
+                                <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden mt-1">
+                                    <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 1H2C0.9 1 0 1.9 0 3V21C0 22.1 0.9 23 2 23H22C23.1 23 24 22.1 24 21V3C24 1.9 23.1 1 22 1Z" fill="#FF9A3D"/>
+                                    <path d="M8.5 16.5L6.5 12.5H8L9.2 15.2L10.4 12.5H11.9L9.9 16.5H8.5Z" fill="white"/>
+                                    <path d="M14 12.5V16.5H15.5V15H17V16.5H18.5V12.5H17V14H15.5V12.5H14Z" fill="white"/>
+                                </svg>
+                                <span class="text-lg font-semibold text-gray-200">أدوبي إلوستريتور</span>
+                            </div>
+                            <div class="text-left">
+                                <span class="text-cyan-400 font-bold">90%</span>
+                                <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden mt-1">
+                                    <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 1H2C0.9 1 0 1.9 0 3V21C0 22.1 0.9 23 2 23H22C23.1 23 24 22.1 24 21V3C24 1.9 23.1 1 22 1Z" fill="#DD4D40"/>
+                                    <rect x="6" y="12" width="3" height="5" fill="white"/>
+                                    <rect x="10" y="10" width="3" height="7" fill="white"/>
+                                    <rect x="14" y="8" width="3" height="9" fill="white"/>
+                                </svg>
+                                <span class="text-lg font-semibold text-gray-200">أدوبي إنديزاين</span>
+                            </div>
+                            <div class="text-left">
+                                <span class="text-cyan-400 font-bold">85%</span>
+                                <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden mt-1">
+                                    <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 1H2C0.9 1 0 1.9 0 3V21C0 22.1 0.9 23 2 23H22C23.1 23 24 22.1 24 21V3C24 1.9 23.1 1 22 1Z" fill="#0ACF83"/>
+                                    <path d="M8 8H6V6H8V8Z" fill="white"/>
+                                    <path d="M12 8H10V6H12V8Z" fill="white"/>
+                                    <path d="M16 8H14V6H16V8Z" fill="white"/>
+                                    <path d="M10 12H8V10H10V12Z" fill="white"/>
+                                    <path d="M14 12H12V10H14V12Z" fill="white"/>
+                                    <path d="M12 16H10V14H12V16Z" fill="white"/>
+                                </svg>
+                                <span class="text-lg font-semibold text-gray-200">Figma</span>
+                            </div>
+                            <div class="text-left">
+                                <span class="text-cyan-400 font-bold">90%</span>
+                                <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden mt-1">
+                                    <div class="h-full bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 1H2C0.9 1 0 1.9 0 3V21C0 22.1 0.9 23 2 23H22C23.1 23 24 22.1 24 21V3C24 1.9 23.1 1 22 1Z" fill="#F57900"/>
+                                    <path d="M8 16L6 12H9L10 14L11 12H14L12 16H8Z" fill="white"/>
+                                    <path d="M16 12H18V16H16V12Z" fill="white"/>
+                                </svg>
+                                <span class="text-lg font-semibold text-gray-200">بلندر</span>
+                            </div>
+                            <div class="text-left">
+                                <span class="text-amber-400 font-bold">40%</span>
+                                <div class="h-2.5 bg-gray-700 rounded-full overflow-hidden mt-1">
+                                    <div class="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full" style="width: 40%"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -373,17 +489,24 @@
 
     <!-- Contact -->
     <section id="contact" class="py-20 px-4 bg-black bg-opacity-30">
+        <div class="text-center mb-12">
+            <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
+                تواصل معي | Contact Me
+            </h2>
+        </div>
         <div class="container mx-auto max-w-4xl">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-400">اتصل بي | Contact Me</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-pink-500 to-cyan-400 mx-auto"></div>
-                <p class="text-gray-400 mt-4">📧 albharm47@gmail.com | 📱 +00966550122179</p>
-            </div>
             <div class="bg-gray-800 bg-opacity-50 rounded-3xl p-8">
                 <form id="contact-form" action="https://formspree.io/f/mgvppkoj" method="POST" class="space-y-4">
-                    <input type="text" name="name" placeholder="الاسم" required class="w-full px-4 py-3 bg-gray-700 rounded-lg text-white placeholder-gray-400">
-                    <input type="email" name="email" placeholder="البريد الإلكتروني" required class="w-full px-4 py-3 bg-gray-700 rounded-lg text-white placeholder-gray-400">
-                    <textarea name="message" placeholder="رسالتك" rows="5" required class="w-full px-4 py-3 bg-gray-700 rounded-lg text-white placeholder-gray-400"></textarea>
+                    <input type="text" name="name" placeholder="الاسم" required class="w-full px-4 py-3 bg-gray-700 rounded-lg text-white placeholder-gray-400 text-right">
+                    <input type="email" name="email" placeholder="البريد الإلكتروني" required class="w-full px-4 py-3 bg-gray-700 rounded-lg text-white placeholder-gray-400 text-right">
+                    <textarea name="message" placeholder="رسالتك" rows="5" required class="w-full px-4 py-3 bg-gray-700 rounded-lg text-white placeholder-gray-400 text-right"></textarea>
+                    <div class="p-4 bg-gray-700 rounded-lg text-sm text-gray-300 text-right">
+                        <strong>📌 ملاحظة مهمة:</strong><br>
+                        إذا كنت ترغب في إرسال صور، لوجو، أو ملفات (PDF، AI، PSD...)، يُرجى إرسالها مباشرةً إلى بريدي الإلكتروني: 
+                        <a href="mailto:albharm47@gmail.com" class="text-cyan-400 hover:underline">albharm47@gmail.com</a>
+                        <br><br>
+                        هذا النموذج يدعم فقط الرسائل النصية.
+                    </div>
                     <button type="submit" class="btn-outline-cyan w-full">إرسال الرسالة</button>
                 </form>
             </div>
@@ -391,68 +514,95 @@
     </section>
 
     <!-- Footer -->
-            <!-- قسم المدونة في الصفحة الرئيسية -->
-        <section id="blog" class="py-20 px-4">
-          <div class="text-center mb-12">
-            <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl">
-              مقالات وأفكار | Blog
-            </h2>
-          </div>
-          <div class="text-center max-w-2xl mx-auto">
-            <p class="text-gray-300 mb-6">
-              مشاركات حول التصميم الجرافيكي، الهوية البصرية، البراندنج، وأفضل ممارسات الصناعة.
-            </p>
-            <a href="blog/index.html" class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-3 rounded-lg font-bold hover:opacity-90">
-              اقرأ المقالات
-            </a>
-          </div>
-        </section>
-    <footer class="py-10 text-center text-gray-500 border-t border-gray-800">
-        <div class="english-name mb-2">Mohamed Omar</div>
-        <p>&copy; 2025 جميع الحقوق محفوظة.</p>
+    <footer class="py-10 px-4 text-center text-gray-500 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex justify-center space-x-6 space-x-reverse mb-6">
+                <a href="https://www.behance.net/mohamedalkteb" target="_blank" class="text-gray-400 hover:text-cyan-400 transition">
+                    <i class="fab fa-behance text-2xl"></i>
+                </a>
+                <a href="https://instagram.com/albhar63" target="_blank" class="text-gray-400 hover:text-pink-500 transition">
+                    <i class="fab fa-instagram text-2xl"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/%D9%85%D8%AD%D9%85%D8%AF-%D8%A7%D9%84%D8%AE%D8%B7%D9%8A%D8%A8-b4400319a/" target="_blank" class="text-gray-400 hover:text-blue-500 transition">
+                    <i class="fab fa-linkedin-in text-2xl"></i>
+                </a>
+            </div>
+            <div class="english-name mb-2">Mohamed Omar</div>
+            <p>&copy; 2025 جميع الحقوق محفوظة.</p>
+        </div>
     </footer>
 
     <!-- Portfolio Modal -->
     <div id="projectModal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4">
         <div class="relative w-full max-w-4xl">
-            <button id="closeModal" class="absolute top-0 right-0 text-white text-4xl p-2 hover:text-cyan-300">&times;</button>
+            <button id="closeModal" class="absolute top-0 left-0 text-white text-4xl p-2 hover:text-cyan-300">&times;</button>
             <img id="modalImage" class="w-full max-h-[80vh] object-contain rounded-xl">
-            <button id="prevBtn" class="absolute left-4 top-1/2 transform -translate-y-1/2">❮</button>
-            <button id="nextBtn" class="absolute right-4 top-1/2 transform -translate-y-1/2">❯</button>
+            <button id="prevBtn" class="absolute right-4 top-1/2 transform -translate-y-1/2">❮</button>
+            <button id="nextBtn" class="absolute left-4 top-1/2 transform -translate-y-1/2">❯</button>
             <div id="imageCounter" class="absolute bottom-4 left-1/2 transform -translate-x-1/2"></div>
         </div>
     </div>
 
-    <!-- JavaScript -->
     <script>
         const projects = {
             branding: [
-                "projects/images/brand_adentity/9.jpg",
+                "projects/images/brand_adentity/3.jpg",
+                "projects/images/brand_adentity/4.jpg",
+                "projects/images/brand_adentity/5.jpg",
+                "projects/images/brand_adentity/6.jpg",
+                "projects/images/brand_adentity/7.jpg",
                 "projects/images/brand_adentity/8.jpg",
-                "projects/images/brand_adentity/10.jpg"
+                "projects/images/brand_adentity/103.jpeg",
+                "projects/images/brand_adentity/brand_identity(2).jpg",
+                "projects/images/brand_adentity/brand_identity.jpg"
             ],
             mobile: [
                 "projects/images/mobile/40.png",
                 "projects/images/mobile/41.png",
-                "projects/images/mobile/mobile.jpg"
+                "projects/images/mobile/mobile.jpg",
+                "projects/images/mobile/43.png"
             ],
             packaging: [
                 "projects/images/packaging/44.jpg",
+                "projects/images/packaging/12.jpg",
+                "projects/images/packaging/5.png",
+                "projects/images/packaging/46.jpg",
                 "projects/images/packaging/packaging.jpg"
             ],
             poster_desing: [
                 "projects/images/poster_desing/11.jpg",
-                "projects/images/poster_desing/poster.jpg"
+                "projects/images/poster_desing/poster.jpg",
+                "projects/images/poster_desing/2025-01.jpg",
+                "projects/images/poster_desing/32.png",
+                "projects/images/poster_desing/33.jpg"
             ],
             social_meade: [
                 "projects/images/social_meade/14.jpg",
                 "projects/images/social_meade/10.jpg",
-                "projects/images/social_meade/11.jpg"
+                "projects/images/social_meade/11.jpg",
+                "projects/images/social_meade/2-01.jpg",
+                "projects/images/social_meade/4.jpg",
+                "projects/images/social_meade/8.jpg",
+                "projects/images/social_meade/9.jpg",
+                "projects/images/social_meade/kids.jpg",
+                "projects/images/social_meade/social.jpg"
             ],
             loges: [
                 "projects/images/loges/24.png",
                 "projects/images/loges/22.jpg",
-                "projects/images/loges/23.jpg"
+                "projects/images/loges/23.jpg",
+                "projects/images/loges/25.png",
+                "projects/images/loges/26.jpeg",
+                "projects/images/loges/27.jpg",
+                "projects/images/loges/28.jpg",
+                "projects/images/loges/29.jpg",
+                "projects/images/loges/20.jpg",
+                "projects/images/loges/log.png",
+                "projects/images/loges/555.png",
+                "projects/images/loges/102.jpeg",
+                "projects/images/loges/104.jpeg",
+                "projects/images/loges/101.jpeg",
+                "projects/images/loges/loge.jpg"
             ]
         };
 
@@ -497,7 +647,6 @@
             }
         };
 
-        // Contact Form
         document.getElementById('contact-form').onsubmit = (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button');
@@ -523,6 +672,5 @@
             });
         };
     </script>
-
 </body>
 </html>
