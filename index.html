@@ -20,120 +20,139 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://albhar63.github.io/profile.jpg">
 
-    <!-- Styles -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon.png">
-   
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #ffffff;
-        }
-        .hero-text {
-            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 300% 300%;
-            animation: gradientShift 8s ease infinite;
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .nav-link { position: relative; transition: color 0.3s ease; }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            right: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after {
-            width: 100%;
-            left: 0;
-            right: auto;
-        }
-        .portfolio-item {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .portfolio-item:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        .english-name { font-family: 'Poppins', sans-serif; font-weight: 600; color: #4ecdc4; }
-        .about-text { line-height: 1.8; text-align: justify; }
-
-        /* زر موحد بإطار سيان */
-        .btn-outline-cyan {
-            background: transparent;
-            border: 2px solid #00bfff;
-            color: #00bfff;
-            padding: 12px 28px;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 12px rgba(0, 191, 255, 0.4);
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            font-size: 1rem;
-        }
-        .btn-outline-cyan:hover {
-            background: rgba(0, 191, 255, 0.15);
-            color: white;
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 191, 255, 0.7);
-        }
-        .btn-outline-cyan.w-full {
-            width: 100%;
-            padding: 14px;
-        }
-
-        /* أزرار المودال */
-        #prevBtn, #nextBtn {
-            background: transparent;
-            border: 2px solid #00bfff;
-            color: #00bfff;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            box-shadow: 0 0 12px rgba(0, 191, 255, 0.5);
-            transition: all 0.3s ease;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 10;
-        }
-        #prevBtn:hover, #nextBtn:hover {
-            background: rgba(0, 191, 255, 0.2);
-            color: white;
-            transform: scale(1.15);
-            box-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
-        }
-
-        /* عداد الصور */
-        #imageCounter {
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-        }
-    </style>
-           <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+           <style>
+            body {
+                font-family: 'Cairo', sans-serif;
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                color: #ffffff;
+                margin: 0;
+                padding: 0;
+            }
+        
+            /* Hero Gradient Text */
+            .hero-text {
+                background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                background-size: 300% 300%;
+                animation: gradientShift 8s ease infinite;
+            }
+            @keyframes gradientShift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+        
+            /* Navigation */
+            .nav-link {
+                position: relative;
+                transition: color 0.3s ease;
+            }
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                right: 0;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+                transition: width 0.3s ease;
+            }
+            .nav-link:hover::after {
+                width: 100%;
+                left: 0;
+                right: auto;
+            }
+        
+            /* Portfolio Hover Effect */
+            .portfolio-item {
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+            .portfolio-item:hover {
+                transform: translateY(-10px) scale(1.02);
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            }
+        
+            /* Typography */
+            .english-name {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                color: #4ecdc4;
+            }
+            .about-text {
+                line-height: 1.8;
+                text-align: justify;
+            }
+        
+            /* Unified Cyan Outline Button */
+            .btn-outline-cyan {
+                background: transparent;
+                border: 2px solid #00bfff;
+                color: #00bfff;
+                padding: 12px 28px;
+                font-weight: 600;
+                border-radius: 50px;
+                transition: all 0.3s ease;
+                box-shadow: 0 0 12px rgba(0, 191, 255, 0.4);
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-block;
+                text-align: center;
+                font-size: 1rem;
+            }
+            .btn-outline-cyan:hover {
+                background: rgba(0, 191, 255, 0.15);
+                color: white;
+                transform: scale(1.05);
+                box-shadow: 0 0 20px rgba(0, 191, 255, 0.7);
+            }
+            .btn-outline-cyan.w-full {
+                width: 100%;
+                padding: 14px;
+                font-size: 1.125rem;
+            }
+        
+            /* Modal Navigation Buttons */
+            #prevBtn, #nextBtn {
+                background: transparent;
+                border: 2px solid #00bfff;
+                color: #00bfff;
+                width: 48px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                box-shadow: 0 0 12px rgba(0, 191, 255, 0.5);
+                transition: all 0.3s ease;
+                font-size: 20px;
+                font-weight: bold;
+                cursor: pointer;
+                z-index: 10;
+            }
+            #prevBtn:hover, #nextBtn:hover {
+                background: rgba(0, 191, 255, 0.2);
+                color: white;
+                transform: scale(1.15);
+                box-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+            }
+        
+            /* Image Counter in Modal */
+            #imageCounter {
+                background: rgba(0, 0, 0, 0.6);
+                color: white;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 14px;
+                backdrop-filter: blur(4px);
+            }
+        
+            /* Section Spacing & Readability */
+            section {
+                scroll-margin-top: 80px;
+            }
+        </style>
 <body class="bg-gray-900">
 
     <!-- Navigation -->
