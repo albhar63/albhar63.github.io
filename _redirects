@@ -1,4 +1,9 @@
-User-agent: *
-Allow: /
+# إعادة توجيه صفحات قديمة (لو وُجدت)
+# مثال: إذا غيرت مسار المجلات من /magazine إلى /magazines
+# /magazine/*  /magazines/:splat  301
 
-Sitemap: https://albhar63.github.io/sitemap.xml
+# إعادة توجيه أي صفحة غير موجودة إلى الصفحة الرئيسية
+/*    /    404
+
+# إذا كنت تستخدم نسخة عربية/إنجليزية، يمكنك توجيه اللغات
+# /en/*    /:splat    302
