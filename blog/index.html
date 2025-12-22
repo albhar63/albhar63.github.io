@@ -9,7 +9,9 @@
   <style>body { font-family: 'Cairo', sans-serif; }</style>
 </head>
 <body class="bg-gray-900 text-gray-200 leading-relaxed">
-
+  
+   <canvas id="waveBg" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+  
   <header class="text-center py-16 px-4">
     <div class="bg-gray-800 border-2 border-cyan-400 rounded-2xl inline-block px-8 py-4 mb-6">
       <h1 class="text-3xl md:text-4xl font-bold text-cyan-300">المدوّنة</h1>
@@ -135,6 +137,65 @@
   <div class="text-center pb-10">
     <a href="../index.html" class="text-cyan-400 hover:underline font-medium">← العودة إلى الموقع</a>
   </div>
+<script>
+  const canvas = document.getElementById('waveBg');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
+  // عدد النقاط
+  const dots = [];
+  const dotCount = 100; // عدّل العدد حسب الكثافة المطلوبة
+  const colors = ['#00bcd4', '#0097a7', '#00796b']; // ألوان فاتحة/زرقاء (يمكنك تغييرها)
+
+  class Dot {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.radius = Math.random() * 2 + 0.5;
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      // ارتداد عند الحواف
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+  }
+
+  // إنشاء النقاط
+  for (let i = 0; i < dotCount; i++) {
+    dots.push(new Dot());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    dots.forEach(dot => {
+      dot.update();
+      dot.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  // تحديث الحجم عند تغيير نافذة المتصفح
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
 </body>
 </html>
