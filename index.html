@@ -171,17 +171,20 @@
 <body class="bg-gray-900">
 
   <canvas id="waveBg" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
-  
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur-md z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-3 space-x-reverse">
-                 <div class="text-right">
-             ‌   <div class="text-white text-xl font-bold whitespace-nowrap px-4 py-2 rounded bg-gray-800 shadow-md">محمد عمر</div>
-                <div class="english-name text-lg">Mohamed Omar</div>
-                
+    
+          <!-- Navigation -->
+        <nav class="fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur-md z-50">
+          <div class="container mx-auto px-4 py-4 flex justify-between items-center flex-row-reverse">
+            
+            <!-- الاسم (يمين الشاشة) -->
+            <div class="text-left me-4"> <!-- me-4 = margin-end (يعمل كـ mr-4 في RTL) -->
+              <div class="text-white text-xl font-bold whitespace-nowrap px-4 py-2 rounded bg-gray-800 shadow-md">محمد عمر</div>
+              <div class="english-name text-sm text-cyan-200 mt-1">Mohamed Omar</div>
             </div>
-            <div class="hidden md:flex space-x-6 space-x-reverse text-white">
+        
+            <!-- الروابط + زر الهامبرغر (يسار الشاشة) -->
+            <div class="flex items-center">
+              <div class="hidden md:flex space-x-6 space-x-reverse text-white">
                 <a href="#home" class="nav-link hover:text-cyan-300">الرئيسية</a>
                 <a href="#about" class="nav-link hover:text-cyan-300">عني</a>
                 <a href="#portfolio" class="nav-link hover:text-cyan-300">أعمالي</a>
@@ -189,11 +192,12 @@
                 <a href="#skills" class="nav-link hover:text-cyan-300">المهارات</a>
                 <a href="#blog" class="nav-link hover:text-cyan-300">المدونة</a>
                 <a href="#contact" class="nav-link hover:text-cyan-300">اتصل بي</a>
+              </div>
+              <button class="md:hidden text-white ms-4"><i class="fas fa-bars text-2xl"></i></button>
             </div>
-            <button class="md:hidden text-white"><i class="fas fa-bars text-2xl"></i></button>
-        </div>
-    </nav>
-
+        
+          </div>
+        </nav>
     <!-- Hero -->
     <section id="home" class="min-h-screen flex items-center justify-center px-4 pt-20">
         <div class="text-center max-w-4xl mx-auto">
