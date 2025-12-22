@@ -161,10 +161,85 @@
                 grid-template-columns: repeat(5, 1fr);
             }
         }
+    
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
+    
+    <script>
+    tsParticles.load("particles-bg", {
+      fullScreen: false,
+    
+      background: {
+        color: "#020617" // داكن جدًا
+      },
+    
+      fpsLimit: 60,
+      detectRetina: true,
+    
+      particles: {
+        number: {
+          value: 80,
+          density: {
+            enable: true,
+            area: 800
+          }
+        },
+    
+        color: {
+          value: "#94a3b8" // رمادي مزرق هادي
+        },
+    
+        opacity: {
+          value: 0.35
+        },
+    
+        size: {
+          value: { min: 1, max: 2 }
+        },
+    
+        move: {
+          enable: true,
+          speed: 0.4,       // بطيء = أمواج ناعمة
+          direction: "none",
+          random: false,
+          straight: false
+        }
+      },
+    
+      interactivity: {
+        events: {
+          onHover: {
+            enable: false   // أوفر بطارية للجوال
+          },
+          onClick: {
+            enable: false
+          }
+        }
+      },
+    
+      responsive: [
+        {
+          maxWidth: 768,
+          options: {
+            particles: {
+              number: {
+                value: 40   // أقل على الموبايل
+              },
+              move: {
+                speed: 0.25
+              }
+            }
+          }
+        }
+      ]
+    });
+    </script>
+
 </head>
 <body class="bg-gray-900">
+    
+     <div id="particles-bg" class="fixed inset-0 -z-10"></div>
 
     <!-- Navigation -->
     <nav class="fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur-md z-50">
