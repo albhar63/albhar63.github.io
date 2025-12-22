@@ -170,6 +170,9 @@
 </head>
 <body class="bg-gray-900">
 
+   <canvas id="waveBg" class="fixed inset-0 w-full h-full z-[-1]"></canvas>
+  
+  
     <!-- Navigation -->
     <nav class="fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur-md z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -676,5 +679,65 @@
             });
         };
     </script>
+    <script>
+  const canvas = document.getElementById('waveBg');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // عدد النقاط
+  const dots = [];
+  const dotCount = 80; // عدّل العدد حسب الكثافة المطلوبة
+  const colors = ['#00bcd4', '#0097a7', '#00796b']; // ألوان فاتحة/زرقاء (يمكنك تغييرها)
+
+  class Dot {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.radius = Math.random() * 2 + 0.5;
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      // ارتداد عند الحواف
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+  }
+
+  // إنشاء النقاط
+  for (let i = 0; i < dotCount; i++) {
+    dots.push(new Dot());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    dots.forEach(dot => {
+      dot.update();
+      dot.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  // تحديث الحجم عند تغيير نافذة المتصفح
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
 </body>
 </html>
