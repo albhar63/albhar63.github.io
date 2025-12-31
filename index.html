@@ -165,24 +165,21 @@
     
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-         <style>
+     <style>
       @keyframes floating {
-        0% {
+        0%, 100% {
           transform: translateY(0px);
         }
         50% {
-          transform: translateY(-15px);
-        }
-        100% {
-          transform: translateY(0px);
+          transform: translateY(-12px);
         }
       }
     
-      .floating {
+      .floating-profile {
         animation: floating 4s ease-in-out infinite;
+        display: inline-block; /* مهم لكي يعمل transform بشكل صحيح */
       }
-    </style>  
-
+    </style>
 </head>
 <body class="bg-gray-900">
 
@@ -218,11 +215,13 @@
     <section id="home" class="min-h-screen flex items-center justify-center px-4 pt-20">
         <div class="text-center max-w-4xl mx-auto">
             <div class="flex justify-center items-center mb-6">
-                <img 
-                    src="profile.jpg" 
-                    alt="Mohamed Omar" 
-                    class="w-44 h-44 rounded-full border-4 border-cyan-400 shadow-2xl"
-                />
+                <div class="floating-profile">
+                    <img 
+                        src="profile.jpg" 
+                        alt="Mohamed Omar" 
+                        class="w-44 h-44 rounded-full border-4 border-cyan-400 shadow-2xl"
+                    />
+                </div>
             </div>
             <h1 class="text-4xl md:text-6xl font-bold mb-2 hero-text">محمد عمر</h1>
             <h2 class="text-2xl md:text-3xl english-name mb-4">Mohamed Omar</h2>
