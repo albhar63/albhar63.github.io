@@ -165,7 +165,23 @@
     
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-       
+         <style>
+      @keyframes floating {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-15px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+    
+      .floating {
+        animation: floating 4s ease-in-out infinite;
+      }
+    </style>  
 
 </head>
 <body class="bg-gray-900">
