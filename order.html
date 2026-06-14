@@ -102,20 +102,35 @@
             <div class="bg-gray-800 bg-opacity-50 rounded-2xl p-6 md:p-8 border border-gray-700">
                 <h2 class="section-title text-2xl font-bold mb-6 text-white">2. مواصفات الطباعة وتفاصيل البريف</h2>
 
-                <div class="space-y-5">
-                    <div>
-                        <label class="block text-gray-300 mb-2 text-sm">المنتج المراد طباعته</label>
-                        <select name="نوع_المنتج"
-                            class="form-input w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white text-right focus:border-cyan-500 focus:outline-none">
-                            <option value="كروت شخصية">كروت شخصية</option>
-                            <option value="فلاير">فلاير</option>
-                            <option value="بروشور">بروشور</option>
-                            <option value="بنر">بنر</option>
-                            <option value="ستيكر">ستيكر</option>
-                            <option value="فولدر">فولدر</option>
-                            <option value="أخرى">أخرى</option>
-                        </select>
-                    </div>
+                            <div>
+                <label class="block text-gray-300 mb-2 text-sm">نوع الخدمة / المنتج</label>
+                <select name="نوع_المنتج" id="productType"
+                    class="form-input w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white text-right focus:border-cyan-500 focus:outline-none">
+                    
+                    <!-- 🎨 خدمات التصميم -->
+                    <optgroup label="🎨 خدمات التصميم">
+                        <option value="تصميم شعار">تصميم شعار (Logo) - 300 ر.س</option>
+                        <option value="هوية بصرية">هوية بصرية كاملة - 800 ر.س</option>
+                        <option value="تصميم تغليف">تصميم تغليف / Packaging - 400 ر.س</option>
+                        <option value="إدارة سوشيال ميديا">إدارة سوشيال ميديا - 500 ر.س/شهر</option>
+                    </optgroup>
+                    
+                    <!-- 🖨️ المطبوعات -->
+                    <optgroup label="🖨️ المطبوعات">
+                        <option value="كروت شخصية">كروت شخصية - 100 ر.س</option>
+                        <option value="فلاير">فلاير / منشور - 150 ر.س</option>
+                        <option value="بروشور">بروشور - 200 ر.س</option>
+                        <option value="فولدر">فولدر / Folder - 180 ر.س</option>
+                        <option value="بنر">بنر / لافتة - 250 ر.س</option>
+                        <option value="ستيكر">ستيكر / ملصق - 120 ر.س</option>
+                    </optgroup>
+                    
+                    <!-- 📦 خدمات أخرى -->
+                    <optgroup label="📦 خدمات أخرى">
+                        <option value="أخرى">خدمة أخرى - 150 ر.س</option>
+                    </optgroup>
+                </select>
+            </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
@@ -296,13 +311,13 @@
     </footer>
 
     <script>
-        // حساب التكاليف التقديري
-        const quantityInput = document.getElementById('quantity');
+                // حساب التكاليف التقديري
         const discountInput = document.getElementById('discount');
+        const productSelect = document.getElementById('productType');
         
-               function calculateTotal() {
+        function calculateTotal() {
             const discount = parseFloat(discountInput.value) || 0;
-            const productType = document.querySelector('select[name="نوع_المنتج"]').value;
+            const productType = productSelect.value;
             
             // ✅ أسعار التصميم حسب النوع (بالريال السعودي)
             const designPrices = {
@@ -329,6 +344,13 @@
             document.getElementById('vat').textContent = vat.toFixed(2) + ' ر.س';
             document.getElementById('total').textContent = total.toFixed(2) + ' ر.س';
         }
+        
+        // ✅ تحديث السعر تلقائياً لما العميل يغير نوع المنتج
+        productSelect.addEventListener('change', calculateTotal);
+        discountInput.addEventListener('input', calculateTotal);
+        
+        // حساب أولي عند تحميل الصفحة
+        calculateTotal();
 
         quantityInput.addEventListener('input', calculateTotal);
         discountInput.addEventListener('input', calculateTotal);
