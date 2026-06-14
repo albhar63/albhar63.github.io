@@ -10,140 +10,162 @@
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
         
         body { 
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Cairo', sans-serif; 
+            background: #000;
             position: relative;
             overflow-x: hidden;
         }
-        
-        /* 🌌 الخلفية المتحركة */
+
+        /* 🎨 الخلفية المتحركة */
         .animated-bg {
-            background: linear-gradient(135deg, #000000 0%, #0a0e1a 50%, #000000 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        /* ✨ الجزيئات المتحركة */
-        .particles {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
+            z-index: -2;
+            background: linear-gradient(125deg, #000000, #0a1929, #000000, #001f3f);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
         }
-        
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: #06b6d4;
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: float 20s infinite linear;
-            box-shadow: 0 0 10px #06b6d4;
-        }
-        
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) translateX(0) scale(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.3;
-                transform: translateY(90vh) translateX(20px) scale(1);
-            }
-            90% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-10vh) translateX(-20px) scale(0);
-                opacity: 0;
-            }
-        }
-        
-        /* 💫 تأثير التوهج على الحدود */
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(to right, #06b6d4, #3b82f6);
-            margin-top: 8px;
-            border-radius: 2px;
-            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
-        }
-        
-        /* 🎯 كروت الأقسام */
-        .form-section {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            border-radius: 1rem;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .form-section:hover {
-            border-color: rgba(6, 182, 212, 0.6);
-            box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
-            transform: translateY(-2px);
-        }
-        
-        /* 📝 حقول الإدخال */
-        .form-input {
-            transition: all 0.3s ease;
-            background: rgba(15, 23, 42, 0.8);
-        }
-        
-        .form-input:focus {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3);
-            border-color: #06b6d4;
-        }
-        
-        /* 🎨 زر الإرسال */
-        .submit-btn {
-            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-            background-size: 200% 200%;
-            animation: btnGradient 3s ease infinite;
-            transition: all 0.3s ease;
-        }
-        
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4);
-        }
-        
-        @keyframes btnGradient {
+
+        @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        
-        /* 📱 تحسين الموبايل */
-        @media (max-width: 640px) {
-            .form-section {
-                padding: 1rem !important;
+
+        /* 🎨 الأشكال العائمة */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            top: 60%;
+            right: 5%;
+            animation-delay: -5s;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+        }
+
+        .shape-3 {
+            width: 250px;
+            height: 250px;
+            top: 30%;
+            right: 20%;
+            animation-delay: -10s;
+        }
+
+        .shape-4 {
+            width: 350px;
+            height: 350px;
+            bottom: 10%;
+            left: 20%;
+            animation-delay: -15s;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
             }
+            25% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+            50% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+            75% {
+                transform: translate(20px, 30px) scale(1.05);
+            }
+        }
+
+        /* 🎨 Border سيان للمربعات */
+        .cyan-border-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.05);
+            transition: all 0.4s ease;
+        }
+
+        .cyan-border-card:hover {
+            border-color: rgba(6, 182, 212, 0.7);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* 🎨 عنوان القسم مع الخط السياني */
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(to right, #06b6d4, #3b82f6);
+            margin-top: 8px;
+            border-radius: 2px;
+        }
+
+        /* 🎨 Inputs */
+        .form-input {
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.2);
+            border-color: #06b6d4 !important;
+        }
+
+        /* 🎨 Header */
+        .glass-header {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
         }
     </style>
 </head>
-<body class="animated-bg text-white min-h-screen pb-10">
+<body class="text-white min-h-screen pb-20">
 
-    <!-- ✨ الجزيئات المتحركة -->
-    <div class="particles" id="particles"></div>
+    <!-- 🎨 الخلفية المتحركة -->
+    <div class="animated-bg"></div>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
 
     <!-- Header -->
-    <header class="bg-gray-900 bg-opacity-80 backdrop-blur-sm border-b border-cyan-500/30 sticky top-0 z-50">
+    <header class="glass-header sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <a href="index.html" class="text-cyan-400 hover:text-cyan-300 transition text-sm md:text-base">
                 <i class="fas fa-arrow-right ml-2"></i>
@@ -152,74 +174,74 @@
             <h1 class="text-lg md:text-xl font-bold text-cyan-400">نظام إدارة الطلبات</h1>
         </div>
     </header>
-    
+
     <!-- Hero Section -->
-    <section class="py-8 px-4 text-center relative z-10">
+    <section class="py-8 px-4 text-center">
         <h1 class="text-2xl md:text-4xl font-bold mb-2 text-cyan-400">
             استقبال عميل جديد
         </h1>
         <h2 class="text-xl md:text-2xl font-bold mb-3 text-white">
             وتسجيل طلب
         </h2>
-        <p class="text-gray-400 max-w-2xl mx-auto text-sm leading-relaxed">
+        <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
             قم بتسجيل مواصفات البريف، وحساب التكلفة تلقائياً، وإرسال الطلب للمصممين
         </p>
     </section>
-    
+
     <!-- Form Container -->
-    <div class="container mx-auto max-w-4xl px-4 relative z-10">
-        <form id="orderForm" action="https://formspree.io/f/mgvppkoj" method="POST" class="space-y-4">
+    <div class="container mx-auto max-w-4xl px-4">
+        <form id="orderForm" action="https://formspree.io/f/mgvppkoj" method="POST" class="space-y-5">
 
             <!-- 1. بيانات العميل الأساسية -->
-            <div class="form-section p-4 md:p-5">
-                <h2 class="section-title text-xl md:text-2xl font-bold mb-4 text-white">1. بيانات العميل الأساسية</h2>
+            <div class="cyan-border-card rounded-2xl p-4 md:p-5">
+                <h2 class="section-title text-lg md:text-xl font-bold mb-4 text-white">1. بيانات العميل الأساسية</h2>
 
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-gray-300 mb-1 text-sm">
+                        <label class="block text-gray-300 mb-1.5 text-sm">
                             اسم العميل <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="اسم_العميل" 
                             placeholder="الاسم الثلاثي للعميل" required
-                            class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white placeholder-gray-400 text-right focus:outline-none">
+                            class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white placeholder-gray-400 text-right focus:outline-none">
                     </div>
 
                     <div>
-                        <label class="block text-gray-300 mb-1 text-sm">
+                        <label class="block text-gray-300 mb-1.5 text-sm">
                             رقم الجوال <span class="text-red-500">*</span>
                         </label>
                         <input type="tel" name="رقم_الجوال" 
                             placeholder="05xxxxxxxx" required
-                            class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white placeholder-gray-400 text-right focus:outline-none">
+                            class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white placeholder-gray-400 text-right focus:outline-none">
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-gray-300 mb-1 text-sm">الشركة / المؤسسة</label>
+                            <label class="block text-gray-300 mb-1.5 text-sm">الشركة / المؤسسة</label>
                             <input type="text" name="الشركة" 
                                 placeholder="اسم جهة العمل إن وجد"
-                                class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white placeholder-gray-400 text-right focus:outline-none">
+                                class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white placeholder-gray-400 text-right focus:outline-none">
                         </div>
 
                         <div>
-                            <label class="block text-gray-300 mb-1 text-sm">البريد الإلكتروني</label>
+                            <label class="block text-gray-300 mb-1.5 text-sm">البريد الإلكتروني</label>
                             <input type="email" name="البريد_الإلكتروني" 
                                 placeholder="example@email.com"
-                                class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white placeholder-gray-400 text-right focus:outline-none">
+                                class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white placeholder-gray-400 text-right focus:outline-none">
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- 2. مواصفات الطباعة -->
-            <div class="form-section p-4 md:p-5">
-                <h2 class="section-title text-xl md:text-2xl font-bold mb-4 text-white">2. مواصفات الطباعة وتفاصيل البريف</h2>
+            <div class="cyan-border-card rounded-2xl p-4 md:p-5">
+                <h2 class="section-title text-lg md:text-xl font-bold mb-4 text-white">2. مواصفات الطباعة وتفاصيل البريف</h2>
 
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-gray-300 mb-1 text-sm">نوع الخدمة / المنتج</label>
+                        <label class="block text-gray-300 mb-1.5 text-sm">نوع الخدمة / المنتج</label>
                         <select name="نوع_المنتج" id="productType"
-                            class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
+                            class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
                             
                             <optgroup label="🎨 خدمات التصميم">
                                 <option value="تصميم شعار">تصميم شعار (Logo) - 300 ر.س</option>
@@ -245,15 +267,15 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-gray-300 mb-1 text-sm">الكمية المطلوبة</label>
+                            <label class="block text-gray-300 mb-1.5 text-sm">الكمية المطلوبة</label>
                             <input type="number" name="الكمية" id="quantity" value="100" min="1"
-                                class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
+                                class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
                         </div>
 
                         <div>
-                            <label class="block text-gray-300 mb-1 text-sm">نوع الورق / الخامة</label>
+                            <label class="block text-gray-300 mb-1.5 text-sm">نوع الورق / الخامة</label>
                             <select name="نوع_الورق"
-                                class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
+                                class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
                                 <option value="كوتد 350 جرام فاخر">كوتد 350 جرام فاخر</option>
                                 <option value="كوتد 300 جرام">كوتد 300 جرام</option>
                                 <option value="ورق مصقول">ورق مصقول</option>
@@ -265,9 +287,9 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-gray-300 mb-1 text-sm">نوع السلفان / اللمسة الفنية</label>
+                            <label class="block text-gray-300 mb-1.5 text-sm">نوع السلفان / اللمسة الفنية</label>
                             <select name="نوع_السلفان"
-                                class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
+                                class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
                                 <option value="بدون سلفان">بدون سلفان</option>
                                 <option value="سلفان لامع">سلفان لامع</option>
                                 <option value="سلفان مات">سلفان مات</option>
@@ -278,30 +300,30 @@
                         </div>
 
                         <div>
-                            <label class="block text-gray-300 mb-1 text-sm">المقاس والأبعاد</label>
+                            <label class="block text-gray-300 mb-1.5 text-sm">المقاس والأبعاد</label>
                             <input type="text" name="المقاس" value="9x5 cm"
-                                class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
+                                class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- 3. تفاصيل إضافية -->
-            <div class="form-section p-4 md:p-5">
-                <h2 class="section-title text-xl md:text-2xl font-bold mb-4 text-white">3. تفاصيل إضافية</h2>
+            <div class="cyan-border-card rounded-2xl p-4 md:p-5">
+                <h2 class="section-title text-lg md:text-xl font-bold mb-4 text-white">3. تفاصيل إضافية</h2>
 
                 <div class="space-y-3">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-gray-300 mb-1 text-sm">تاريخ التسليم المطلوب</label>
+                            <label class="block text-gray-300 mb-1.5 text-sm">تاريخ التسليم المطلوب</label>
                             <input type="date" name="تاريخ_التسليم"
-                                class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
+                                class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
                         </div>
 
                         <div>
-                            <label class="block text-gray-300 mb-1 text-sm">أهمية الطلب (الأولوية)</label>
+                            <label class="block text-gray-300 mb-1.5 text-sm">أهمية الطلب (الأولوية)</label>
                             <select name="الأولوية"
-                                class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
+                                class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
                                 <option value="منخفضة">منخفضة</option>
                                 <option value="متوسطة" selected>متوسطة</option>
                                 <option value="عالية">عالية</option>
@@ -311,9 +333,9 @@
                     </div>
 
                     <div>
-                        <label class="block text-gray-300 mb-1 text-sm">المصمم المسؤول عن الطلب</label>
+                        <label class="block text-gray-300 mb-1.5 text-sm">المصمم المسؤول عن الطلب</label>
                         <select name="المصمم"
-                            class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
+                            class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
                             <option value="خالد عمر">خالد عمر</option>
                             <option value="محمد عمر">محمد عمر</option>
                             <option value="لم يحدد بعد">لم يحدد بعد</option>
@@ -321,46 +343,46 @@
                     </div>
 
                     <div>
-                        <label class="block text-gray-300 mb-1 text-sm">البريف ووصف متطلبات التصميم (الملاحظات)</label>
+                        <label class="block text-gray-300 mb-1.5 text-sm">البريف ووصف متطلبات التصميم (الملاحظات)</label>
                         <textarea name="البريف" rows="3" 
                             placeholder="اكتب هنا كافة تفاصيل بريف العميل..."
-                            class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white placeholder-gray-400 text-right focus:outline-none"></textarea>
+                            class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white placeholder-gray-400 text-right focus:outline-none"></textarea>
                     </div>
 
                     <div>
-                        <label class="block text-gray-300 mb-1 text-sm">ملفات البريف (PDF، صور...)</label>
-                        <p class="text-xs text-gray-500 mb-1">
-                            ⚠️ يُرجى إرسال الملفات إلى: 
+                        <label class="block text-gray-300 mb-1.5 text-sm">ملفات البريف (PDF، صور...)</label>
+                        <p class="text-xs text-gray-500 mb-2">
+                            ⚠️ يُرجى إرسال الملفات مباشرة إلى البريد: 
                             <a href="mailto:albhar63@gmail.com" class="text-cyan-400 hover:underline">albhar63@gmail.com</a>
                         </p>
                         <input type="file" name="الملفات" multiple
-                            class="w-full px-3 py-2 bg-gray-900/80 border border-gray-700 rounded-lg text-white text-right text-sm">
+                            class="w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right">
                     </div>
                 </div>
             </div>
 
             <!-- 4. التسعير والدفع -->
-            <div class="form-section p-4 md:p-5">
-                <h2 class="section-title text-xl md:text-2xl font-bold mb-4 text-white">4. التسعير والدفع المبدئي</h2>
+            <div class="cyan-border-card rounded-2xl p-4 md:p-5">
+                <h2 class="section-title text-lg md:text-xl font-bold mb-4 text-white">4. التسعير والدفع المبدئي</h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
                     <div>
-                        <label class="block text-gray-300 mb-1 text-sm">قيمة الخصم إن وجد (ريال)</label>
+                        <label class="block text-gray-300 mb-1.5 text-sm">قيمة الخصم إن وجد (ريال)</label>
                         <input type="number" name="الخصم" id="discount" value="0" min="0"
-                            class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
+                            class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
                     </div>
 
                     <div>
-                        <label class="block text-gray-300 mb-1 text-sm">المبلغ المدفوع مقدماً (ريال)</label>
+                        <label class="block text-gray-300 mb-1.5 text-sm">المبلغ المدفوع مقدماً (ريال)</label>
                         <input type="number" name="المدفوع_مقدماً" value="0" min="0"
-                            class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
+                            class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="block text-gray-300 mb-1 text-sm">طريقة الدفع</label>
+                <div class="mb-4">
+                    <label class="block text-gray-300 mb-1.5 text-sm">طريقة الدفع</label>
                     <select name="طريقة_الدفع"
-                        class="form-input w-full px-3 py-2 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
+                        class="form-input w-full px-4 py-2.5 bg-gray-900/70 border border-gray-700 rounded-lg text-white text-right focus:outline-none">
                         <option value="نقدي">نقدي</option>
                         <option value="تحويل بنكي">تحويل بنكي</option>
                         <option value="بطاقة ائتمان">بطاقة ائتمان</option>
@@ -369,41 +391,42 @@
                 </div>
 
                 <!-- ملخص التكاليف -->
-                <div class="bg-black/50 rounded-lg p-4 border border-cyan-500/30">
-                    <h3 class="text-center text-lg font-bold mb-3 text-cyan-400">💰 ملخص التكاليف التقديرية</h3>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between items-center py-1 border-b border-gray-700/50">
-                            <span class="text-gray-300">سعر التصميم:</span>
-                            <span id="baseCost" class="text-white font-semibold">100.00 ر.س</span>
+                <div class="bg-gray-900/80 rounded-xl p-4 border border-cyan-500/30">
+                    <h3 class="text-center text-lg font-bold mb-3 text-cyan-400">ملخص التكاليف التقديرية</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center py-2 border-b border-gray-700/50">
+                            <span class="text-gray-300 text-sm">سعر التصميم:</span>
+                            <span id="baseCost" class="text-white font-semibold">150.00 ر.س</span>
                         </div>
-                        <div class="flex justify-between items-center py-1 border-b border-gray-700/50">
-                            <span class="text-gray-300">بعد الخصم:</span>
-                            <span id="taxable" class="text-white font-semibold">100.00 ر.س</span>
+                        <div class="flex justify-between items-center py-2 border-b border-gray-700/50">
+                            <span class="text-gray-300 text-sm">بعد الخصم:</span>
+                            <span id="taxable" class="text-white font-semibold">150.00 ر.س</span>
                         </div>
-                        <div class="flex justify-between items-center py-1 border-b border-gray-700/50">
-                            <span class="text-gray-300">ضريبة القيمة المضافة (15%):</span>
-                            <span id="vat" class="text-white font-semibold">15.00 ر.س</span>
+                        <div class="flex justify-between items-center py-2 border-b border-gray-700/50">
+                            <span class="text-gray-300 text-sm">ضريبة القيمة المضافة (15%):</span>
+                            <span id="vat" class="text-white font-semibold">22.50 ر.س</span>
                         </div>
-                        <div class="flex justify-between items-center pt-2">
+                        <div class="flex justify-between items-center pt-3">
                             <span class="text-lg font-bold text-cyan-400">الإجمالي النهائي:</span>
-                            <span id="total" class="text-xl font-bold text-cyan-400">115.00 ر.س</span>
+                            <span id="total" class="text-xl font-bold text-cyan-400">172.50 ر.س</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- ملاحظة مهمة -->
-            <div class="form-section p-4 bg-yellow-900/10 border-yellow-500/30">
+            <div class="bg-yellow-900/20 rounded-xl p-4 border border-yellow-500/30">
                 <p class="text-gray-300 text-sm leading-relaxed">
                     <strong class="text-yellow-400">📌 ملاحظة مهمة:</strong><br>
-                    لإرسال الملفات (PDF, AI, PSD...) إلى البريد:
-                    <a href="mailto:albhar63@gmail.com" class="text-cyan-400 hover:underline font-semibold">albhar63@gmail.com</a>
+                    إذا كنت ترغب في إرسال صور، لوجو، أو ملفات (PDF, AI, PSD...)،
+                    يُرجى إرسالها مباشرةً إلى بريدي الإلكتروني:
+                    <a href="mailto:albhar63@gmail.com" class="text-cyan-400 hover:underline">albhar63@gmail.com</a>
                 </p>
             </div>
 
             <!-- Submit Button -->
             <button type="submit" 
-                class="submit-btn w-full text-white py-3 rounded-xl font-bold text-lg shadow-lg">
+                class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-3.5 rounded-xl font-bold text-lg hover:from-cyan-600 hover:to-blue-600 transition transform hover:scale-[1.02] shadow-lg shadow-cyan-500/30">
                 <i class="fas fa-paper-plane ml-2"></i>
                 إرسال الطلب
             </button>
@@ -412,31 +435,15 @@
     </div>
 
     <!-- Footer -->
-    <footer class="py-4 px-4 text-center text-gray-500 border-t border-cyan-500/20 mt-6 relative z-10">
-        <p class="text-xs">© 2026 البرهار - جميع الحقوق محفوظة</p>
+    <footer class="py-6 px-4 text-center text-gray-500 border-t border-cyan-500/20 mt-8">
+        <p class="text-sm">© 2026 البرهار - جميع الحقوق محفوظة</p>
     </footer>
 
     <script>
-        // ✨ إنشاء الجزيئات المتحركة
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
-        
-        createParticles();
-
-        // 💰 حساب التكاليف التقديري
+        // ✅ حساب التكاليف التقديري
         const discountInput = document.getElementById('discount');
         const productSelect = document.getElementById('productType');
+        const quantityInput = document.getElementById('quantity');
         
         function calculateTotal() {
             const discount = parseFloat(discountInput.value) || 0;
