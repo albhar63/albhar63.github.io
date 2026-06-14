@@ -300,12 +300,26 @@
         const quantityInput = document.getElementById('quantity');
         const discountInput = document.getElementById('discount');
         
-        function calculateTotal() {
-            const quantity = parseInt(quantityInput.value) || 100;
+               function calculateTotal() {
             const discount = parseFloat(discountInput.value) || 0;
+            const productType = document.querySelector('select[name="نوع_المنتج"]').value;
             
-            // سعر تقديري: 0.5 ريال لكل وحدة
-            const baseCost = quantity * 0.5;
+            // ✅ أسعار التصميم حسب النوع (بالريال السعودي)
+            const designPrices = {
+                'كروت شخصية': 100,
+                'فلاير': 150,
+                'بروشور': 200,
+                'بنر': 250,
+                'ستيكر': 120,
+                'فولدر': 180,
+                'هوية بصرية': 800,
+                'تصميم شعار': 300,
+                'تصميم تغليف': 400,
+                'إدارة سوشيال ميديا': 500,
+                'أخرى': 150
+            };
+            
+            const baseCost = designPrices[productType] || 150;
             const afterDiscount = Math.max(baseCost - discount, 0);
             const vat = afterDiscount * 0.15;
             const total = afterDiscount + vat;
