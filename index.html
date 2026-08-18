@@ -295,12 +295,12 @@
         </div>
     </section>
 
-        <!-- ========================================== -->
+            <!-- ========================================== -->
     <!-- قسم الدورات التدريبية | Training Courses -->
     <!-- ========================================== -->
     <section id="courses" class="py-20 px-4">
         
-        <!-- عنوان القسم (بنفس نمط مجلاتي الرقمية تماماً) -->
+        <!-- عنوان القسم -->
         <div class="text-center mb-12">
             <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
                 دوراتي التدريبية | My Training Courses
@@ -313,71 +313,83 @@
         </div>
 
         <div class="max-w-7xl mx-auto">
-            <!-- شبكة العرض (مُعدّة لاستيعاب 4 دورات بشكل متناغم ومتجاوب) -->
+            <!-- شبكة العرض -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
                 
-                <!-- الدورة الأولى: الالستريتو (مُضافة ورابطها فعال) -->
+                <!-- الدورة الأولى: Illustrator (مفعلة) -->
                 <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105 text-center w-full">
-                    <div class="w-full max-w-[320px] mx-auto aspect-video rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400 overflow-hidden bg-black">
-                        <iframe 
-                            class="w-full h-full" 
-                            src="https://www.youtube.com/embed/Cagi32jl7zY" 
-                            title="دورة Illustrator الالستريتو " 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen
-                            loading="lazy">
-                        </iframe>
-                    </div>
-                    <p class="mt-4 text-cyan-400 font-bold text-lg">دورة InDesign الاحترافية</p>
-                    <p class="text-gray-400 text-sm mt-1">Professional InDesign Course</p>
-                </div>
-
-                <!-- الدورة الثانية: الفوتوشوب (مُضافة ورابطها فعال) -->
-                <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105 text-center w-full">
-                    <div class="w-full max-w-[320px] mx-auto aspect-video rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400 overflow-hidden bg-black">
-                        <iframe 
-                            class="w-full h-full" 
-                            src="https://www.youtube.com/embed/dfwyG8iPDMs" 
-                            title="Photoshop الوتوشوب " 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen
-                            loading="lazy">
-                        </iframe>
-                    </div>
-                    <p class="mt-4 text-cyan-400 font-bold text-lg">الكورس التجاري الشامل</p>
-                    <p class="text-gray-400 text-sm mt-1">Comprehensive Commercial Design</p>
-                </div>
-
-                <!-- الدورة الثالثة: فوتوشوب (مكان محجوز لإضافتها لاحقاً) -->
-                <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105 text-center w-full">
-                    <div class="w-full max-w-[320px] mx-auto aspect-video rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400 overflow-hidden bg-gray-800 flex items-center justify-center">
-                        <!-- عند إضافة الرابط، استبدل هذا الـ div بكود الـ iframe التالي: -->
-                        <!-- <iframe class="w-full h-full" src="https://www.youtube.com/embed/رابط_الاندزين _هنا" title="دورة InDesign " frameborder="0" allowfullscreen loading="lazy"></iframe> -->
-                        <span class="text-gray-500 font-medium px-4 text-center">سيتم إضافة دورة Photoshop قريباً<br><span class="text-xs">Photoshop Course Coming Soon</span></span>
-                    </div>
-                    <p class="mt-4 text-cyan-400 font-bold text-lg">دورة Photoshop</p>
-                    <p class="text-gray-400 text-sm mt-1">Photoshop Course</p>
-                </div>
-
-                <!-- الدورة الرابعة: التصميم التجارى والاعلانى  (مكان محجوز لإضافتها لاحقاً) -->
-                <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105 text-center w-full">
-                    <div class="w-full max-w-[320px] mx-auto aspect-video rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400 overflow-hidden bg-gray-800 flex items-center justify-center">
-                        <!-- عند إضافة الرابط، استبدل هذا الـ div بكود الـ iframe التالي: -->
-                        <!-- <iframe class="w-full h-full" src="https://www.youtube.com/embed/رابط_التصميم التجارى والاعلانى _هنا" title="دورة Illustrator" frameborder="0" allowfullscreen loading="lazy"></iframe> -->
-                        <span class="text-gray-500 font-medium px-4 text-center">سيتم إضافة دورة Illustrator قريباً<br><span class="text-xs">Illustrator Course Coming Soon</span></span>
+                    <div class="w-full max-w-[320px] mx-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400 overflow-hidden bg-black relative">
+                        <!-- مكان الصورة المصغرة - استبدل src برابط صورتك -->
+                        <img src="thumbnails/illustrator-thumbnail.jpg" 
+                             alt="دورة Illustrator" 
+                             class="w-full h-auto object-cover">
+                        <!-- زر التشغيل يظهر عند التمرير -->
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <svg class="w-16 h-16 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                            </svg>
+                        </div>
                     </div>
                     <p class="mt-4 text-cyan-400 font-bold text-lg">دورة Illustrator</p>
                     <p class="text-gray-400 text-sm mt-1">Illustrator Course</p>
+                    <a href="https://youtu.be/Cagi32jl7zY" target="_blank" class="inline-block mt-2 text-cyan-300 hover:text-cyan-400 text-sm underline">شاهد الدورة</a>
+                </div>
+
+                <!-- الدورة الثانية: Photoshop (مفعلة) -->
+                <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105 text-center w-full">
+                    <div class="w-full max-w-[320px] mx-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400 overflow-hidden bg-black relative">
+                        <!-- مكان الصورة المصغرة - استبدل src برابط صورتك -->
+                        <img src="thumbnails/photoshop-thumbnail.jpg" 
+                             alt="دورة Photoshop" 
+                             class="w-full h-auto object-cover">
+                        <!-- زر التشغيل يظهر عند التمرير -->
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <svg class="w-16 h-16 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-cyan-400 font-bold text-lg">دورة Photoshop</p>
+                    <p class="text-gray-400 text-sm mt-1">Photoshop Course</p>
+                    <a href="https://youtu.be/dfwyG8iPDMs" target="_blank" class="inline-block mt-2 text-cyan-300 hover:text-cyan-400 text-sm underline">شاهد الدورة</a>
+                </div>
+
+                <!-- الدورة الثالثة: InDesign (مكان محجوز) -->
+                <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105 text-center w-full">
+                    <div class="w-full max-w-[320px] mx-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400 overflow-hidden bg-gray-800 relative aspect-video flex items-center justify-center">
+                        <!-- مكان الصورة المصغرة - استبدل هذا بـ <img> عند الإضافة -->
+                        <div class="text-center p-4">
+                            <svg class="w-12 h-12 text-gray-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            <span class="text-gray-500 text-sm">سيتم الإضافة قريباً<br>Coming Soon</span>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-cyan-400 font-bold text-lg">دورة InDesign</p>
+                    <p class="text-gray-400 text-sm mt-1">InDesign Course</p>
+                </div>
+
+                <!-- الدورة الرابعة: التصميم التجاري (مكان محجوز) -->
+                <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105 text-center w-full">
+                    <div class="w-full max-w-[320px] mx-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400 overflow-hidden bg-gray-800 relative aspect-video flex items-center justify-center">
+                        <!-- مكان الصورة المصغرة - استبدل هذا بـ <img> عند الإضافة -->
+                        <div class="text-center p-4">
+                            <svg class="w-12 h-12 text-gray-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            <span class="text-gray-500 text-sm">سيتم الإضافة قريباً<br>Coming Soon</span>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-cyan-400 font-bold text-lg">التصميم التجاري</p>
+                    <p class="text-gray-400 text-sm mt-1">Commercial Design</p>
                 </div>
 
             </div>
 
-            <!-- زر الاستكشاف (بنفس كلاس الزر الخاص بك تماماً) -->
+            <!-- زر القناة -->
             <div class="text-center mt-12">
                 <a href="https://www.youtube.com/@insidprint" target="_blank" rel="noopener noreferrer" class="btn-outline-cyan px-12 py-5 text-xl font-bold max-w-xs w-full mx-auto inline-block transition-all duration-300 hover:shadow-cyan-500/50 hover:shadow-lg">
-                    شاهد جميع الدورات على القناة
+                    اشترك في القناة
                 </a>
             </div>
         </div>
