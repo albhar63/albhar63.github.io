@@ -181,6 +181,142 @@
       }
     </style>
 </head>
+    <!-- ========================================== -->
+<!-- نافذة طلب البريد الإلكتروني | Email Modal -->
+<!-- ========================================== -->
+<div id="emailModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <!-- الخلفية المعتمة -->
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeEmailModal()"></div>
+    
+    <!-- محتوى النافذة -->
+    <div class="relative bg-gray-900 border border-cyan-500/30 rounded-2xl p-8 max-w-md w-full shadow-2xl shadow-cyan-900/50 transform transition-all">
+        
+        <!-- زر الإغلاق -->
+        <button onclick="closeEmailModal()" class="absolute top-4 left-4 text-gray-400 hover:text-cyan-400 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+
+        <!-- أيقونة الكتاب -->
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-cyan-500/20 rounded-full mb-4">
+                <svg class="w-8 h-8 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2">تحميل الكتاب</h3>
+            <p class="text-gray-400 text-sm">أدخل بريدك الإلكتروني لتحميل الكتاب مجاناً</p>
+        </div>
+
+        <!-- النموذج -->
+        <form id="emailForm" onsubmit="handleEmailSubmit(event)" class="space-y-4">
+            <div>
+                <label class="block text-gray-300 text-sm font-medium mb-2">البريد الإلكتروني</label>
+                <input 
+                    type="email" 
+                    id="userEmail" 
+                    required
+                    placeholder="example@email.com"
+                    class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all"
+                >
+                <p id="emailError" class="text-red-400 text-xs mt-1 hidden">يرجى إدخال بريد إلكتروني صحيح</p>
+            </div>
+
+            <button 
+                type="submit" 
+                class="w-full py-3 bg-gradient-to-r from-cyan-600 to-cyan-400 text-white font-bold rounded-xl hover:from-cyan-500 hover:to-cyan-300 transition-all duration-300 shadow-lg shadow-cyan-900/50 hover:shadow-cyan-500/50"
+            >
+                تحميل الكتاب الآن
+            </button>
+        </form>
+
+        <p class="text-gray-500 text-xs text-center mt-4">
+            🔒 لن نشارك بريدك مع أي طرف ثالث
+        </p>
+    </div>
+</div>
+
+<!-- JavaScript للنافذة -->
+<script>
+    // متغير لتخزين رابط التحميل الحالي
+    let currentDownloadLink = '';
+    let currentBookName = '';
+
+    // فتح النافذة
+    function openEmailModal(bookLink, bookName) {
+        // تحقق إذا كان الزائر قد أدخل بريده مسبقاً
+        const savedEmail = localStorage.getItem('userEmail');
+        
+        if (savedEmail) {
+            // إذا كان البريد محفوظاً، افتح التحميل مباشرة
+            window.open(bookLink, '_blank');
+            return;
+        }
+        
+        currentDownloadLink = bookLink;
+        currentBookName = bookName;
+        document.getElementById('emailModal').classList.remove('hidden');
+        document.getElementById('emailModal').classList.add('flex');
+        document.body.style.overflow = 'hidden'; // منع التمرير
+    }
+
+    // إغلاق النافذة
+    function closeEmailModal() {
+        document.getElementById('emailModal').classList.add('hidden');
+        document.getElementById('emailModal').classList.remove('flex');
+        document.body.style.overflow = 'auto'; // إعادة التمرير
+        document.getElementById('emailError').classList.add('hidden');
+    }
+
+    // معالجة إرسال النموذج
+    function handleEmailSubmit(event) {
+        event.preventDefault();
+        
+        const email = document.getElementById('userEmail').value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        // التحقق من صحة البريد
+        if (!emailRegex.test(email)) {
+            document.getElementById('emailError').classList.remove('hidden');
+            return;
+        }
+
+        // حفظ البريد في المتصفح (لن يُطلب مرة أخرى)
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('downloadDate', new Date().toISOString());
+
+        // إرسال البريد إلى Formspree (اختياري)
+        // استبدل الرابط أدناه برابط Formspree الخاص بك
+        const formspreeURL = 'https://formspree.io/f/xxxxx'; // <-- ضع رابطك هنا
+        
+        fetch(formspreeURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email,
+                book: currentBookName,
+                date: new Date().toLocaleString('ar-EG')
+            })
+        }).catch(error => console.log('Formspree error:', error));
+
+        // فتح رابط التحميل
+        window.open(currentDownloadLink, '_blank');
+        
+        // إغلاق النافذة
+        closeEmailModal();
+        
+        // رسالة نجاح (اختياري)
+        alert('✅ تم تحميل الكتاب بنجاح! شكراً لك.');
+    }
+
+    // إغلاق النافذة بزر Escape
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeEmailModal();
+        }
+    });
+</script>
 <body class="bg-gray-900">
 
   <canvas id="waveBg" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
@@ -421,22 +557,21 @@
             </div>
         </div>
     </section>
-        <!-- ========================================== -->
-       <!-- ========================================== -->
+           <!-- ========================================== -->
     <!-- قسم كتبي التدريبية | My Training Books     -->
     <!-- ========================================== -->
-    <section id="books" class="py-24 px-4 relative" dir="rtl" lang="ar">
+    <section id="books" class="py-24 px-4 relative">
         <div class="max-w-7xl mx-auto relative z-10">
             
             <!-- عنوان القسم -->
             <div class="text-center mb-16">
-                <h2 class="inline-block bg-gradient-to-r from-cyan-600 to-cyan-400 text-white px-8 py-3 rounded-full font-bold text-2xl md:text-3xl shadow-lg shadow-cyan-900/50 mb-4 border border-cyan-500/30" style="font-family: 'Cairo', 'Tajawal', sans-serif;">
-                    كتبى التدريبية | My Training Books
+                <h2 class="inline-block bg-gradient-to-r from-cyan-600 to-cyan-400 text-white px-8 py-3 rounded-full font-bold text-2xl md:text-3xl shadow-lg shadow-cyan-900/50 mb-4 border border-cyan-500/30">
+                    كتبي التدريبية | My Training Books
                 </h2>
-                <p class="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed mt-4" style="font-family: 'Cairo', 'Tajawal', sans-serif;">
-                    النسخة المكتوبة والشاملة من دوراتي، مصممة لتكون مرجعاً عملياً دائماً لك في كل مرحلة من مراحل تعلم التصميم.
+                <p class="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed mt-4">
+                    النسخة المكتوبة والشاملة من دوراتي، مصممة لتكون مرجعاً عملياً دائماً لك.
                     <br class="hidden md:block">
-                    The comprehensive written version of my courses, designed to be a permanent practical reference.
+                    The comprehensive written version of my courses.
                 </p>
             </div>
 
@@ -444,7 +579,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
                 
                 <!-- الكتاب 1: Illustrator -->
-                <div class="group w-full max-w-[260px] bg-gray-900/60 border border-gray-800 rounded-2xl overflow-hidden hover:border-cyan-500/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-900/20 flex flex-col" style="font-family: 'Cairo', 'Tajawal', sans-serif;">
+                <div class="group w-full max-w-[280px] bg-gray-900/60 backdrop-blur-md border border-gray-800 rounded-2xl overflow-hidden hover:border-cyan-500/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-900/20 flex flex-col">
                     <div class="relative aspect-[3/4] overflow-hidden bg-gray-800">
                         <img src="books/illustrator-book .jpeg" 
                              alt="كتاب دورة Illustrator" 
@@ -458,15 +593,25 @@
                     <div class="p-5 text-center flex flex-col flex-grow">
                         <h3 class="text-cyan-400 font-bold text-lg mb-2">كتاب دورة Illustrator</h3>
                         <p class="text-gray-400 text-sm mb-5 flex-grow">مرجع شامل يغطي كل أدوات البرنامج مع تمارين عملية وتطبيقات حقيقية.</p>
-                        <a href="#" class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-cyan-600/20 text-cyan-400 rounded-xl hover:bg-cyan-500 hover:text-white transition-all duration-300 text-sm font-bold border border-cyan-500/30 hover:border-cyan-400 mt-auto">
+                        
+                        <!-- زر اقرأ الكتاب -->
+                        <a href="books/illustrator-book.pdf" target="_blank" 
+                           class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-cyan-600/20 text-cyan-400 rounded-xl hover:bg-cyan-500 hover:text-white transition-all duration-300 text-sm font-bold border border-cyan-500/30 hover:border-cyan-400 mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            اقرأ الكتاب
+                        </a>
+                        
+                        <!-- زر تحميل الكتاب -->
+                        <a href="books/illustrator-book.pdf" download="كتاب-Illustrator-محمد-عمر.pdf" 
+                           class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-gray-800/60 text-gray-300 rounded-xl hover:bg-cyan-600 hover:text-white transition-all duration-300 text-sm font-bold border border-gray-700 hover:border-cyan-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            تفاصيل / تحميل الكتاب
+                            تحميل الكتاب
                         </a>
                     </div>
                 </div>
 
                 <!-- الكتاب 2: Photoshop -->
-                <div class="group w-full max-w-[260px] bg-gray-900/60 border border-gray-800 rounded-2xl overflow-hidden hover:border-cyan-500/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-900/20 flex flex-col" style="font-family: 'Cairo', 'Tajawal', sans-serif;">
+                <div class="group w-full max-w-[280px] bg-gray-900/60 backdrop-blur-md border border-gray-800 rounded-2xl overflow-hidden hover:border-cyan-500/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-900/20 flex flex-col">
                     <div class="relative aspect-[3/4] overflow-hidden bg-gray-800">
                         <img src="books/photoshop-book.jpeg" 
                              alt="كتاب دورة Photoshop" 
@@ -479,15 +624,23 @@
                     <div class="p-5 text-center flex flex-col flex-grow">
                         <h3 class="text-cyan-400 font-bold text-lg mb-2">كتاب دورة Photoshop</h3>
                         <p class="text-gray-400 text-sm mb-5 flex-grow">دليلك الاحترافي لمعالجة الصور، الدمج الإبداعي، وإعداد الملفات للطباعة.</p>
-                        <a href="#" class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-cyan-600/20 text-cyan-400 rounded-xl hover:bg-cyan-500 hover:text-white transition-all duration-300 text-sm font-bold border border-cyan-500/30 hover:border-cyan-400 mt-auto">
+                        
+                        <a href="books/photoshop-book.pdf" target="_blank" 
+                           class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-cyan-600/20 text-cyan-400 rounded-xl hover:bg-cyan-500 hover:text-white transition-all duration-300 text-sm font-bold border border-cyan-500/30 hover:border-cyan-400 mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            اقرأ الكتاب
+                        </a>
+                        
+                        <a href="books/photoshop-book.pdf" download="كتاب-Photoshop-محمد-عمر.pdf" 
+                           class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-gray-800/60 text-gray-300 rounded-xl hover:bg-cyan-600 hover:text-white transition-all duration-300 text-sm font-bold border border-gray-700 hover:border-cyan-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            تفاصيل / تحميل الكتاب
+                            تحميل الكتاب
                         </a>
                     </div>
                 </div>
 
                 <!-- الكتاب 3: InDesign -->
-                <div class="group w-full max-w-[260px] bg-gray-900/60 border border-gray-800 rounded-2xl overflow-hidden hover:border-cyan-500/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-900/20 flex flex-col" style="font-family: 'Cairo', 'Tajawal', sans-serif;">
+                <div class="group w-full max-w-[280px] bg-gray-900/60 backdrop-blur-md border border-gray-800 rounded-2xl overflow-hidden hover:border-cyan-500/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-900/20 flex flex-col">
                     <div class="relative aspect-[3/4] overflow-hidden bg-gray-800">
                         <img src="books/indesign-book.jpeg" 
                              alt="كتاب دورة InDesign" 
@@ -500,15 +653,23 @@
                     <div class="p-5 text-center flex flex-col flex-grow">
                         <h3 class="text-cyan-400 font-bold text-lg mb-2">كتاب دورة InDesign</h3>
                         <p class="text-gray-400 text-sm mb-5 flex-grow">المرجع الكامل لتنسيق الكتب، المجلات، والملفات متعددة الصفحات باحترافية.</p>
-                        <a href="#" class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-cyan-600/20 text-cyan-400 rounded-xl hover:bg-cyan-500 hover:text-white transition-all duration-300 text-sm font-bold border border-cyan-500/30 hover:border-cyan-400 mt-auto">
+                        
+                        <a href="books/indesign-book.pdf" target="_blank" 
+                           class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-cyan-600/20 text-cyan-400 rounded-xl hover:bg-cyan-500 hover:text-white transition-all duration-300 text-sm font-bold border border-cyan-500/30 hover:border-cyan-400 mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            اقرأ الكتاب
+                        </a>
+                        
+                        <a href="books/indesign-book.pdf" download="كتاب-InDesign-محمد-عمر.pdf" 
+                           class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-gray-800/60 text-gray-300 rounded-xl hover:bg-cyan-600 hover:text-white transition-all duration-300 text-sm font-bold border border-gray-700 hover:border-cyan-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            تفاصيل / تحميل الكتاب
+                            تحميل الكتاب
                         </a>
                     </div>
                 </div>
 
                 <!-- الكتاب 4: التصميم التجاري -->
-                <div class="group w-full max-w-[260px] bg-gray-900/60 border border-gray-800 rounded-2xl overflow-hidden hover:border-cyan-500/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-900/20 flex flex-col" style="font-family: 'Cairo', 'Tajawal', sans-serif;">
+                <div class="group w-full max-w-[280px] bg-gray-900/60 backdrop-blur-md border border-gray-800 rounded-2xl overflow-hidden hover:border-cyan-500/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-cyan-900/20 flex flex-col">
                     <div class="relative aspect-[3/4] overflow-hidden bg-gray-800">
                         <img src="books/commercial-book.jpeg" 
                              alt="كتاب التصميم التجاري" 
@@ -521,9 +682,17 @@
                     <div class="p-5 text-center flex flex-col flex-grow">
                         <h3 class="text-cyan-400 font-bold text-lg mb-2">التصميم التجاري والإعلان</h3>
                         <p class="text-gray-400 text-sm mb-5 flex-grow">أساسيات بناء الهوية البصرية، سيكولوجية الألوان، وتصميم الإعلانات المؤثرة.</p>
-                        <a href="#" class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-cyan-600/20 text-cyan-400 rounded-xl hover:bg-cyan-500 hover:text-white transition-all duration-300 text-sm font-bold border border-cyan-500/30 hover:border-cyan-400 mt-auto">
+                        
+                        <a href="books/commercial-book.pdf" target="_blank" 
+                           class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-cyan-600/20 text-cyan-400 rounded-xl hover:bg-cyan-500 hover:text-white transition-all duration-300 text-sm font-bold border border-cyan-500/30 hover:border-cyan-400 mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            اقرأ الكتاب
+                        </a>
+                        
+                        <a href="books/commercial-book.pdf" download="كتاب-التصميم-التجاري-محمد-عمر.pdf" 
+                           class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-gray-800/60 text-gray-300 rounded-xl hover:bg-cyan-600 hover:text-white transition-all duration-300 text-sm font-bold border border-gray-700 hover:border-cyan-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            تفاصيل / تحميل الكتاب
+                            تحميل الكتاب
                         </a>
                     </div>
                 </div>
