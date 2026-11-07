@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تصفح المجلة | Mohamed Omar</title>
+    
+    <!-- مكتبة Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- مكتبة StPageFlip -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+        .flip-book {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .page {
+            background-color: white;
+            overflow: hidden;
+        }
+        .page img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* تأثير التحميل */
+        .loading {
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: opacity 0.5s;
+        }
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4">
+
+    <!-- شاشة التحميل -->
+    <div id="loading" class="loading">
+        <div class="text-center">
+            <div class="inline-block w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <p class="text-cyan-400 text-xl font-bold">جاري تحميل المجلة...</p>
+        </div>
+    </div>
+
+    <!-- شريط التحكم العلوي -->
+    <div class="fixed top-0 left-0 right-0 bg-gray-900/90 backdrop-blur-md border-b border-cyan-500/30 z-40 px-6 py-3 flex items-center justify-between">
+        <a href="../index.html#magazines-showcase" class="text-cyan-400 hover:text-cyan-300 flex items-center gap-2 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            العودة للموقع
+        </a>
+        
+        <h1 id="magazineTitle" class="text-white font-bold text-lg">تصفح المجلة</h1>
+        
+        <div class="flex items-center gap-3">
+            <button onclick="prevPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="الصفحة السابقة">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+            
+            <span id="pageIndicator" class="text-gray-300 text-sm font-mono">1 / 10</span>
+            
+            <button onclick="nextPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="الصفحة التالية">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            
+            <button onclick="toggleFullscreen()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="ملء الشاشة">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- حاوية المجلة -->
+    <div class="mt-20 mb-8 flex justify-center">
+        <div id="book" class="flip-book">
+            <!-- الصفحات ستُضاف هنا ديناميكياً -->
+        </div>
+    </div>
+
+    <!-- شريط التنقل السفلي -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900/90 backdrop-blur-md border-t border-cyan-500/30 z-40 px-6 py-3 flex items-center justify-center gap-4">
+        <input 
+            type="range" 
+            id="pageSlider" 
+            min="0" 
+            max="10" 
+            value="0"
+            class="w-64 accent-cyan-400"
+            oninput="goToPage(this.value)"
+        >
+        <button onclick="downloadMagazine()" class="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            تحميل PDF
+        </button>
+    </div>
+
+    <script>
+        // ==========================================
+        // إعدادات المجلة - عدّل هذه القيم حسب مجلتك
+        // ==========================================
+        const MAGAZINE_CONFIG = {
+            // اسم المجلد الذي يحتوي على صور المجلة
+            folder: '../covers/sun-kids/',
+            
+            // قائمة أسماء الصور بالترتيب (بدون امتداد)
+            pages: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+            
+            // امتداد الصور
+            extension: '.jpg',
+            
+            // عنوان المجلة
+            title: 'شمس الطفولة',
+            
+            // رابط تحميل PDF (اختياري)
+            pdfLink: '../covers/sun-kids/magazine.pdf'
+        };
+
+        // ==========================================
+        // تهيئة المجلة
+        // ==========================================
+        let pageFlip;
+        const bookElement = document.getElementById('book');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const pageSlider = document.getElementById('pageSlider');
+        const loadingScreen = document.getElementById('loading');
+
+        // إنشاء صفحات المجلة
+        function createPages() {
+            MAGAZINE_CONFIG.pages.forEach((page, index) => {
+                const pageDiv = document.createElement('div');
+                pageDiv.className = 'page';
+                pageDiv.innerHTML = `<img src="${MAGAZINE_CONFIG.folder}${page}${MAGAZINE_CONFIG.extension}" alt="صفحة ${index + 1}" loading="lazy">`;
+                bookElement.appendChild(pageDiv);
+            });
+        }
+
+        // تهيئة مكتبة PageFlip
+        function initFlipBook() {
+            pageFlip = new StPageFlip.PageFlip(bookElement, {
+                width: 400,
+                height: 550,
+                size: 'stretch',
+                minWidth: 300,
+                maxWidth: 500,
+                minHeight: 400,
+                maxHeight: 700,
+                showCover: true,
+                maxShadowOpacity: 0.5,
+                mobileScrollSupport: true,
+                flippingTime: 800,
+                usePortrait: true,
+                startPage: 0,
+                autoSize: true,
+                drawShadow: true,
+                useMouseEvents: true,
+                swipeDistance: 30,
+                showPageCorners: true,
+                disableFlipByClick: false
+            });
+
+            pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+
+            // تحديث العداد عند تقليب الصفحة
+            pageFlip.on('flip', (e) => {
+                updatePageIndicator(e.data);
+            });
+
+            // إخفاء شاشة التحميل
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+            }, 500);
+        }
+
+        // تحديث عداد الصفحات
+        function updatePageIndicator(currentPage) {
+            const totalPages = pageFlip.getPageCount();
+            pageIndicator.textContent = `${currentPage + 1} / ${totalPages}`;
+            pageSlider.max = totalPages - 1;
+            pageSlider.value = currentPage;
+        }
+
+        // دوال التحكم
+        function nextPage() {
+            pageFlip.flipNext();
+        }
+
+        function prevPage() {
+            pageFlip.flipPrev();
+        }
+
+        function goToPage(pageNumber) {
+            pageFlip.flip(parseInt(pageNumber));
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function downloadMagazine() {
+            if (MAGAZINE_CONFIG.pdfLink) {
+                window.open(MAGAZINE_CONFIG.pdfLink, '_blank');
+            } else {
+                alert('تحميل PDF غير متاح حالياً');
+            }
+        }
+
+        // اختصارات لوحة المفاتيح
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextPage();
+            if (e.key === 'ArrowLeft') prevPage();
+            if (e.key === 'Escape' && document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        });
+
+        // تهيئة العنوان
+        document.getElementById('magazineTitle').textContent = MAGAZINE_CONFIG.title;
+
+        // تشغيل المجلة
+        createPages();
+        initFlipBook();
+    </script>
+</body>
+</html>
