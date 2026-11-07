@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تصفح المجلة | Mohamed Omar</title>
-    
-    <!-- مكتبة Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- مكتبة StPageFlip -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     
     <style>
@@ -28,7 +24,6 @@
             height: 100%;
             object-fit: cover;
         }
-        /* تأثير التحميل */
         .loading {
             position: fixed;
             inset: 0;
@@ -91,9 +86,7 @@
 
     <!-- حاوية المجلة -->
     <div class="mt-20 mb-8 flex justify-center">
-        <div id="book" class="flip-book">
-            <!-- الصفحات ستُضاف هنا ديناميكياً -->
-        </div>
+        <div id="book" class="flip-book"></div>
     </div>
 
     <!-- شريط التنقل السفلي -->
@@ -116,29 +109,19 @@
     </div>
 
     <script>
-        // ==========================================
-        // إعدادات المجلة - عدّل هذه القيم حسب مجلتك
-        // ==========================================
+        // قراءة اسم المجلة من الرابط
+        const urlParams = new URLSearchParams(window.location.search);
+        const magazineName = urlParams.get('magazine') || 'sun-kids';
+
+        // إعدادات المجلة الديناميكية
         const MAGAZINE_CONFIG = {
-            // اسم المجلد الذي يحتوي على صور المجلة
-            folder: '../covers/sun-kids/',
-            
-            // قائمة أسماء الصور بالترتيب (بدون امتداد)
+            folder: `../covers/${magazineName}/`,
             pages: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-            
-            // امتداد الصور
             extension: '.jpg',
-            
-            // عنوان المجلة
-            title: 'شمس الطفولة',
-            
-            // رابط تحميل PDF (اختياري)
-            pdfLink: '../covers/sun-kids/magazine.pdf'
+            title: magazineName,
+            pdfLink: `../covers/${magazineName}/magazine.pdf`
         };
 
-        // ==========================================
-        // تهيئة المجلة
-        // ==========================================
         let pageFlip;
         const bookElement = document.getElementById('book');
         const pageIndicator = document.getElementById('pageIndicator');
@@ -181,18 +164,15 @@
 
             pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
-            // تحديث العداد عند تقليب الصفحة
             pageFlip.on('flip', (e) => {
                 updatePageIndicator(e.data);
             });
 
-            // إخفاء شاشة التحميل
             setTimeout(() => {
                 loadingScreen.classList.add('hidden');
             }, 500);
         }
 
-        // تحديث عداد الصفحات
         function updatePageIndicator(currentPage) {
             const totalPages = pageFlip.getPageCount();
             pageIndicator.textContent = `${currentPage + 1} / ${totalPages}`;
@@ -200,7 +180,6 @@
             pageSlider.value = currentPage;
         }
 
-        // دوال التحكم
         function nextPage() {
             pageFlip.flipNext();
         }
@@ -229,7 +208,6 @@
             }
         }
 
-        // اختصارات لوحة المفاتيح
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') nextPage();
             if (e.key === 'ArrowLeft') prevPage();
@@ -238,10 +216,8 @@
             }
         });
 
-        // تهيئة العنوان
         document.getElementById('magazineTitle').textContent = MAGAZINE_CONFIG.title;
 
-        // تشغيل المجلة
         createPages();
         initFlipBook();
     </script>
