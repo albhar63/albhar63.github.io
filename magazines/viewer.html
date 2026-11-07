@@ -11,6 +11,7 @@
         body {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
         }
         .flip-book {
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -23,6 +24,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
         .loading {
             position: fixed;
@@ -38,6 +40,11 @@
             opacity: 0;
             pointer-events: none;
         }
+        .error-message {
+            color: #f87171;
+            text-align: center;
+            padding: 20px;
+        }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center p-4">
@@ -47,6 +54,21 @@
         <div class="text-center">
             <div class="inline-block w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mb-4"></div>
             <p class="text-cyan-400 text-xl font-bold">جاري تحميل المجلة...</p>
+            <p id="loadingStatus" class="text-gray-400 text-sm mt-2">جاري قراءة قائمة الصفحات...</p>
+        </div>
+    </div>
+
+    <!-- رسالة الخطأ (تظهر إذا فشلت التحميل) -->
+    <div id="errorMessage" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90">
+        <div class="bg-gray-900 border border-red-500/50 rounded-2xl p-8 max-w-md text-center">
+            <svg class="w-16 h-16 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <h3 class="text-white text-xl font-bold mb-2">تعذر تحميل المجلة</h3>
+            <p id="errorText" class="text-gray-400 mb-6">حدث خطأ أثناء تحميل المجلة</p>
+            <a href="../index.html#magazines-showcase" class="inline-block bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-xl font-bold transition-colors">
+                العودة للموقع
+            </a>
         </div>
     </div>
 
@@ -56,55 +78,48 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
-            العودة للموقع
+            <span class="hidden sm:inline">العودة للموقع</span>
         </a>
         
         <h1 id="magazineTitle" class="text-white font-bold text-lg">تصفح المجلة</h1>
         
         <div class="flex items-center gap-3">
-            <button onclick="prevPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="الصفحة السابقة">
+            <button onclick="prevPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="السابق">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
             </button>
             
-            <span id="pageIndicator" class="text-gray-300 text-sm font-mono">1 / 10</span>
+            <span id="pageIndicator" class="text-gray-300 text-sm font-mono">1 / 1</span>
             
-            <button onclick="nextPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="الصفحة التالية">
+            <button onclick="nextPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="التالي">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-            </button>
-            
-            <button onclick="toggleFullscreen()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="ملء الشاشة">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
                 </svg>
             </button>
         </div>
     </div>
 
     <!-- حاوية المجلة -->
-    <div class="mt-20 mb-8 flex justify-center">
+    <div class="mt-20 mb-8 flex justify-center w-full">
         <div id="book" class="flip-book"></div>
     </div>
 
     <!-- شريط التنقل السفلي -->
-    <div class="fixed bottom-0 left-0 right-0 bg-gray-900/90 backdrop-blur-md border-t border-cyan-500/30 z-40 px-6 py-3 flex items-center justify-center gap-4">
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900/90 backdrop-blur-md border-t border-cyan-500/30 z-40 px-6 py-3 flex items-center justify-center gap-4 flex-wrap">
         <input 
             type="range" 
             id="pageSlider" 
             min="0" 
-            max="10" 
+            max="1" 
             value="0"
-            class="w-64 accent-cyan-400"
+            class="w-48 sm:w-64 accent-cyan-400"
             oninput="goToPage(this.value)"
         >
-        <button onclick="downloadMagazine()" class="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        <button onclick="toggleFullscreen()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="ملء الشاشة">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
             </svg>
-            تحميل PDF
         </button>
     </div>
 
@@ -113,102 +128,188 @@
         const urlParams = new URLSearchParams(window.location.search);
         const magazineName = urlParams.get('magazine') || 'sun-kids';
 
-        // إعدادات المجلة الديناميكية
-        const MAGAZINE_CONFIG = {
-            folder: `../covers/${magazineName}/`,
-            pages: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-            extension: '.jpg',
-            title: magazineName,
-            pdfLink: `../covers/${magazineName}/magazine.pdf`
+        // أسماء المجلدات في covers (تطابق GitHub)
+        const folderMapping = {
+            'sun-kids': 'sun-kids',
+            'egyptian-museum': 'egyptian-museum',
+            'fashico': 'fashion',
+            'packaging': 'packaging',
+            'portfolpo': 'portfoli'
         };
 
-        let pageFlip;
-        const bookElement = document.getElementById('book');
-        const pageIndicator = document.getElementById('pageIndicator');
-        const pageSlider = document.getElementById('pageSlider');
-        const loadingScreen = document.getElementById('loading');
+        const coverFolder = folderMapping[magazineName] || magazineName;
+        const MAGAZINE_CONFIG = {
+            folder: `../covers/${coverFolder}/`,
+            pages: [], // سيتم ملؤها من pages.txt
+            extension: '.jpg',
+            title: magazineName,
+            pdfLink: `../covers/${coverFolder}/magazine.pdf`
+        };
 
-        // إنشاء صفحات المجلة
-        function createPages() {
-            MAGAZINE_CONFIG.pages.forEach((page, index) => {
-                const pageDiv = document.createElement('div');
-                pageDiv.className = 'page';
-                pageDiv.innerHTML = `<img src="${MAGAZINE_CONFIG.folder}${page}${MAGAZINE_CONFIG.extension}" alt="صفحة ${index + 1}" loading="lazy">`;
-                bookElement.appendChild(pageDiv);
-            });
+        const loadingStatus = document.getElementById('loadingStatus');
+        const loadingScreen = document.getElementById('loading');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const bookElement = document.getElementById('book');
+
+        let pageFlip;
+        let isInitialized = false;
+
+        // دالة عرض الخطأ
+        function showError(message) {
+            loadingScreen.classList.add('hidden');
+            errorText.textContent = message;
+            errorMessage.classList.remove('hidden');
+            console.error('Error:', message);
         }
 
-        // تهيئة مكتبة PageFlip
+        // الخطوة 1: قراءة ملف pages.txt
+        async function loadPagesList() {
+            loadingStatus.textContent = 'جاري قراءة قائمة الصفحات...';
+            
+            try {
+                const response = await fetch(`${MAGAZINE_CONFIG.folder}pages.txt`);
+                
+                if (!response.ok) {
+                    throw new Error('لم يتم العثور على ملف pages.txt');
+                }
+                
+                const text = await response.text();
+                const pages = text.split('\n')
+                    .map(p => p.trim())
+                    .filter(p => p !== '' && !p.startsWith('#'));
+                
+                if (pages.length === 0) {
+                    throw new Error('ملف pages.txt فارغ');
+                }
+                
+                MAGAZINE_CONFIG.pages = pages;
+                loadingStatus.textContent = `تم العثور على ${pages.length} صفحة. جاري التحميل...`;
+                
+                return true;
+            } catch (error) {
+                console.error('Error loading pages.txt:', error);
+                showError(`تعذر قراءة قائمة الصفحات: ${error.message}\n\nتأكد من وجود ملف pages.txt في مجلد ${MAGAZINE_CONFIG.folder}`);
+                return false;
+            }
+        }
+
+        // الخطوة 2: تحميل الصور وإنشاء الصفحات
+        async function createPages() {
+            loadingStatus.textContent = 'جاري تحميل الصور...';
+            
+            const loadPromises = MAGAZINE_CONFIG.pages.map((page, index) => {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    const fullPath = `${MAGAZINE_CONFIG.folder}${page}`;
+                    
+                    img.onload = () => {
+                        const pageDiv = document.createElement('div');
+                        pageDiv.className = 'page';
+                        pageDiv.innerHTML = `<img src="${fullPath}" alt="صفحة ${index + 1}" loading="lazy">`;
+                        bookElement.appendChild(pageDiv);
+                        resolve();
+                    };
+                    
+                    img.onerror = () => {
+                        console.warn(`فشل تحميل: ${fullPath}`);
+                        // إنشاء صفحة فارغة بدلاً من الفشل الكامل
+                        const pageDiv = document.createElement('div');
+                        pageDiv.className = 'page bg-gray-200 flex items-center justify-center';
+                        pageDiv.innerHTML = `<p class="text-gray-500">صفحة ${index + 1}</p>`;
+                        bookElement.appendChild(pageDiv);
+                        resolve(); // نكمل حتى لو فشلت صورة
+                    };
+                    
+                    img.src = fullPath;
+                });
+            });
+            
+            await Promise.all(loadPromises);
+            loadingStatus.textContent = 'جاري تهيئة عارض الصفحات...';
+        }
+
+        // الخطوة 3: تهيئة مكتبة PageFlip
         function initFlipBook() {
-            pageFlip = new StPageFlip.PageFlip(bookElement, {
-                width: 400,
-                height: 550,
-                size: 'stretch',
-                minWidth: 300,
-                maxWidth: 500,
-                minHeight: 400,
-                maxHeight: 700,
-                showCover: true,
-                maxShadowOpacity: 0.5,
-                mobileScrollSupport: true,
-                flippingTime: 800,
-                usePortrait: true,
-                startPage: 0,
-                autoSize: true,
-                drawShadow: true,
-                useMouseEvents: true,
-                swipeDistance: 30,
-                showPageCorners: true,
-                disableFlipByClick: false
-            });
+            if (typeof StPageFlip === 'undefined') {
+                showError('مكتبة تقليب الصفحات لم تُحمّل. تحقق من اتصالك بالإنترنت.');
+                return;
+            }
 
-            pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+            try {
+                pageFlip = new StPageFlip.PageFlip(bookElement, {
+                    width: 400,
+                    height: 550,
+                    size: 'stretch',
+                    minWidth: 300,
+                    maxWidth: 500,
+                    minHeight: 400,
+                    maxHeight: 700,
+                    showCover: true,
+                    maxShadowOpacity: 0.5,
+                    mobileScrollSupport: true,
+                    flippingTime: 800,
+                    usePortrait: true,
+                    startPage: 0,
+                    autoSize: true,
+                    drawShadow: true,
+                    useMouseEvents: true,
+                    swipeDistance: 30,
+                    showPageCorners: true,
+                    disableFlipByClick: false
+                });
 
-            pageFlip.on('flip', (e) => {
-                updatePageIndicator(e.data);
-            });
+                pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
-            setTimeout(() => {
-                loadingScreen.classList.add('hidden');
-            }, 500);
+                pageFlip.on('flip', (e) => {
+                    updatePageIndicator(e.data);
+                });
+
+                isInitialized = true;
+                
+                // إخفاء شاشة التحميل بعد تأخير بسيط
+                setTimeout(() => {
+                    loadingScreen.classList.add('hidden');
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error initializing PageFlip:', error);
+                showError(`خطأ في تهيئة عارض الصفحات: ${error.message}`);
+            }
         }
 
         function updatePageIndicator(currentPage) {
-            const totalPages = pageFlip.getPageCount();
+            const totalPages = pageFlip ? pageFlip.getPageCount() : MAGAZINE_CONFIG.pages.length;
             pageIndicator.textContent = `${currentPage + 1} / ${totalPages}`;
             pageSlider.max = totalPages - 1;
             pageSlider.value = currentPage;
         }
 
         function nextPage() {
-            pageFlip.flipNext();
+            if (pageFlip) pageFlip.flipNext();
         }
 
         function prevPage() {
-            pageFlip.flipPrev();
+            if (pageFlip) pageFlip.flipPrev();
         }
 
         function goToPage(pageNumber) {
-            pageFlip.flip(parseInt(pageNumber));
+            if (pageFlip) pageFlip.flip(parseInt(pageNumber));
         }
 
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log('Fullscreen error:', err);
+                });
             } else {
                 document.exitFullscreen();
             }
         }
 
-        function downloadMagazine() {
-            if (MAGAZINE_CONFIG.pdfLink) {
-                window.open(MAGAZINE_CONFIG.pdfLink, '_blank');
-            } else {
-                alert('تحميل PDF غير متاح حالياً');
-            }
-        }
-
+        // اختصارات لوحة المفاتيح
         document.addEventListener('keydown', (e) => {
+            if (!isInitialized) return;
             if (e.key === 'ArrowRight') nextPage();
             if (e.key === 'ArrowLeft') prevPage();
             if (e.key === 'Escape' && document.fullscreenElement) {
@@ -216,10 +317,16 @@
             }
         });
 
+        // تشغيل التحميل
         document.getElementById('magazineTitle').textContent = MAGAZINE_CONFIG.title;
 
-        createPages();
-        initFlipBook();
+        (async function init() {
+            const pagesLoaded = await loadPagesList();
+            if (pagesLoaded) {
+                await createPages();
+                initFlipBook();
+            }
+        })();
     </script>
 </body>
 </html>
