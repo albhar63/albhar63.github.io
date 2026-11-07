@@ -625,8 +625,9 @@
             }
         });
     </script>
-    
-    <!-- Magazines -->
+        <!-- ========================================== -->
+    <!-- قسم المجلات الرقمية | My Magazines         -->
+    <!-- ========================================== -->
     <section id="magazines-showcase" class="py-20 px-4">
         <div class="text-center mb-12">
             <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
@@ -634,70 +635,53 @@
             </h2>
         </div>
         <div class="max-w-6xl mx-auto">
-            <div class="cover-grid">
+            <div class="cover-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 justify-items-center">
+                
+                <!-- مجلة شمس الطفولة -->
                 <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
-                   <a href="magazines/viewer.html?magazine=sun-kids">  
-                      <img src="covers/sun-kids/222.jpg" alt="شمس الطفولة" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
-                      <p class="mt-2 text-cyan-300 font-medium text-sm">شمس الطفولة</p>
-                   </a>   
+                    <a href="magazines/viewer.html?magazine=sun-kids" class="block">
+                        <img src="covers/sun-kids/222.jpg" alt="شمس الطفولة" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                        <p class="mt-2 text-cyan-300 font-medium text-sm">شمس الطفولة</p>
+                    </a>
                 </div>
+
+                <!-- مجلة المتحف المصري -->
                 <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
-                    <img src="covers/egyptian-museum/22.jpg" alt="المتحف المصري الكبير" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
-                    <p class="mt-2 text-cyan-300 font-medium text-sm">المتحف المصري</p>
+                    <a href="magazines/viewer.html?magazine=egyptian-museum" class="block">
+                        <img src="covers/egyptian-museum/22.jpg" alt="المتحف المصري الكبير" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                        <p class="mt-2 text-cyan-300 font-medium text-sm">المتحف المصري</p>
+                    </a>
                 </div>
+
+                <!-- مجلة فاشن -->
                 <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
-                    <img src="covers/fashion/fisging.jpg" alt="فاشن" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
-                    <p class="mt-2 text-cyan-300 font-medium text-sm">فاشن</p>
+                    <a href="magazines/viewer.html?magazine=fashico" class="block">
+                        <img src="covers/fashion/fisging.jpg" alt="فاشن" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                        <p class="mt-2 text-cyan-300 font-medium text-sm">فاشن</p>
+                    </a>
                 </div>
+
+                <!-- مجلة تغليف منتجات -->
                 <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
-                    <img src="covers/packaging/1.jpg" alt="تغليف" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
-                    <p class="mt-2 text-cyan-300 font-medium text-sm">تغليف منتجات</p>
+                    <a href="magazines/viewer.html?magazine=packaging" class="block">
+                        <img src="covers/packaging/1.jpg" alt="تغليف" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                        <p class="mt-2 text-cyan-300 font-medium text-sm">تغليف منتجات</p>
+                    </a>
                 </div>
+
+                <!-- مجلة أعمالي المختارة -->
                 <div class="group cursor-pointer transform transition-transform hover:scale-105 text-center">
-                    <img src="covers/portfoli/22.jpg" alt="أعمالي المختارة" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
-                    <p class="mt-2 text-cyan-300 font-medium text-sm">أعمالي المختارة</p>
+                    <a href="magazines/viewer.html?magazine=portfolpo" class="block">
+                        <img src="covers/portfoli/22.jpg" alt="أعمالي المختارة" class="w-full max-w-[160px] h-auto rounded-lg shadow-lg border-2 border-transparent group-hover:border-cyan-400">
+                        <p class="mt-2 text-cyan-300 font-medium text-sm">أعمالي المختارة</p>
+                    </a>
                 </div>
+
             </div>
             <div class="text-center mt-12">
-                <a href="magazines/" class="btn-outline-cyan px-12 py-5 text-xl font-bold max-w-xs w-full mx-auto">
+                <a href="magazines/" class="btn-outline-cyan px-12 py-5 text-xl font-bold max-w-xs w-full mx-auto inline-block">
                     استكشف جميع المجلات
                 </a>
-            </div>
-        </div>
-    </section>
-      <!-- Portfolio -->
-    <section id="portfolio" class="py-20 bg-gray-900 px-4">
-        <div class="container mx-auto">
-            <div class="text-center mb-12">
-                <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
-                    أعمالي | Portfolio
-                </h2>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="portfolio-item cursor-pointer" data-project="branding">
-                    <img src="projects/images/brand_adentity/5.jpg" alt="هوية بصرية" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">هوية بصرية</h3>
-                </div>
-                <div class="portfolio-item cursor-pointer" data-project="mobile">
-                    <img src="projects/images/mobile/mobile.jpg" alt="واجهة تطبيق" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">واجهة تطبيق</h3>
-                </div>
-                <div class="portfolio-item cursor-pointer" data-project="packaging">
-                    <img src="projects/images/packaging/packaging.jpg" alt="تغليف" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">تصميم تغليف</h3>
-                </div>
-                <div class="portfolio-item cursor-pointer" data-project="poster_desing">
-                    <img src="projects/images/poster_desing/poster.jpg" alt="بوستر" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">تصميم بوستر</h3>
-                </div>
-                <div class="portfolio-item cursor-pointer" data-project="social_meade">
-                    <img src="projects/images/social_meade/14.jpg" alt="سوشيال ميديا" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">محتوى السوشيال ميديا</h3>
-                </div>
-                <div class="portfolio-item cursor-pointer" data-project="loges">
-                    <img src="projects/images/loges/24.png" alt="شعار" class="w-full h-64 object-cover rounded-2xl shadow-lg">
-                    <h3 class="mt-4 text-xl font-semibold text-cyan-300 text-center">تصميم شعار</h3>
-                </div>
             </div>
         </div>
     </section>
