@@ -47,7 +47,6 @@
             }
         }
         
-        /* حاوية الصفحتين المتقابلتين */
         .spread-container {
             position: relative;
             width: 100%;
@@ -60,6 +59,7 @@
             height: 100%;
             overflow: hidden;
             position: relative;
+            transition: opacity 0.3s ease;
         }
         
         .page-display img {
@@ -77,16 +77,11 @@
             border-left: 2px solid #333;
         }
         
-        /* تأثير الانتقال */
-        .page-display {
-            transition: opacity 0.3s ease;
-        }
-        
-        .page-display.changing {
+        /* تأثير الاختفاء للصفحة اليمنى فقط */
+        .page-display.right.flipping {
             opacity: 0;
         }
         
-        /* ثنية الكتاب */
         .book-spine {
             position: absolute;
             left: 50%;
@@ -256,21 +251,7 @@
         const leftPageDiv = document.getElementById('leftPage');
         const rightPageDiv = document.getElementById('rightPage');
 
-        // صوت تقليب ورق حقيقي من CDN موثوق
-        const flipSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2398/2398-preview.mp3');
-        flipSound.volume = 0.6;
-        flipSound.preload = 'auto';
-        
-        function playFlipSound() {
-            flipSound.currentTime = 0;
-            flipSound.play().catch(e => {
-                console.log('Sound error:', e);
-                // محاولة بديلة
-                const audio2 = new Audio('https://cdn.jsdelivr.net/gh/nicehash/nicehash-desktop@master/resources/sounds/page-flip.mp3');
-                audio2.volume = 0.6;
-                audio2.play().catch(e2 => console.log('Backup sound error:', e2));
-            });
-        }
+        // لا يوجد صوت - تم إزالته تماماً
 
         function showError(message) {
             loadingScreen.classList.add('hidden');
@@ -328,80 +309,92 @@
         function updateBookView() {
             const isMobile = window.innerWidth <= 768;
             
-            // تأثير الانتقال
-            leftPageDiv.classList.add('changing');
-            rightPageDiv.classList.add('changing');
+            // الصفحة اليسرى = الصفحة السابقة (currentPageIndex - 1)
+            const leftIndex = currentPageIndex - 1;
+            // الصفحة اليمنى = الصفحة الحالية (currentPageIndex)
+            const rightIndex = currentPageIndex;
             
-            setTimeout(() => {
-                // الصفحة اليسرى
-                if (isMobile) {
-                    leftPageDiv.style.display = 'none';
+            if (isMobile) {
+                leftPageDiv.style.display = 'none';
+            } else {
+                leftPageDiv.style.display = 'block';
+                if (leftIndex >= 0 && leftIndex < totalPages) {
+                    leftPageImg.src = pageImages[leftIndex] || '';
+                    leftPageImg.alt = `صفحة ${leftIndex + 1}`;
                 } else {
-                    leftPageDiv.style.display = 'block';
-                    const leftSrc = pageImages[currentPageIndex] || '';
-                    leftPageImg.src = leftSrc;
-                    leftPageImg.alt = `صفحة ${currentPageIndex + 1}`;
+                    leftPageImg.src = '';
                 }
-                
-                // الصفحة اليمنى
-                const rightIndex = currentPageIndex + 1;
-                const rightSrc = pageImages[rightIndex] || '';
-                rightPageImg.src = rightSrc;
+            }
+            
+            // الصفحة اليمنى
+            if (rightIndex >= 0 && rightIndex < totalPages) {
+                rightPageImg.src = pageImages[rightIndex] || '';
                 rightPageImg.alt = `صفحة ${rightIndex + 1}`;
-                
-                // إزالة تأثير الانتقال
-                setTimeout(() => {
-                    leftPageDiv.classList.remove('changing');
-                    rightPageDiv.classList.remove('changing');
-                }, 50);
-            }, 300);
+            } else {
+                rightPageImg.src = '';
+            }
             
             // تحديث العداد
-            const displayStart = currentPageIndex + 1;
-            const displayEnd = Math.min(currentPageIndex + 2, totalPages);
-            
             document.getElementById('pageIndicator').textContent = 
-                isMobile ? `${displayStart} / ${totalPages}` : 
-                `${displayStart}-${displayEnd} / ${totalPages}`;
+                isMobile ? `${rightIndex + 1} / ${totalPages}` : 
+                `${leftIndex >= 0 ? leftIndex + 1 : '-'}-${rightIndex + 1} / ${totalPages}`;
             
             document.getElementById('pageSlider').max = totalPages - 1;
             document.getElementById('pageSlider').value = currentPageIndex;
             
             // تحديث حالة الأزرار
             document.getElementById('prevBtn').disabled = currentPageIndex === 0;
-            document.getElementById('nextBtn').disabled = currentPageIndex >= totalPages - 2;
+            document.getElementById('nextBtn').disabled = currentPageIndex >= totalPages - 1;
         }
 
         function nextPage() {
-            if (currentPageIndex + 1 < totalPages) {
-                currentPageIndex += 2; // ننتقل صفحتين (زوج كامل)
-                if (currentPageIndex >= totalPages) {
-                    currentPageIndex = totalPages - 1;
-                }
-                playFlipSound();
-                updateBookView();
+            if (currentPageIndex < totalPages - 1) {
+                // تأثير الاختفاء للصفحة اليمنى فقط
+                rightPageDiv.classList.add('flipping');
+                
+                setTimeout(() => {
+                    currentPageIndex++;
+                    updateBookView();
+                    
+                    // إزالة تأثير الاختفاء بعد تغيير المحتوى
+                    setTimeout(() => {
+                        rightPageDiv.classList.remove('flipping');
+                    }, 50);
+                }, 300);
             }
         }
 
         function prevPage() {
             if (currentPageIndex > 0) {
-                currentPageIndex -= 2; // نرجع صفحتين
-                if (currentPageIndex < 0) {
-                    currentPageIndex = 0;
-                }
-                playFlipSound();
-                updateBookView();
+                // تأثير الاختفاء للصفحة اليمنى فقط
+                rightPageDiv.classList.add('flipping');
+                
+                setTimeout(() => {
+                    currentPageIndex--;
+                    updateBookView();
+                    
+                    // إزالة تأثير الاختفاء بعد تغيير المحتوى
+                    setTimeout(() => {
+                        rightPageDiv.classList.remove('flipping');
+                    }, 50);
+                }, 300);
             }
         }
 
         function goToPage(pageNumber) {
-            currentPageIndex = parseInt(pageNumber);
-            // التأكد من أن الرقم زوجي (لأننا نعرض صفحتين معاً)
-            if (currentPageIndex % 2 !== 0) {
-                currentPageIndex--;
+            const targetPage = parseInt(pageNumber);
+            if (targetPage >= 0 && targetPage < totalPages) {
+                rightPageDiv.classList.add('flipping');
+                
+                setTimeout(() => {
+                    currentPageIndex = targetPage;
+                    updateBookView();
+                    
+                    setTimeout(() => {
+                        rightPageDiv.classList.remove('flipping');
+                    }, 50);
+                }, 300);
             }
-            playFlipSound();
-            updateBookView();
         }
 
         function toggleFullscreen() {
