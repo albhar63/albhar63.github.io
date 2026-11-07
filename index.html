@@ -634,7 +634,7 @@
         <!-- ========================================== -->
     <!-- قسم المجلات الرقمية | My Magazines         -->
     <!-- ========================================== -->
-    <section id="magazines-showcase" class="py-20 px-4">
+    <section id="all-magazines-sec" class="py-20 px-4">
         <div class="text-center mb-12">
             <h2 class="inline-block bg-gradient-to-r from-cyan-500 to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold text-xl md:text-2xl shadow-md">
                 مجلاتي الرقمية | My Magazines
@@ -683,8 +683,10 @@
                     </a>
                 </div>
                 <div class="text-center mt-12">
-                   <a href="#magazines-showcase" class="btn-outline-cyan px-12 py-5 text-xl font-bold max-w-xs w-full mx-auto inline-block">
-                        استكشف جميع المجلات
+                    <a href="javascript:void(0)" 
+                       onclick="document.getElementById('all-magazines-sec').scrollIntoView({behavior: 'smooth', block: 'start'}); return false;" 
+                       class="btn-outline-cyan px-12 py-5 text-xl font-bold max-w-xs w-full mx-auto inline-block cursor-pointer">
+                    استكشف جميع المجلات
                    </a>
                </div>
          </div>
