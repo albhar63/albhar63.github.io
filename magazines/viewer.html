@@ -6,36 +6,67 @@
     <title>تصفح المجلة | Mohamed Omar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- محاولة تحميل المكتبة من مصادر متعددة -->
-    <script src="https://unpkg.com/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
-    <script>
-        // إذا فشل المصدر الأول، جرب الثاني
-        if (typeof StPageFlip === 'undefined') {
-            document.write('<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"><\/script>');
-        }
-    </script>
-    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-        
         body {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            overflow-x: hidden;
         }
-        .flip-book {
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        
+        .book-container {
+            perspective: 2000px;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
         }
+        
+        .book {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 140%;
+            transform-style: preserve-3d;
+        }
+        
         .page {
-            background-color: white;
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            top: 0;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.6s;
+            transform-origin: left center;
+            cursor: pointer;
             overflow: hidden;
         }
+        
+        .page-right {
+            right: 0;
+            transform-origin: left center;
+        }
+        
+        .page-left {
+            left: 0;
+            transform-origin: right center;
+            transform: rotateY(180deg);
+        }
+        
+        .page.flipped-right {
+            transform: rotateY(-180deg);
+        }
+        
+        .page.flipped-left {
+            transform: rotateY(0deg);
+        }
+        
         .page img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
         }
+        
         .loading {
             position: fixed;
             inset: 0;
@@ -46,25 +77,27 @@
             z-index: 100;
             transition: opacity 0.5s;
         }
+        
         .loading.hidden {
             opacity: 0;
             pointer-events: none;
         }
-        /* عرض بديل عند فشل المكتبة */
-        .fallback-viewer {
-            display: none;
-            max-width: 800px;
-            margin: 0 auto;
+
+        .nav-button {
+            transition: all 0.3s;
         }
-        .fallback-viewer.active {
-            display: block;
+        
+        .nav-button:hover {
+            transform: scale(1.1);
         }
-        .fallback-viewer img {
-            width: 100%;
-            max-height: 80vh;
-            object-fit: contain;
-            border-radius: 8px;
-            margin-bottom: 20px;
+
+        @media (max-width: 768px) {
+            .page {
+                width: 100%;
+            }
+            .page-left {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -75,7 +108,7 @@
         <div class="text-center">
             <div class="inline-block w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mb-4"></div>
             <p class="text-cyan-400 text-xl font-bold">جاري تحميل المجلة...</p>
-            <p id="loadingStatus" class="text-gray-400 text-sm mt-2">جاري تهيئة المكتبة...</p>
+            <p id="loadingStatus" class="text-gray-400 text-sm mt-2">جاري قراءة قائمة الصفحات...</p>
         </div>
     </div>
 
@@ -87,33 +120,36 @@
             </svg>
             <h3 class="text-white text-xl font-bold mb-2">تعذر تحميل المجلة</h3>
             <p id="errorText" class="text-gray-400 mb-6">حدث خطأ</p>
-            <button onclick="window.location.href='../index.html#magazines-showcase'" class="inline-block bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-xl font-bold transition-colors">
-                العودة للموقع
+            <button onclick="location.reload()" class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-xl font-bold transition-colors">
+                إعادة المحاولة
             </button>
+            <a href="../index.html#magazines-showcase" class="block mt-3 text-cyan-400 hover:text-cyan-300">
+                العودة للموقع
+            </a>
         </div>
     </div>
 
     <!-- شريط التحكم العلوي -->
     <div class="fixed top-0 left-0 right-0 bg-gray-900/90 backdrop-blur-md border-b border-cyan-500/30 z-40 px-6 py-3 flex items-center justify-between">
-        <button onclick="window.location.href='../index.html#magazines-showcase'" class="text-cyan-400 hover:text-cyan-300 flex items-center gap-2 transition-colors">
+        <a href="../index.html#magazines-showcase" class="text-cyan-400 hover:text-cyan-300 flex items-center gap-2 transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
             <span class="hidden sm:inline">العودة للموقع</span>
-        </button>
+        </a>
         
-        <h1 id="magazineTitle" class="text-white font-bold text-lg">تصفح المجلة</h1>
+        <h1 id="magazineTitle" class="text-white font-bold text-lg truncate max-w-[200px]">تصفح المجلة</h1>
         
-        <div class="flex items-center gap-3">
-            <button id="prevBtn" onclick="prevPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors">
+        <div class="flex items-center gap-2">
+            <button onclick="prevPage()" class="nav-button text-cyan-400 hover:text-cyan-300 p-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
             </button>
             
-            <span id="pageIndicator" class="text-gray-300 text-sm font-mono">1 / 1</span>
+            <span id="pageIndicator" class="text-gray-300 text-sm font-mono bg-gray-800 px-3 py-1 rounded-full">1 / 1</span>
             
-            <button id="nextBtn" onclick="nextPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors">
+            <button onclick="nextPage()" class="nav-button text-cyan-400 hover:text-cyan-300 p-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
@@ -121,23 +157,15 @@
         </div>
     </div>
 
-    <!-- عارض تقليب الصفحات -->
-    <div class="mt-20 mb-8 flex justify-center w-full">
-        <div id="book" class="flip-book"></div>
-    </div>
-
-    <!-- العارض البديل (يعمل إذا فشلت المكتبة) -->
-    <div id="fallbackViewer" class="fallback-viewer mt-20 mb-24 px-4">
-        <img id="fallbackImage" src="" alt="صفحة المجلة">
-        <div class="flex justify-center gap-4 mt-4">
-            <button onclick="prevFallbackPage()" class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg font-bold">السابق</button>
-            <span id="fallbackIndicator" class="text-white self-center">1 / 1</span>
-            <button onclick="nextFallbackPage()" class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg font-bold">التالي</button>
+    <!-- حاوية الكتاب -->
+    <div class="mt-20 mb-8 w-full">
+        <div id="book" class="book-container">
+            <div id="bookInner" class="book"></div>
         </div>
     </div>
 
     <!-- شريط التنقل السفلي -->
-    <div id="bottomBar" class="fixed bottom-0 left-0 right-0 bg-gray-900/90 backdrop-blur-md border-t border-cyan-500/30 z-40 px-6 py-3 flex items-center justify-center gap-4 flex-wrap">
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900/90 backdrop-blur-md border-t border-cyan-500/30 z-40 px-6 py-3 flex items-center justify-center gap-4 flex-wrap">
         <input 
             type="range" 
             id="pageSlider" 
@@ -147,7 +175,7 @@
             class="w-48 sm:w-64 accent-cyan-400"
             oninput="goToPage(this.value)"
         >
-        <button onclick="toggleFullscreen()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="ملء الشاشة">
+        <button onclick="toggleFullscreen()" class="nav-button text-cyan-400 hover:text-cyan-300 p-2" title="ملء الشاشة">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
             </svg>
@@ -159,26 +187,19 @@
         const urlParams = new URLSearchParams(window.location.search);
         const magazineName = urlParams.get('magazine') || 'sun-kids';
 
-        // المسار الصحيح - المجلدات داخل magazines/
         const MAGAZINE_CONFIG = {
             folder: `./${magazineName}/`,
             pages: [],
             title: magazineName
         };
 
-        const loadingStatus = document.getElementById('loadingStatus');
+        let currentPage = 0;
+        let totalPages = 0;
+        const bookInner = document.getElementById('bookInner');
         const loadingScreen = document.getElementById('loading');
+        const loadingStatus = document.getElementById('loadingStatus');
         const errorMessage = document.getElementById('errorMessage');
         const errorText = document.getElementById('errorText');
-        const bookElement = document.getElementById('book');
-        const fallbackViewer = document.getElementById('fallbackViewer');
-        const fallbackImage = document.getElementById('fallbackImage');
-        const fallbackIndicator = document.getElementById('fallbackIndicator');
-
-        let pageFlip;
-        let isInitialized = false;
-        let useFallback = false;
-        let currentFallbackPage = 0;
 
         function showError(message) {
             loadingScreen.classList.add('hidden');
@@ -207,18 +228,21 @@
                 }
                 
                 MAGAZINE_CONFIG.pages = pages;
+                totalPages = pages.length;
                 loadingStatus.textContent = `تم العثور على ${pages.length} صفحة. جاري التحميل...`;
                 
                 return true;
             } catch (error) {
+                console.error('Error:', error);
                 showError(`تعذر قراءة قائمة الصفحات: ${error.message}`);
                 return false;
             }
         }
 
-        // تحميل الصور
+        // إنشاء الصفحات
         async function createPages() {
             loadingStatus.textContent = 'جاري تحميل الصور...';
+            bookInner.innerHTML = '';
             
             const loadPromises = MAGAZINE_CONFIG.pages.map((page, index) => {
                 return new Promise((resolve) => {
@@ -227,17 +251,21 @@
                     
                     img.onload = () => {
                         const pageDiv = document.createElement('div');
-                        pageDiv.className = 'page';
-                        pageDiv.innerHTML = `<img src="${fullPath}" alt="صفحة ${index + 1}">`;
-                        bookElement.appendChild(pageDiv);
+                        pageDiv.className = 'page page-right';
+                        pageDiv.style.zIndex = totalPages - index;
+                        pageDiv.innerHTML = `<img src="${fullPath}" alt="صفحة ${index + 1}" loading="lazy">`;
+                        pageDiv.onclick = () => nextPage();
+                        bookInner.appendChild(pageDiv);
                         resolve();
                     };
                     
                     img.onerror = () => {
+                        console.warn(`فشل تحميل: ${fullPath}`);
                         const pageDiv = document.createElement('div');
-                        pageDiv.className = 'page bg-gray-200 flex items-center justify-center';
-                        pageDiv.innerHTML = `<p class="text-gray-500">صفحة ${index + 1}</p>`;
-                        bookElement.appendChild(pageDiv);
+                        pageDiv.className = 'page page-right bg-gray-200 flex items-center justify-center';
+                        pageDiv.style.zIndex = totalPages - index;
+                        pageDiv.innerHTML = `<p class="text-gray-500 text-center p-4">صفحة ${index + 1}</p>`;
+                        bookInner.appendChild(pageDiv);
                         resolve();
                     };
                     
@@ -246,121 +274,53 @@
             });
             
             await Promise.all(loadPromises);
-        }
-
-        // تهيئة مكتبة PageFlip
-        function initFlipBook() {
-            // التحقق من تحميل المكتبة
-            if (typeof StPageFlip === 'undefined') {
-                console.warn('StPageFlip not loaded, using fallback');
-                useFallback = true;
-                showFallbackViewer();
-                return;
-            }
-
-            try {
-                pageFlip = new StPageFlip.PageFlip(bookElement, {
-                    width: 400,
-                    height: 550,
-                    size: 'stretch',
-                    minWidth: 300,
-                    maxWidth: 500,
-                    minHeight: 400,
-                    maxHeight: 700,
-                    showCover: true,
-                    maxShadowOpacity: 0.5,
-                    mobileScrollSupport: true,
-                    flippingTime: 800,
-                    usePortrait: true,
-                    startPage: 0,
-                    autoSize: true,
-                    drawShadow: true,
-                    useMouseEvents: true,
-                    swipeDistance: 30,
-                    showPageCorners: true,
-                    disableFlipByClick: false
-                });
-
-                pageFlip.loadFromHTML(document.querySelectorAll('.page'));
-
-                pageFlip.on('flip', (e) => {
-                    updatePageIndicator(e.data);
-                });
-
-                isInitialized = true;
-                
-                setTimeout(() => {
-                    loadingScreen.classList.add('hidden');
-                }, 500);
-                
-            } catch (error) {
-                console.error('PageFlip error:', error);
-                useFallback = true;
-                showFallbackViewer();
-            }
-        }
-
-        // العارض البديل (يعرض صورة واحدة في كل مرة)
-        function showFallbackViewer() {
-            bookElement.style.display = 'none';
-            document.getElementById('bottomBar').style.display = 'none';
-            fallbackViewer.classList.add('active');
+            updateDisplay();
             loadingScreen.classList.add('hidden');
-            updateFallbackViewer();
         }
 
-        function updateFallbackViewer() {
-            if (MAGAZINE_CONFIG.pages.length > 0) {
-                const fullPath = `${MAGAZINE_CONFIG.folder}${MAGAZINE_CONFIG.pages[currentFallbackPage]}`;
-                fallbackImage.src = fullPath;
-                fallbackIndicator.textContent = `${currentFallbackPage + 1} / ${MAGAZINE_CONFIG.pages.length}`;
-            }
-        }
-
-        function nextFallbackPage() {
-            if (currentFallbackPage < MAGAZINE_CONFIG.pages.length - 1) {
-                currentFallbackPage++;
-                updateFallbackViewer();
-            }
-        }
-
-        function prevFallbackPage() {
-            if (currentFallbackPage > 0) {
-                currentFallbackPage--;
-                updateFallbackViewer();
-            }
-        }
-
-        function updatePageIndicator(currentPage) {
-            const totalPages = pageFlip ? pageFlip.getPageCount() : MAGAZINE_CONFIG.pages.length;
+        function updateDisplay() {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach((page, index) => {
+                if (index < currentPage) {
+                    page.classList.add('flipped-right');
+                    page.classList.remove('page-right');
+                    page.classList.add('page-left');
+                } else {
+                    page.classList.remove('flipped-right');
+                    page.classList.remove('page-left');
+                    page.classList.add('page-right');
+                }
+            });
+            
             document.getElementById('pageIndicator').textContent = `${currentPage + 1} / ${totalPages}`;
             document.getElementById('pageSlider').max = totalPages - 1;
             document.getElementById('pageSlider').value = currentPage;
         }
 
         function nextPage() {
-            if (useFallback) {
-                nextFallbackPage();
-            } else if (pageFlip) {
-                pageFlip.flipNext();
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                updateDisplay();
             }
         }
 
         function prevPage() {
-            if (useFallback) {
-                prevFallbackPage();
-            } else if (pageFlip) {
-                pageFlip.flipPrev();
+            if (currentPage > 0) {
+                currentPage--;
+                updateDisplay();
             }
         }
 
         function goToPage(pageNumber) {
-            if (pageFlip) pageFlip.flip(parseInt(pageNumber));
+            currentPage = parseInt(pageNumber);
+            updateDisplay();
         }
 
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {});
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log('Fullscreen error:', err);
+                });
             } else {
                 document.exitFullscreen();
             }
@@ -375,17 +335,32 @@
             }
         });
 
-        // التهيئة
+        // التمرير باللمس/الماوس
+        let touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        });
+        
+        document.addEventListener('touchend', (e) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const diff = touchStartY - touchEndY;
+            
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    nextPage();
+                } else {
+                    prevPage();
+                }
+            }
+        });
+
+        // التشغيل
         document.getElementById('magazineTitle').textContent = MAGAZINE_CONFIG.title;
 
         (async function init() {
             const pagesLoaded = await loadPagesList();
             if (pagesLoaded) {
                 await createPages();
-                // انتظر قليلاً للتأكد من تحميل المكتبة
-                setTimeout(() => {
-                    initFlipBook();
-                }, 500);
             }
         })();
     </script>
