@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تصفح المجلة | Mohamed Omar</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- مكتبة StPageFlip للتقليب الواقعي -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
@@ -13,59 +18,34 @@
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
             font-family: 'Cairo', sans-serif;
+            overflow-x: hidden;
         }
         
-        /* الكتاب المفتوح - صفحتين جنب بعض */
-        .open-book {
+        /* حاوية الكتاب */
+        .book-container {
             display: flex;
-            max-width: 1000px;
-            margin: 0 auto;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
-            border-radius: 8px;
-            overflow: hidden;
-            background: #1a1a1a;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin-top: 80px;
+            margin-bottom: 100px;
         }
         
-        .book-page {
-            flex: 1;
-            aspect-ratio: 3/4;
-            background: white;
-            position: relative;
+        /* الصفحات */
+        .page {
+            background-color: white;
             overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
         
-        .book-page img {
+        .page img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
         
-        /* خط الوسط (ثنية الكتاب) */
-        .book-page:first-child {
-            border-left: 3px solid #333;
-            box-shadow: inset -15px 0 30px rgba(0,0,0,0.15);
-        }
-        
-        .book-page:last-child {
-            border-right: 3px solid #333;
-            box-shadow: inset 15px 0 30px rgba(0,0,0,0.15);
-        }
-        
-        /* في الجوال: صفحة واحدة فقط */
-        @media (max-width: 768px) {
-            .open-book {
-                max-width: 400px;
-            }
-            .book-page:last-child {
-                display: none;
-            }
-            .book-page:first-child {
-                border-left: none;
-                box-shadow: none;
-            }
-        }
-        
+        /* شاشة التحميل */
         .loading {
             position: fixed;
             inset: 0;
@@ -82,13 +62,16 @@
             pointer-events: none;
         }
         
+        /* أزرار التنقل */
         .nav-btn {
             transition: all 0.3s;
+            background: rgba(6, 182, 212, 0.1);
+            border: 2px solid rgba(6, 182, 212, 0.3);
         }
         
         .nav-btn:hover:not(:disabled) {
-            transform: scale(1.15);
-            color: #22d3ee;
+            background: rgba(6, 182, 212, 0.3);
+            transform: scale(1.1);
         }
         
         .nav-btn:disabled {
@@ -96,114 +79,101 @@
             cursor: not-allowed;
         }
         
-        .page-number {
-            position: absolute;
-            bottom: 10px;
-            font-size: 12px;
-            color: #666;
-            background: rgba(255,255,255,0.8);
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-        
-        .book-page:first-child .page-number {
-            left: 10px;
-        }
-        
-        .book-page:last-child .page-number {
-            right: 10px;
+        /* رسالة الخطأ */
+        .error-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.3);
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center p-4">
+<body>
 
     <!-- شاشة التحميل -->
     <div id="loading" class="loading">
         <div class="text-center">
-            <div class="inline-block w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p class="text-cyan-400 text-xl font-bold">جاري تحميل المجلة...</p>
+            <div class="inline-block w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <p class="text-cyan-400 text-2xl font-bold">جاري تحميل المجلة...</p>
             <p id="loadingStatus" class="text-gray-400 text-sm mt-2">جاري قراءة قائمة الصفحات...</p>
         </div>
     </div>
 
     <!-- رسالة الخطأ -->
     <div id="errorMessage" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90">
-        <div class="bg-gray-900 border border-red-500/50 rounded-2xl p-8 max-w-md text-center">
+        <div class="error-box rounded-2xl p-8 max-w-md text-center">
             <svg class="w-16 h-16 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
             </svg>
             <h3 class="text-white text-xl font-bold mb-2">تعذر تحميل المجلة</h3>
             <p id="errorText" class="text-gray-400 mb-6">حدث خطأ</p>
-            <button onclick="location.reload()" class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-xl font-bold transition-colors">
+            <button onclick="location.reload()" class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-xl font-bold transition-colors mb-3">
                 إعادة المحاولة
             </button>
-            <a href="../index.html#magazines-showcase" class="block mt-3 text-cyan-400 hover:text-cyan-300">
+            <br>
+            <a href="../index.html#all-magazines-sec" class="text-cyan-400 hover:text-cyan-300">
                 العودة للموقع
             </a>
         </div>
     </div>
 
     <!-- شريط التحكم العلوي -->
-    <div class="fixed top-0 left-0 right-0 bg-gray-900/90 backdrop-blur-md border-b border-cyan-500/30 z-40 px-6 py-3 flex items-center justify-between">
-        <a href="../index.html#magazines-showcase" class="text-cyan-400 hover:text-cyan-300 flex items-center gap-2 transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-            </svg>
-            <span class="hidden sm:inline">العودة للموقع</span>
-        </a>
-        
-        <h1 id="magazineTitle" class="text-white font-bold text-lg truncate max-w-[200px]">تصفح المجلة</h1>
-        
-        <div class="flex items-center gap-2">
-            <button onclick="prevPage()" id="prevBtn" class="nav-btn text-cyan-400 p-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+    <div class="fixed top-0 left-0 right-0 bg-gray-900/95 backdrop-blur-md border-b border-cyan-500/30 z-40 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="../index.html#all-magazines-sec" class="text-cyan-400 hover:text-cyan-300 flex items-center gap-2 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
-            </button>
+                <span class="hidden sm:inline font-bold">العودة للموقع</span>
+            </a>
             
-            <span id="pageIndicator" class="text-gray-300 text-sm font-mono bg-gray-800 px-3 py-1 rounded-full">1 / 1</span>
+            <h1 id="magazineTitle" class="text-white font-bold text-lg md:text-xl">تصفح المجلة</h1>
             
-            <button onclick="nextPage()" id="nextBtn" class="nav-btn text-cyan-400 p-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-            </button>
+            <div class="flex items-center gap-3">
+                <button onclick="prevPage()" id="prevBtn" class="nav-btn text-cyan-400 p-2 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                
+                <span id="pageIndicator" class="text-gray-300 text-sm font-mono bg-gray-800 px-4 py-2 rounded-full">
+                    1 / 1
+                </span>
+                
+                <button onclick="nextPage()" id="nextBtn" class="nav-btn text-cyan-400 p-2 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- الكتاب المفتوح -->
-    <div class="mt-24 mb-8 w-full flex justify-center">
-        <div class="open-book" id="openBook">
-            <div class="book-page" id="leftPage">
-                <img src="" alt="الصفحة اليسرى" id="leftImage">
-                <span class="page-number" id="leftPageNum">1</span>
-            </div>
-            <div class="book-page" id="rightPage">
-                <img src="" alt="الصفحة اليمنى" id="rightImage">
-                <span class="page-number" id="rightPageNum">2</span>
-            </div>
-        </div>
+    <!-- حاوية الكتاب -->
+    <div class="book-container">
+        <div id="book"></div>
     </div>
 
     <!-- شريط التنقل السفلي -->
-    <div class="fixed bottom-0 left-0 right-0 bg-gray-900/90 backdrop-blur-md border-t border-cyan-500/30 z-40 px-6 py-3 flex items-center justify-center gap-4 flex-wrap">
-        <input 
-            type="range" 
-            id="pageSlider" 
-            min="0" 
-            max="1" 
-            value="0"
-            class="w-48 sm:w-64 accent-cyan-400"
-            oninput="goToPage(this.value)"
-        >
-        <button onclick="toggleFullscreen()" class="nav-btn text-cyan-400 p-2" title="ملء الشاشة">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
-            </svg>
-        </button>
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900/95 backdrop-blur-md border-t border-cyan-500/30 z-40 px-6 py-4">
+        <div class="max-w-3xl mx-auto flex items-center justify-center gap-4">
+            <input 
+                type="range" 
+                id="pageSlider" 
+                min="0" 
+                max="1" 
+                value="0"
+                class="w-48 sm:w-64 accent-cyan-400"
+                oninput="goToPage(this.value)"
+            >
+            <button onclick="toggleFullscreen()" class="nav-btn text-cyan-400 p-2 rounded-lg" title="ملء الشاشة">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                </svg>
+            </button>
+        </div>
     </div>
 
     <script>
+        // قراءة اسم المجلة من الرابط
         const urlParams = new URLSearchParams(window.location.search);
         const magazineName = urlParams.get('magazine') || 'sun-kids';
 
@@ -213,10 +183,8 @@
             title: magazineName
         };
 
-        let currentPageIndex = 0; // نبدأ من الصفحة 0 (الغلاف)
-        let totalPages = 0;
-        const pageImages = [];
-
+        let pageFlip;
+        const bookElement = document.getElementById('book');
         const loadingScreen = document.getElementById('loading');
         const loadingStatus = document.getElementById('loadingStatus');
         const errorMessage = document.getElementById('errorMessage');
@@ -226,8 +194,10 @@
             loadingScreen.classList.add('hidden');
             errorText.textContent = message;
             errorMessage.classList.remove('hidden');
+            console.error('Error:', message);
         }
 
+        // قراءة ملف pages.txt
         async function loadPagesList() {
             loadingStatus.textContent = 'جاري قراءة قائمة الصفحات...';
             
@@ -243,8 +213,7 @@
                 if (pages.length === 0) throw new Error('ملف pages.txt فارغ');
                 
                 MAGAZINE_CONFIG.pages = pages;
-                totalPages = pages.length;
-                loadingStatus.textContent = `تم العثور على ${pages.length} صفحة. جاري تحميل الصور...`;
+                loadingStatus.textContent = `تم العثور على ${pages.length} صفحة. جاري التحميل...`;
                 return true;
             } catch (error) {
                 showError(`تعذر قراءة قائمة الصفحات: ${error.message}`);
@@ -252,96 +221,116 @@
             }
         }
 
-        async function loadAllImages() {
-            const promises = MAGAZINE_CONFIG.pages.map((page) => {
+        // إنشاء الصفحات
+        async function createPages() {
+            loadingStatus.textContent = 'جاري تحميل الصور...';
+            bookElement.innerHTML = '';
+            
+            const loadPromises = MAGAZINE_CONFIG.pages.map((page, index) => {
                 return new Promise((resolve) => {
                     const img = new Image();
                     const fullPath = `${MAGAZINE_CONFIG.folder}${page}`;
+                    
                     img.onload = () => {
-                        pageImages.push(fullPath);
+                        const pageDiv = document.createElement('div');
+                        pageDiv.className = 'page';
+                        pageDiv.innerHTML = `<img src="${fullPath}" alt="صفحة ${index + 1}">`;
+                        bookElement.appendChild(pageDiv);
                         resolve();
                     };
+                    
                     img.onerror = () => {
-                        pageImages.push(null);
+                        console.warn(`فشل تحميل: ${fullPath}`);
+                        const pageDiv = document.createElement('div');
+                        pageDiv.className = 'page bg-gray-200 flex items-center justify-center';
+                        pageDiv.innerHTML = `<p class="text-gray-500 text-center p-4">صفحة ${index + 1}</p>`;
+                        bookElement.appendChild(pageDiv);
                         resolve();
                     };
+                    
                     img.src = fullPath;
                 });
             });
-            await Promise.all(promises);
+            
+            await Promise.all(loadPromises);
+            loadingStatus.textContent = 'جاري تهيئة عارض الصفحات...';
         }
 
-        function updateBookView() {
-            const isMobile = window.innerWidth <= 768;
-            const leftImg = document.getElementById('leftImage');
-            const rightImg = document.getElementById('rightImage');
-            const leftPage = document.getElementById('leftPage');
-            const rightPage = document.getElementById('rightPage');
-            const leftPageNum = document.getElementById('leftPageNum');
-            const rightPageNum = document.getElementById('rightPageNum');
-
-            if (isMobile) {
-                // في الجوال: صفحة واحدة فقط
-                rightPage.style.display = 'none';
-                const imgSrc = pageImages[currentPageIndex] || '';
-                leftImg.src = imgSrc;
-                leftPageNum.textContent = currentPageIndex + 1;
-            } else {
-                // في الكمبيوتر: صفحتين جنب بعض
-                rightPage.style.display = 'block';
-                
-                const leftSrc = pageImages[currentPageIndex] || '';
-                const rightSrc = pageImages[currentPageIndex + 1] || '';
-                
-                leftImg.src = leftSrc;
-                rightImg.src = rightSrc;
-                leftPageNum.textContent = currentPageIndex + 1;
-                rightPageNum.textContent = currentPageIndex + 2;
-                
-                // إخفاء الصفحة اليمنى إذا كانت الأخيرة فردية
-                if (currentPageIndex + 1 >= totalPages) {
-                    rightImg.style.opacity = '0';
-                } else {
-                    rightImg.style.opacity = '1';
-                }
+        // تهيئة مكتبة StPageFlip
+        function initFlipBook() {
+            if (typeof StPageFlip === 'undefined') {
+                showError('مكتبة تقليب الصفحات لم تُحمّل. تحقق من اتصالك بالإنترنت.');
+                return;
             }
 
-            // تحديث العداد
-            const displayPage = isMobile ? currentPageIndex + 1 : currentPageIndex + 1;
-            document.getElementById('pageIndicator').textContent = `${displayPage} - ${Math.min(currentPageIndex + 2, totalPages)} / ${totalPages}`;
-            document.getElementById('pageSlider').max = totalPages - 1;
-            document.getElementById('pageSlider').value = currentPageIndex;
+            try {
+                // تحديد حجم الكتاب حسب الشاشة
+                const isMobile = window.innerWidth <= 768;
+                const pageWidth = isMobile ? 300 : 400;
+                const pageHeight = isMobile ? 420 : 550;
 
+                pageFlip = new StPageFlip.PageFlip(bookElement, {
+                    width: pageWidth,
+                    height: pageHeight,
+                    size: 'stretch',
+                    minWidth: 250,
+                    maxWidth: 500,
+                    minHeight: 350,
+                    maxHeight: 700,
+                    showCover: true,
+                    maxShadowOpacity: 0.5,
+                    mobileScrollSupport: true,
+                    flippingTime: 1000,
+                    usePortrait: isMobile,
+                    startPage: 0,
+                    autoSize: true,
+                    drawShadow: true,
+                    useMouseEvents: true,
+                    swipeDistance: 30,
+                    showPageCorners: true,
+                    disableFlipByClick: false,
+                    startZIndex: 0
+                });
+
+                pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+
+                // تحديث العداد عند تقليب الصفحة
+                pageFlip.on('flip', (e) => {
+                    updatePageIndicator(e.data);
+                });
+
+                // إخفاء شاشة التحميل
+                setTimeout(() => {
+                    loadingScreen.classList.add('hidden');
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error initializing PageFlip:', error);
+                showError(`خطأ في تهيئة عارض الصفحات: ${error.message}`);
+            }
+        }
+
+        function updatePageIndicator(currentPage) {
+            const totalPages = pageFlip ? pageFlip.getPageCount() : MAGAZINE_CONFIG.pages.length;
+            document.getElementById('pageIndicator').textContent = `${currentPage + 1} / ${totalPages}`;
+            document.getElementById('pageSlider').max = totalPages - 1;
+            document.getElementById('pageSlider').value = currentPage;
+            
             // تحديث حالة الأزرار
-            document.getElementById('prevBtn').disabled = currentPageIndex === 0;
-            document.getElementById('nextBtn').disabled = currentPageIndex >= totalPages - 1;
+            document.getElementById('prevBtn').disabled = currentPage === 0;
+            document.getElementById('nextBtn').disabled = currentPage >= totalPages - 1;
         }
 
         function nextPage() {
-            const step = window.innerWidth <= 768 ? 1 : 2;
-            if (currentPageIndex + step < totalPages) {
-                currentPageIndex += step;
-                updateBookView();
-            } else if (currentPageIndex < totalPages - 1) {
-                currentPageIndex = totalPages - 1;
-                updateBookView();
-            }
+            if (pageFlip) pageFlip.flipNext();
         }
 
         function prevPage() {
-            const step = window.innerWidth <= 768 ? 1 : 2;
-            if (currentPageIndex - step >= 0) {
-                currentPageIndex -= step;
-                updateBookView();
-            } else {
-                currentPageIndex = 0;
-                updateBookView();
-            }
+            if (pageFlip) pageFlip.flipPrev();
         }
 
         function goToPage(pageNumber) {
-            currentPageIndex = parseInt(pageNumber);
-            updateBookView();
+            if (pageFlip) pageFlip.flip(parseInt(pageNumber));
         }
 
         function toggleFullscreen() {
@@ -356,24 +345,22 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') nextPage();
             if (e.key === 'ArrowRight') prevPage();
-            if (e.key === 'Escape' && document.fullscreenElement) document.exitFullscreen();
-        });
-
-        // السحب باللمس
-        let touchStartX = 0;
-        document.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-        });
-        document.addEventListener('touchend', (e) => {
-            const diff = touchStartX - e.changedTouches[0].clientX;
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) nextPage();
-                else prevPage();
+            if (e.key === 'Escape' && document.fullscreenElement) {
+                document.exitFullscreen();
             }
         });
 
-        // إعادة التحديث عند تغيير حجم الشاشة
-        window.addEventListener('resize', updateBookView);
+        // إعادة التهيئة عند تغيير حجم الشاشة
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (pageFlip) {
+                    pageFlip.destroy();
+                    initFlipBook();
+                }
+            }, 250);
+        });
 
         // التشغيل
         document.getElementById('magazineTitle').textContent = MAGAZINE_CONFIG.title;
@@ -381,9 +368,8 @@
         (async function init() {
             const pagesLoaded = await loadPagesList();
             if (pagesLoaded) {
-                await loadAllImages();
-                updateBookView();
-                loadingScreen.classList.add('hidden');
+                await createPages();
+                initFlipBook();
             }
         })();
     </script>
