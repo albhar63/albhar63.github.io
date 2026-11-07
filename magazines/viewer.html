@@ -40,11 +40,6 @@
             opacity: 0;
             pointer-events: none;
         }
-        .error-message {
-            color: #f87171;
-            text-align: center;
-            padding: 20px;
-        }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center p-4">
@@ -58,14 +53,14 @@
         </div>
     </div>
 
-    <!-- رسالة الخطأ (تظهر إذا فشلت التحميل) -->
+    <!-- رسالة الخطأ -->
     <div id="errorMessage" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90">
         <div class="bg-gray-900 border border-red-500/50 rounded-2xl p-8 max-w-md text-center">
             <svg class="w-16 h-16 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
             </svg>
             <h3 class="text-white text-xl font-bold mb-2">تعذر تحميل المجلة</h3>
-            <p id="errorText" class="text-gray-400 mb-6">حدث خطأ أثناء تحميل المجلة</p>
+            <p id="errorText" class="text-gray-400 mb-6">حدث خطأ</p>
             <a href="../index.html#magazines-showcase" class="inline-block bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-xl font-bold transition-colors">
                 العودة للموقع
             </a>
@@ -84,7 +79,7 @@
         <h1 id="magazineTitle" class="text-white font-bold text-lg">تصفح المجلة</h1>
         
         <div class="flex items-center gap-3">
-            <button onclick="prevPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="السابق">
+            <button onclick="prevPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
@@ -92,7 +87,7 @@
             
             <span id="pageIndicator" class="text-gray-300 text-sm font-mono">1 / 1</span>
             
-            <button onclick="nextPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors" title="التالي">
+            <button onclick="nextPage()" class="text-cyan-400 hover:text-cyan-300 p-2 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
@@ -128,22 +123,13 @@
         const urlParams = new URLSearchParams(window.location.search);
         const magazineName = urlParams.get('magazine') || 'sun-kids';
 
-        // أسماء المجلدات في covers (تطابق GitHub)
-        const folderMapping = {
-            'sun-kids': 'sun-kids',
-            'egyptian-museum': 'egyptian-museum',
-            'fashico': 'fashion',
-            'packaging': 'packaging',
-            'portfolpo': 'portfoli'
-        };
-
-        const coverFolder = folderMapping[magazineName] || magazineName;
+        // ✅ التصحيح: المجلدات داخل magazines/ وليس covers/
         const MAGAZINE_CONFIG = {
-            folder: `../covers/${coverFolder}/`,
-            pages: [], // سيتم ملؤها من pages.txt
+            folder: `./${magazineName}/`,  // المسار الصحيح
+            pages: [],
             extension: '.jpg',
             title: magazineName,
-            pdfLink: `../covers/${coverFolder}/magazine.pdf`
+            pdfLink: `./${magazineName}/magazine.pdf`
         };
 
         const loadingStatus = document.getElementById('loadingStatus');
@@ -155,7 +141,6 @@
         let pageFlip;
         let isInitialized = false;
 
-        // دالة عرض الخطأ
         function showError(message) {
             loadingScreen.classList.add('hidden');
             errorText.textContent = message;
@@ -163,7 +148,7 @@
             console.error('Error:', message);
         }
 
-        // الخطوة 1: قراءة ملف pages.txt
+        // قراءة ملف pages.txt من المجلد الصحيح
         async function loadPagesList() {
             loadingStatus.textContent = 'جاري قراءة قائمة الصفحات...';
             
@@ -194,12 +179,12 @@
             }
         }
 
-        // الخطوة 2: تحميل الصور وإنشاء الصفحات
+        // تحميل الصور
         async function createPages() {
             loadingStatus.textContent = 'جاري تحميل الصور...';
             
             const loadPromises = MAGAZINE_CONFIG.pages.map((page, index) => {
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
                     const img = new Image();
                     const fullPath = `${MAGAZINE_CONFIG.folder}${page}`;
                     
@@ -213,12 +198,11 @@
                     
                     img.onerror = () => {
                         console.warn(`فشل تحميل: ${fullPath}`);
-                        // إنشاء صفحة فارغة بدلاً من الفشل الكامل
                         const pageDiv = document.createElement('div');
                         pageDiv.className = 'page bg-gray-200 flex items-center justify-center';
                         pageDiv.innerHTML = `<p class="text-gray-500">صفحة ${index + 1}</p>`;
                         bookElement.appendChild(pageDiv);
-                        resolve(); // نكمل حتى لو فشلت صورة
+                        resolve();
                     };
                     
                     img.src = fullPath;
@@ -229,7 +213,7 @@
             loadingStatus.textContent = 'جاري تهيئة عارض الصفحات...';
         }
 
-        // الخطوة 3: تهيئة مكتبة PageFlip
+        // تهيئة مكتبة PageFlip
         function initFlipBook() {
             if (typeof StPageFlip === 'undefined') {
                 showError('مكتبة تقليب الصفحات لم تُحمّل. تحقق من اتصالك بالإنترنت.');
@@ -267,7 +251,6 @@
 
                 isInitialized = true;
                 
-                // إخفاء شاشة التحميل بعد تأخير بسيط
                 setTimeout(() => {
                     loadingScreen.classList.add('hidden');
                 }, 500);
@@ -307,7 +290,6 @@
             }
         }
 
-        // اختصارات لوحة المفاتيح
         document.addEventListener('keydown', (e) => {
             if (!isInitialized) return;
             if (e.key === 'ArrowRight') nextPage();
@@ -317,7 +299,6 @@
             }
         });
 
-        // تشغيل التحميل
         document.getElementById('magazineTitle').textContent = MAGAZINE_CONFIG.title;
 
         (async function init() {
