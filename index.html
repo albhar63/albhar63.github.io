@@ -678,12 +678,13 @@
                 </div>
 
             </div>
-            <div class="text-center mt-12">
-                <button onclick="document.getElementById('magazines-showcase').scrollIntoView({behavior: 'smooth'}); return false;" 
-                       class="btn-outline-cyan px-12 py-5 text-xl font-bold max-w-xs w-full mx-auto inline-block cursor-pointer">
-                     استكشف جميع المجلات
-               </button>
-        </div>
+           <div class="text-center mt-12">
+               <a href="#magazines-showcase" 
+                   onclick="event.preventDefault(); document.getElementById('magazines-showcase').scrollIntoView({behavior: 'smooth', block: 'start'});"
+                    class="btn-outline-cyan px-12 py-5 text-xl font-bold max-w-xs w-full mx-auto inline-block cursor-pointer">
+                   استكشف جميع المجلات
+              </a>
+         </div>
         </div>
     </section>
 
