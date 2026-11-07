@@ -21,7 +21,7 @@
         
         /* حاوية الكتاب */
         .book-wrapper {
-            perspective: 2500px;
+            perspective: 3000px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -46,79 +46,73 @@
             }
         }
         
-        /* الصفحات */
-        .page {
+        /* كل زوج صفحات (spread) */
+        .spread {
             position: absolute;
             top: 0;
-            width: 50%;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: white;
-            transform-origin: left center;
             transform-style: preserve-3d;
             transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-        
-        .page.right {
-            right: 0;
             transform-origin: left center;
         }
         
-        .page.left {
-            left: 0;
-            transform-origin: right center;
+        .spread.flipped {
+            transform: rotateY(-180deg);
         }
         
-        .page-face {
+        /* وجه الصفحات */
+        .spread-face {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
+            display: flex;
             overflow: hidden;
             background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
         
-        .page-face.front {
+        .spread-face.front {
             z-index: 2;
         }
         
-        .page-face.back {
+        .spread-face.back {
             transform: rotateY(180deg);
             z-index: 1;
         }
         
-        .page-face img {
-            width: 100%;
+        .page-img {
+            flex: 1;
             height: 100%;
             object-fit: cover;
-            display: block;
         }
         
-        /* تأثير الظل عند التقليب */
-        .page::before {
-            content: '';
+        .page-img.left {
+            border-left: 2px solid #333;
+        }
+        
+        .page-img.right {
+            border-right: 2px solid #333;
+        }
+        
+        /* ثنية الكتاب */
+        .book-spine {
             position: absolute;
+            left: 50%;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, rgba(0,0,0,0.2) 0%, transparent 10%);
-            pointer-events: none;
-            z-index: 3;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to right, #1a1a1a, #333, #1a1a1a);
+            transform: translateX(-50%);
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
         
-        .page.right::before {
-            background: linear-gradient(to left, rgba(0,0,0,0.2) 0%, transparent 10%);
-        }
-        
-        /* الصفحة المقلوبة */
-        .page.flipped {
-            transform: rotateY(-180deg);
-        }
-        
-        .page.left.flipped {
-            transform: rotateY(180deg);
+        @media (max-width: 768px) {
+            .book-spine { display: none; }
+            .page-img.left { display: none; }
         }
         
         /* شاشة التحميل */
@@ -155,29 +149,9 @@
             cursor: not-allowed;
         }
         
-        /* رسالة الخطأ */
         .error-box {
             background: rgba(239, 68, 68, 0.1);
             border: 2px solid rgba(239, 68, 68, 0.3);
-        }
-        
-        /* ثنية الكتاب في المنتصف */
-        .book-spine {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: linear-gradient(to right, #1a1a1a, #333, #1a1a1a);
-            transform: translateX(-50%);
-            z-index: 10;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        
-        @media (max-width: 768px) {
-            .book-spine { display: none; }
-            .page.left { display: none; }
-            .page.right { width: 100%; }
         }
     </style>
 </head>
@@ -246,7 +220,6 @@
     <div class="book-wrapper">
         <div class="book" id="book">
             <div class="book-spine"></div>
-            <!-- الصفحات ستُضاف هنا ديناميكياً -->
         </div>
     </div>
 
@@ -281,13 +254,21 @@
             title: magazineName
         };
 
-        let currentPage = 0;
-        let totalPages = 0;
+        let currentSpread = 0;
+        let totalSpreads = 0;
         const bookElement = document.getElementById('book');
         const loadingScreen = document.getElementById('loading');
         const loadingStatus = document.getElementById('loadingStatus');
         const errorMessage = document.getElementById('errorMessage');
         const errorText = document.getElementById('errorText');
+
+        // صوت تقليب الصفحات (Base64 مدمج - لا يحتاج تحميل خارجي)
+        const flipSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIGGS57OihUBELTKXh8bllHAU2j9Xvz3kpBSh+zPDajzsKFWC06OyrWBUIQ5zd8sFuJAUuhM/z24k2CBhku+zooVARC0yl4fG5ZRwFNo/V7895KQUofsz");
+        
+        function playFlipSound() {
+            flipSound.currentTime = 0;
+            flipSound.play().catch(e => console.log('Sound error:', e));
+        }
 
         function showError(message) {
             loadingScreen.classList.add('hidden');
@@ -312,7 +293,7 @@
                 if (pages.length === 0) throw new Error('ملف pages.txt فارغ');
                 
                 MAGAZINE_CONFIG.pages = pages;
-                totalPages = pages.length;
+                totalSpreads = Math.ceil(pages.length / 2);
                 loadingStatus.textContent = `تم العثور على ${pages.length} صفحة. جاري التحميل...`;
                 return true;
             } catch (error) {
@@ -321,82 +302,74 @@
             }
         }
 
-        // إنشاء الصفحات
-        async function createPages() {
+        // إنشاء أزواج الصفحات (Spreads)
+        async function createSpreads() {
             loadingStatus.textContent = 'جاري تحميل الصور...';
             
-            // إزالة الثنية مؤقتاً
+            // إزالة الأزواج القديمة (احتفظ بالـ spine)
             const spine = bookElement.querySelector('.book-spine');
             bookElement.innerHTML = '';
             bookElement.appendChild(spine);
             
-            const loadPromises = MAGAZINE_CONFIG.pages.map((page, index) => {
+            // تحميل جميع الصور أولاً
+            const imagePromises = MAGAZINE_CONFIG.pages.map((page) => {
                 return new Promise((resolve) => {
                     const img = new Image();
                     const fullPath = `${MAGAZINE_CONFIG.folder}${page}`;
-                    
-                    img.onload = () => {
-                        resolve({ src: fullPath, index });
-                    };
-                    
-                    img.onerror = () => {
-                        console.warn(`فشل تحميل: ${fullPath}`);
-                        resolve({ src: null, index });
-                    };
-                    
+                    img.onload = () => resolve(fullPath);
+                    img.onerror = () => resolve(null);
                     img.src = fullPath;
                 });
             });
             
-            const loadedImages = await Promise.all(loadPromises);
+            const loadedImages = await Promise.all(imagePromises);
             
-            // إنشاء أزواج من الصفحات (كل زوج = صفحة يسرى + صفحة يمنى)
-            const isMobile = window.innerWidth <= 768;
-            const totalPairs = Math.ceil(totalPages / 2);
-            
-            for (let pairIndex = 0; pairIndex < totalPairs; pairIndex++) {
-                const leftIndex = pairIndex * 2;
-                const rightIndex = pairIndex * 2 + 1;
+            // إنشاء أزواج الصفحات
+            for (let i = 0; i < totalSpreads; i++) {
+                const leftIndex = i * 2;
+                const rightIndex = i * 2 + 1;
                 
-                // الصفحة اليسرى (الوجه الخلفي للزوج السابق)
-                if (leftIndex < totalPages) {
-                    const leftPage = document.createElement('div');
-                    leftPage.className = 'page left';
-                    leftPage.style.zIndex = totalPairs - pairIndex;
-                    leftPage.dataset.pageIndex = leftIndex;
-                    
-                    const imgSrc = loadedImages[leftIndex].src || '';
-                    leftPage.innerHTML = `
-                        <div class="page-face front">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="صفحة ${leftIndex + 1}">` : `<div class="flex items-center justify-center h-full text-gray-500">صفحة ${leftIndex + 1}</div>`}
-                        </div>
-                        <div class="page-face back">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="صفحة ${leftIndex + 1}">` : `<div class="flex items-center justify-center h-full text-gray-500">صفحة ${leftIndex + 1}</div>`}
-                        </div>
-                    `;
-                    leftPage.onclick = () => prevPage();
-                    bookElement.appendChild(leftPage);
-                }
+                const spread = document.createElement('div');
+                spread.className = 'spread';
+                spread.dataset.spreadIndex = i;
                 
-                // الصفحة اليمنى
-                if (rightIndex < totalPages) {
-                    const rightPage = document.createElement('div');
-                    rightPage.className = 'page right';
-                    rightPage.style.zIndex = totalPairs - pairIndex;
-                    rightPage.dataset.pageIndex = rightIndex;
+                // z-index: الأزواج الأولى في الأعلى
+                spread.style.zIndex = totalSpreads - i;
+                
+                const leftImg = loadedImages[leftIndex] || '';
+                const rightImg = loadedImages[rightIndex] || '';
+                
+                // الوجه الأمامي (الصفحة اليسرى + اليمنى)
+                const frontFace = document.createElement('div');
+                frontFace.className = 'spread-face front';
+                frontFace.innerHTML = `
+                    ${leftImg ? `<img src="${leftImg}" class="page-img left" alt="صفحة ${leftIndex + 1}">` : '<div class="page-img left bg-gray-200 flex items-center justify-center text-gray-500">صفحة ' + (leftIndex + 1) + '</div>'}
+                    ${rightImg ? `<img src="${rightImg}" class="page-img right" alt="صفحة ${rightIndex + 1}">` : '<div class="page-img right bg-gray-200 flex items-center justify-center text-gray-500">صفحة ' + (rightIndex + 1) + '</div>'}
+                `;
+                
+                // الوجه الخلفي (نفس الصفحات لكن مقلوبة)
+                const backFace = document.createElement('div');
+                backFace.className = 'spread-face back';
+                backFace.innerHTML = frontFace.innerHTML;
+                
+                spread.appendChild(frontFace);
+                spread.appendChild(backFace);
+                
+                // النقر للتقليب
+                spread.onclick = (e) => {
+                    const rect = spread.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
                     
-                    const imgSrc = loadedImages[rightIndex].src || '';
-                    rightPage.innerHTML = `
-                        <div class="page-face front">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="صفحة ${rightIndex + 1}">` : `<div class="flex items-center justify-center h-full text-gray-500">صفحة ${rightIndex + 1}</div>`}
-                        </div>
-                        <div class="page-face back">
-                            ${imgSrc ? `<img src="${imgSrc}" alt="صفحة ${rightIndex + 1}">` : `<div class="flex items-center justify-center h-full text-gray-500">صفحة ${rightIndex + 1}</div>`}
-                        </div>
-                    `;
-                    rightPage.onclick = () => nextPage();
-                    bookElement.appendChild(rightPage);
-                }
+                    if (clickX < rect.width / 2) {
+                        // نقر على اليسار = رجوع
+                        prevPage();
+                    } else {
+                        // نقر على اليمين = تقدم
+                        nextPage();
+                    }
+                };
+                
+                bookElement.appendChild(spread);
             }
             
             loadingStatus.textContent = 'جاهز!';
@@ -405,64 +378,63 @@
 
         function updateBookView() {
             const isMobile = window.innerWidth <= 768;
-            const pages = bookElement.querySelectorAll('.page');
+            const spreads = bookElement.querySelectorAll('.spread');
             
-            pages.forEach((page, index) => {
-                const pageIndex = parseInt(page.dataset.pageIndex);
-                
+            spreads.forEach((spread, index) => {
                 if (isMobile) {
-                    // في الجوال: صفحة واحدة
-                    if (page.classList.contains('left')) {
-                        page.style.display = 'none';
+                    // في الجوال: نعرض spread واحد فقط
+                    if (index === currentSpread) {
+                        spread.style.display = 'block';
+                        spread.classList.remove('flipped');
                     } else {
-                        page.style.display = 'block';
-                        if (pageIndex < currentPage) {
-                            page.classList.add('flipped');
-                        } else {
-                            page.classList.remove('flipped');
-                        }
+                        spread.style.display = 'none';
                     }
                 } else {
-                    // في الكمبيوتر: صفحتين
-                    page.style.display = 'block';
-                    if (pageIndex < currentPage) {
-                        page.classList.add('flipped');
+                    // في الكمبيوتر: كل الأزواج مرئية
+                    spread.style.display = 'block';
+                    if (index < currentSpread) {
+                        spread.classList.add('flipped');
                     } else {
-                        page.classList.remove('flipped');
+                        spread.classList.remove('flipped');
                     }
                 }
             });
             
             // تحديث العداد
-            const displayPage = currentPage + 1;
-            const displayEnd = Math.min(currentPage + 2, totalPages);
-            document.getElementById('pageIndicator').textContent = 
-                isMobile ? `${displayPage} / ${totalPages}` : `${displayPage}-${displayEnd} / ${totalPages}`;
+            const currentPageNum = currentSpread * 2 + 1;
+            const endPageNum = Math.min(currentSpread * 2 + 2, MAGAZINE_CONFIG.pages.length);
             
-            document.getElementById('pageSlider').max = totalPages - 1;
-            document.getElementById('pageSlider').value = currentPage;
+            document.getElementById('pageIndicator').textContent = 
+                isMobile ? `${currentPageNum} / ${MAGAZINE_CONFIG.pages.length}` : 
+                `${currentPageNum}-${endPageNum} / ${MAGAZINE_CONFIG.pages.length}`;
+            
+            document.getElementById('pageSlider').max = totalSpreads - 1;
+            document.getElementById('pageSlider').value = currentSpread;
             
             // تحديث حالة الأزرار
-            document.getElementById('prevBtn').disabled = currentPage === 0;
-            document.getElementById('nextBtn').disabled = currentPage >= totalPages - 1;
+            document.getElementById('prevBtn').disabled = currentSpread === 0;
+            document.getElementById('nextBtn').disabled = currentSpread >= totalSpreads - 1;
         }
 
         function nextPage() {
-            if (currentPage < totalPages - 1) {
-                currentPage++;
+            if (currentSpread < totalSpreads - 1) {
+                currentSpread++;
+                playFlipSound();
                 updateBookView();
             }
         }
 
         function prevPage() {
-            if (currentPage > 0) {
-                currentPage--;
+            if (currentSpread > 0) {
+                currentSpread--;
+                playFlipSound();
                 updateBookView();
             }
         }
 
         function goToPage(pageNumber) {
-            currentPage = parseInt(pageNumber);
+            currentSpread = parseInt(pageNumber);
+            playFlipSound();
             updateBookView();
         }
 
@@ -505,7 +477,7 @@
         (async function init() {
             const pagesLoaded = await loadPagesList();
             if (pagesLoaded) {
-                await createPages();
+                await createSpreads();
                 setTimeout(() => {
                     loadingScreen.classList.add('hidden');
                 }, 300);
