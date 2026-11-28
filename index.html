@@ -48,6 +48,9 @@
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+            .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+            .nav-logo { height: 44px; width: auto; display: block; }
+            @media (max-width: 480px) { .nav-logo { height: 36px; } }
         }
         .nav-link {
             position: relative;
@@ -196,10 +199,13 @@
           <div class="container mx-auto px-4 py-4 flex justify-between items-center flex-row-reverse">
             
             <!-- الاسم (يمين الشاشة) -->
-            <div class="text-left me-4"> <!-- me-4 = margin-end (يعمل كـ mr-4 في RTL) -->
-              <div class="text-white text-xl font-bold whitespace-nowrap px-4 py-2 rounded bg-gray-800 shadow-md">محمد عمر</div>
+           <a href="#home" class="nav-brand" dir="ltr">
+             <img src="photo_2026.jpg" alt="شعار محمد عمر" class="nav-logo" width="58" height="44">
+                <div class="text-left">
+               <div class="text-white text-xl font-bold whitespace-nowrap px-4 py-2 rounded bg-gray-800 shadow-md">محمد عمر</div>
               <div class="english-name text-sm text-cyan-200 mt-1">Mohamed Omar</div>
-            </div>
+             </div>
+           </a>
         
             <!-- الروابط + زر الهامبرغر (يسار الشاشة) -->
             <div class="flex items-center">
